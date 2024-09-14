@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Disallow: /404
+
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: http://localhost:8080/v1
+
+# Sitemaps
+Sitemap: http://localhost:8080/v1/sitemap.xml
