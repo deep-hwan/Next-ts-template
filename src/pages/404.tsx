@@ -1,12 +1,12 @@
-import SEO from '@/seo.config'
-import { NextRouter, useRouter } from 'next/router'
+import SEO from "@/head/seo";
+import { NextRouter, useRouter } from "next/router";
 
-import { Button, V, Spacing, Txt } from '@/_ui'
-import { MQ, colors, fontSize } from '@/libs/themes'
+import { Button, Spacing, Txt, V } from "@/_ui";
+import { MQ, colors, fontSize } from "@/libs/themes";
 
 //
 export default function Error() {
-    const router: NextRouter = useRouter()
+    const router: NextRouter = useRouter();
 
     return (
         <>
@@ -41,5 +41,5 @@ export default function Error() {
                 </V.Column>
             </V.Section>
         </>
-    )
+    );
 }

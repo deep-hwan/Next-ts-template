@@ -1,42 +1,42 @@
 /** @jsxImportSource @emotion/react */
-import React, { ForwardedRef, ReactNode, forwardRef, useCallback, useEffect, useRef } from 'react'
-import { BlurLayer, TouchableOpacity } from '../index'
+import { ForwardedRef, ReactNode, forwardRef, useCallback, useEffect, useRef } from "react";
+import { BlurLayer } from "../index";
 
 // --------------------------------------------
 // -------------- Type Interface --------------
 // --------------------------------------------
 interface Props {
-    open: boolean
-    onCancel: () => void
-    cancelTabIconActive?: boolean
-    children: ReactNode
-    backgroundColor?: string
-    cancelIconColor?: string
+    open: boolean;
+    onCancel: () => void;
+    cancelTabIconActive?: boolean;
+    children: ReactNode;
+    backgroundColor?: string;
+    cancelIconColor?: string;
 }
 
 // ---------------------------------------
 // -------------- AppDrawer --------------
 // ---------------------------------------
 export const AppDrawer = forwardRef((props: Props, ref?: ForwardedRef<HTMLDivElement>) => {
-    const { open, onCancel, cancelTabIconActive = true, cancelIconColor } = props
-    const drawerRef = useRef<HTMLDivElement>(null)
+    const { open, onCancel, cancelTabIconActive = true, cancelIconColor } = props;
+    const drawerRef = useRef<HTMLDivElement>(null);
 
     const clickModalOutside = useCallback(
         (event: MouseEvent) => {
-            if (open && drawerRef.current && !drawerRef.current.contains(event.target as Node)) onCancel()
+            if (open && drawerRef.current && !drawerRef.current.contains(event.target as Node)) onCancel();
         },
         [open, onCancel, drawerRef],
-    )
+    );
 
     useEffect(() => {
-        drawerRef.current?.scrollTo(0, 0)
+        drawerRef.current?.scrollTo(0, 0);
 
-        if (open) document.body.style.overflowY = 'hidden'
-        else document.body.style.overflowY = 'auto'
+        if (open) document.body.style.overflowY = "hidden";
+        else document.body.style.overflowY = "auto";
 
-        document.addEventListener('mousedown', clickModalOutside)
-        return () => document.removeEventListener('mousedown', clickModalOutside)
-    })
+        document.addEventListener("mousedown", clickModalOutside);
+        return () => document.removeEventListener("mousedown", clickModalOutside);
+    });
 
     return (
         <>
@@ -46,56 +46,56 @@ export const AppDrawer = forwardRef((props: Props, ref?: ForwardedRef<HTMLDivEle
                 ref={drawerRef}
                 css={{
                     zIndex: 2000,
-                    width: '100%',
+                    width: "100%",
                     maxWidth: 320,
-                    position: 'fixed',
+                    position: "fixed",
                     top: 0,
                     bottom: 0,
-                    right: open ? '0' : '-100%',
+                    right: open ? "0" : "-100%",
                     background:
                         props.backgroundColor ??
                         `linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 100%);`,
-                    backdropFilter: 'blur(4px)',
+                    backdropFilter: "blur(4px)",
                     paddingRight: `max(0px, env(safe-area-inset-right))`,
-                    transition: '0.3s ease-in-out',
+                    transition: "0.3s ease-in-out",
                 }}
             >
                 <div
                     css={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'end',
-                        padding: '14px 14px 6px',
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "end",
+                        padding: "14px 14px 6px",
                     }}
                 >
                     {cancelTabIconActive ? (
                         <button type="button" onClick={() => onCancel()} css={{ padding: 5 }}>
-                            {CancelIcon({ fill: cancelIconColor ?? '#ccc' })}
+                            {CancelIcon({ fill: cancelIconColor ?? "#ccc" })}
                         </button>
                     ) : (
-                        ''
+                        ""
                     )}
                 </div>
 
                 <div
                     ref={ref}
                     css={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexWrap: 'nowrap',
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        flexWrap: "nowrap",
                         zIndex: 10,
-                        overflowY: 'auto',
-                        '::-webkit-scrollbar': { display: 'none' },
+                        overflowY: "auto",
+                        "::-webkit-scrollbar": { display: "none" },
                     }}
                 >
                     {props.children}
                 </div>
             </div>
         </>
-    )
-})
+    );
+});
 
 const CancelIcon = ({ fill }: { fill: string }) => {
     return (
@@ -107,5 +107,5 @@ const CancelIcon = ({ fill }: { fill: string }) => {
                 fill={fill}
             />
         </svg>
-    )
-}
+    );
+};

@@ -1,17 +1,17 @@
-import { NextRouter, useRouter } from 'next/router'
+import { NextRouter, useRouter } from "next/router";
 
 //libs
-import { V, Spacing, Txt } from '@/_ui'
-import { colors } from '@/libs/themes'
+import { V, Spacing, Txt } from "@/_ui";
+import { colors } from "@/libs/themes";
 
 //components
-import SEO from '@/seo.config'
-import Fields from '@/app/form-fields/Fields'
-import Result from '@/app/form-fields/Result'
+import Fields from "@/app/form-fields/Fields";
+import Result from "@/app/form-fields/Result";
+import SEO from "@/head/seo";
 
 //
 export default function FormFields() {
-    const router: NextRouter = useRouter()
+    const router: NextRouter = useRouter();
 
     return (
         <>
@@ -39,5 +39,5 @@ export default function FormFields() {
                 </V.Column>
             </V.Section>
         </>
-    )
+    );
 }

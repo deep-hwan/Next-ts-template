@@ -1,14 +1,14 @@
 //libs
-import { V, Spacing } from '@/_ui/index'
-import { screenSize } from '@/libs/themes'
+import { Spacing, V } from "@/_ui/index";
+import { screenSize } from "@/libs/themes";
 
 //components
-import SEO from '@/seo.config'
-import Comp1 from '@/app/home/Comp1'
-import Comp2 from '@/app/home/Comp2'
-import Comp3 from '@/app/home/Comp3'
-import Comp4 from '@/app/home/Comp4'
-import Comp5 from '@/app/home/Comp5'
+import Comp1 from "@/app/home/Comp1";
+import Comp2 from "@/app/home/Comp2";
+import Comp3 from "@/app/home/Comp3";
+import Comp4 from "@/app/home/Comp4";
+import Comp5 from "@/app/home/Comp5";
+import SEO from "@/head/seo";
 
 //
 export default function Index() {
@@ -30,5 +30,5 @@ export default function Index() {
                 </V.Column>
             </V.Section>
         </>
-    )
+    );
 }

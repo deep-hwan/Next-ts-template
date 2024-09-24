@@ -14,7 +14,6 @@ V3 버전 업데이트는 yarn berry 의 Plug'n Play(PnP) 적용 가능한 버�
 </p>
 </div>
 
-
 ## Install
 
 (필수) yarn berry를 셋팅하세요
@@ -41,10 +40,9 @@ V3 버전 업데이트는 yarn berry 의 Plug'n Play(PnP) 적용 가능한 버�
 
 ---
 
-
 ## Yarn Plug'n Play (PnP) 활성화 유무 (선택)
 
-    yarn set version berry 
+    yarn set version berry
 
 명령어를 통해 yarn berry를 설치 후
 
@@ -66,16 +64,16 @@ nodeLinker: pnp << 추가 시 yarn Plug'n Play 사용 가능
 
 현재 패키지에 설치 및 적용된 **NPM 패키지 라이브러리 / 버전 정보** 입니다.
 
--   next : 14.2.5
+-   next : 14.2.13
 -   typeScript : 5.5.4
--   next-pwa : 5.6.9
--   next-seo : 6.5.0
+-   next-pwa : 5.6.0
 -   next-sitemap: 4.2.3
+-   date-fns : 4.1.0
 -   next-auth : 4.24.7
--   axios : 1.7.4
+-   axios : 1.7.7
 -   tanstack/react-query : 4.5
 -   recoil: 0.7.7
--   emotion : 11.13.0
+-   emotion : 11.13.3
 -   react-cookie : 7.2.0
 -   react-flatlist-ui : 1.4.2 (자체 배포/개발 패키지)
 -   react-layout-flexbox : 0.1.9 (자체 배포/개발 UI 패키지)
@@ -260,7 +258,11 @@ https://github.com/deep-hwan/react-typogrphy-txt
 
 ## Site-map
 
-1. public > seo.config.tsx : 검색엔진에 사이트 키워드를 작성 (권장 / 필수)
+yarn berry PnP 사용 시 사이트 맵 생성을 위해 아래 명령어를 입력하세요
+
+     npx next-sitemap
+
+1. src > head > seo.ts : 검색엔진에 사이트 키워드를 작성 (권장 / 필수)
 
 2. src > pages > api > sitemap.ts 에서 staticPages 라우트 추가 / dynamicRoutes 동적 라우트의 서버 api URL 추가
 
@@ -269,6 +271,12 @@ https://github.com/deep-hwan/react-typogrphy-txt
 4. next-sitemap.config.js에서 siteUrl : 도메인 주소로 변경 / additionalSitemaps : 도메인 주소/sitemap.xml로 변경
 
 5. npm run build
+
+---
+
+## RSS 수정 (선택)
+
+-   src > pages > api > rss.ts 를 수정하세요
 
 ---
 
@@ -286,4 +294,6 @@ https://github.com/deep-hwan/react-typogrphy-txt
 
 5. next.config.js 에서 siteUrl 수정
 
-6. npm run build
+6. npx next-sitemap << 명령어를 통해 사이트 맵을 생성하세요 (\* pnp)
+
+7. npm run build
