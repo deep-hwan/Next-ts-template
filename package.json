@@ -1,9 +1,7 @@
 {
   "name": "create-next-speed-template",
   "version": "2.0.0",
-  "bin": {
-    "create-next-speed-template": "./bin/create-next-speed-template.js"
-  },
+  "bin": "./bin/create-next-speed-template.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -68,7 +66,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/deep-hwan/Next_Typescript_Tamplate.git"
+    "url": "git+https://github.com/deep-hwan/next.js-speed-template"
   },
   "author": "deep-hwan <deep@deepcomu.com>",
   "license": "MIT",

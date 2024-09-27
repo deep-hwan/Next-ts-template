@@ -1,14 +1,12 @@
 # Create Next Speed Template
 
-This is a template set up to create Next.js App with fast speed and high performance<br/>
+빠른 속도와 높은 성능으로 Next.js App을 만들 수 있도록 셋팅된 템플릿입니다
 
-**🇰🇷 :**[ 한국어 문서로 내용보기](https://github.com/deep-hwan/next.js-speed-template/blob/main/document/README.md)<br/>
-
-**Demo URL:**
-[This Click☝🏻 Please](https://next-typescript-tamplate.vercel.app)
+**미리보기:**
+[여기에서 확인 가능해요☝🏻](https://next-typescript-tamplate.vercel.app)
 
 
-## Getting Started
+## 시작하기
 
     npx create-next-speed-template my-app
     cd my-app
@@ -17,7 +15,7 @@ This is a template set up to create Next.js App with fast speed and high perform
 
 ---
 
-## Use Important Library
+## 사용된 주요 라이브러리
 
 -   langauage : **Typescript**
 -   State : **Recoil**
@@ -29,34 +27,36 @@ This is a template set up to create Next.js App with fast speed and high perform
 -   SVG : **@svgr/webpack**
 
 
-
 ---
 
-## Info
+## 안내사항
 
-This template is set to Yarn Berry - Plug'n Play.<br/> We recommend that you use the template through the Yarn command 🙏🏻
+해당 템플릿은 Yarn Berry - Plug'n Play 으로 셋팅되었습니다. <br/>Yarn 명령어를 통해 템플릿을 사용할 것을 권장합니다 🙏🏻
+<br/>
 
-
-### ⚙️ Yarn Berry Plug'n Play (PnP) enabled or disabled
+### Yarn Berry Plug'n Play (PnP) 활성화 유무 (선택)
 
 yarn npm : .yarnrc.yml => nodeLinker: node-modules
 yarn pnp : .yarnrc.yml => nodeLinker: pnp
 
 
-### ✅ Essential : Set up yarn berry
+
+
+### ✅ 필수사항 : yarn berry를 초기 설치 및 셋팅하세요
 
     npm install -g yarn
     yarn set version berry
     yarn install
 
-### ✔️ Optional : In Case of Type or Prettier Issue
+### ✔️ 선택사항 : Type 및 Prettier 이슈가 발생 시 아래 플러그인 및 명령어를 입력해보세요 🙏🏻
 
-Install Plug-In : [ZipFS - a zip file system](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
+Plug-In 을 설치하세요 : [ZipFS - a zip file system](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
     
     yarn dlx @yarnpkg/sdks vscode
     yarn add --dev --exact prettier
 
-### ✔️ Optional : In the event of an Issue after the Yarn Run Build Command
+### ✔️ 선택사항 : Yarn run build 명령어 입력 이후 이슈가 발생할 때 아래 명령어를 입력해보세요 🙏🏻
+
 
     yarn add @babel/runtime --dev
     yarn cache clean
@@ -66,37 +66,15 @@ Install Plug-In : [ZipFS - a zip file system](https://marketplace.visualstudio.c
 ---
 
 
-## Design Systems (Widgets)
+## 디자인 시스템 (위젯)
 
-### [🔎 Look Design Systems ☝🏻](https://github.com/deep-hwan/next.js-speed-template/tree/main/src/_ui/Readme.md)
+### [🔎 위젯 미리보기 ☝🏻](https://github.com/deep-hwan/next.js-speed-template/tree/main/src/_ui/Readme.md)
 
-🗂️ **Root : src > _ui**
+🗂️ **경로 : src > _ui**
 
-Check out the finished design system widgets<be/>
-I'll be responsible for your UI experience and work efficiency
+완성된 디자인 시스템 위젯들을 확인하세요<br/>
+당신의 UI 경험과 작업 능률을 책임질게요
 
-
-
-
----
-
-## Themes (테마)
-
-#### 파일경로 : src > lib > themes
-
-상황에 따른 컬러 및 사이즈, 미디어쿼리 등을 즉시 사용할 수 있는 테마입니다.
-
----
-
-## Utils (유틸 기능)
-
-#### 파일경로 src > lib > utils
-
-프론트 개발에 도움이 되는 다양한 유틸 기능입니다.
-
--   enum : enum을 미리 셋팅 후 가져와 사용할 수 있습니다.
-
--   regEx : 이메일 및 비밀번호 정규식을 즉시 사용할 수 있습니다. ex\_ regEx.email.text(email)
 
 ---
 

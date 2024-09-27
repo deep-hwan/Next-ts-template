@@ -6600,6 +6600,61 @@ __metadata:
   languageName: node
   linkType: hard
 
+"create-next-speed-template@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "create-next-speed-template@workspace:."
+  dependencies:
+    "@babel/runtime": "npm:^7.25.6"
+    "@emotion/babel-plugin": "npm:^11.12.0"
+    "@emotion/eslint-plugin": "npm:^11.12.0"
+    "@emotion/react": "npm:^11.13.3"
+    "@next/bundle-analyzer": "npm:^14.2.13"
+    "@svgr/webpack": "npm:^8.1.0"
+    "@tanstack/react-query": "npm:5.56"
+    "@types/next-pwa": "npm:^5.6.9"
+    "@types/node": "npm:^22.7.2"
+    "@types/react": "npm:^18.3.9"
+    "@types/react-dom": "npm:^18.3.0"
+    "@types/react-query": "npm:^1.2.9"
+    "@typescript-eslint/eslint-plugin": "npm:^8.7.0"
+    "@typescript-eslint/parser": "npm:^8.7.0"
+    "@yarnpkg/pnpify": "npm:^4.1.2"
+    axios: "npm:^1.7.7"
+    build: "npm:^0.1.4"
+    cross-env: "npm:^7.0.3"
+    date-fns: "npm:^4.1.0"
+    emotion: "npm:^11.0.0"
+    eslint: "npm:^9.11.1"
+    eslint-config-next: "npm:14.2.13"
+    eslint-config-prettier: "npm:^9.1.0"
+    eslint-import-resolver-typescript: "npm:^3.6.3"
+    eslint-plugin-emotion: "npm:^11.0.0"
+    eslint-plugin-import: "npm:^2.30.0"
+    eslint-plugin-prettier: "npm:^5.2.1"
+    eslint-plugin-react: "npm:^7.36.1"
+    eslint-plugin-react-hooks: "npm:^4.6.2"
+    next: "npm:^14.2.13"
+    next-auth: "npm:^4.24.8"
+    next-pwa: "npm:^5.6.0"
+    next-sitemap: "npm:^4.2.3"
+    npm: "npm:^10.8.3"
+    prettier: "npm:^3.3.3"
+    react: "npm:^18.3.1"
+    react-cookie: "npm:^7.2.0"
+    react-dom: "npm:18.3.1"
+    react-flatlist-ui: "npm:^1.4.2"
+    react-layout-flexbox: "npm:^0.1.9"
+    react-touchableopacity: "npm:^0.0.6"
+    react-typogrphy-txt: "npm:^0.0.8"
+    recoil: "npm:^0.7.7"
+    run: "npm:^1.5.0"
+    typescript: "npm:^5.6.2"
+    webpack-bundle-analyzer: "npm:^4.10.2"
+  bin:
+    create-next-speed-template: ./bin/create-next-speed-template.js
+  languageName: unknown
+  linkType: soft
+
 "cross-env@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
@@ -7887,7 +7942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escalade@npm:^3.1.1, escalade@npm:^3.1.2":
+"escalade@npm:^3.1.1, escalade@npm:^3.2.0":
   version: 3.2.0
   resolution: "escalade@npm:3.2.0"
   checksum: 10c0/ced4dd3a78e15897ed3be74e635110bbf3b08877b0a41be50dcb325ee0e0b5f65fc2d50e9845194d7c4633f327e2e1c6cce00a71b617c5673df0374201d67f65
@@ -12289,61 +12344,6 @@ __metadata:
   checksum: 10c0/8a367c9db84ca249797ec900d06c267434265bf635a82bc0896d35bc0ce85eee0cf115d4340baa93dd20fde081e513115d38776b5e8a5b3fb604c7b34a8542ea
   languageName: node
   linkType: hard
-
-"next-speed-app-template-ts@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "next-speed-app-template-ts@workspace:."
-  dependencies:
-    "@babel/runtime": "npm:^7.25.6"
-    "@emotion/babel-plugin": "npm:^11.12.0"
-    "@emotion/eslint-plugin": "npm:^11.12.0"
-    "@emotion/react": "npm:^11.13.3"
-    "@next/bundle-analyzer": "npm:^14.2.13"
-    "@svgr/webpack": "npm:^8.1.0"
-    "@tanstack/react-query": "npm:5.56"
-    "@types/next-pwa": "npm:^5.6.9"
-    "@types/node": "npm:^22.7.2"
-    "@types/react": "npm:^18.3.9"
-    "@types/react-dom": "npm:^18.3.0"
-    "@types/react-query": "npm:^1.2.9"
-    "@typescript-eslint/eslint-plugin": "npm:^8.7.0"
-    "@typescript-eslint/parser": "npm:^8.7.0"
-    "@yarnpkg/pnpify": "npm:^4.1.2"
-    axios: "npm:^1.7.7"
-    build: "npm:^0.1.4"
-    cross-env: "npm:^7.0.3"
-    date-fns: "npm:^4.1.0"
-    emotion: "npm:^11.0.0"
-    eslint: "npm:^9.11.1"
-    eslint-config-next: "npm:14.2.13"
-    eslint-config-prettier: "npm:^9.1.0"
-    eslint-import-resolver-typescript: "npm:^3.6.3"
-    eslint-plugin-emotion: "npm:^11.0.0"
-    eslint-plugin-import: "npm:^2.30.0"
-    eslint-plugin-prettier: "npm:^5.2.1"
-    eslint-plugin-react: "npm:^7.36.1"
-    eslint-plugin-react-hooks: "npm:^4.6.2"
-    next: "npm:^14.2.13"
-    next-auth: "npm:^4.24.8"
-    next-pwa: "npm:^5.6.0"
-    next-sitemap: "npm:^4.2.3"
-    npm: "npm:^10.8.3"
-    prettier: "npm:^3.3.3"
-    react: "npm:^18.3.1"
-    react-cookie: "npm:^7.2.0"
-    react-dom: "npm:18.3.1"
-    react-flatlist-ui: "npm:^1.4.2"
-    react-layout-flexbox: "npm:^0.1.9"
-    react-touchableopacity: "npm:^0.0.6"
-    react-typogrphy-txt: "npm:^0.0.8"
-    recoil: "npm:^0.7.7"
-    run: "npm:^1.5.0"
-    typescript: "npm:^5.6.2"
-    webpack-bundle-analyzer: "npm:^4.10.2"
-  bin:
-    create-next-speed-template: ./bin/create-next-speed-template.js
-  languageName: unknown
-  linkType: soft
 
 "next@npm:^12.2.5 || ^13.0.0":
   version: 13.5.7
@@ -17145,16 +17145,16 @@ __metadata:
   linkType: hard
 
 "update-browserslist-db@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "update-browserslist-db@npm:1.1.0"
+  version: 1.1.1
+  resolution: "update-browserslist-db@npm:1.1.1"
   dependencies:
-    escalade: "npm:^3.1.2"
-    picocolors: "npm:^1.0.1"
+    escalade: "npm:^3.2.0"
+    picocolors: "npm:^1.1.0"
   peerDependencies:
     browserslist: ">= 4.21.0"
   bin:
     update-browserslist-db: cli.js
-  checksum: 10c0/a7452de47785842736fb71547651c5bbe5b4dc1e3722ccf48a704b7b34e4dcf633991eaa8e4a6a517ffb738b3252eede3773bef673ef9021baa26b056d63a5b9
+  checksum: 10c0/536a2979adda2b4be81b07e311bd2f3ad5e978690987956bc5f514130ad50cac87cd22c710b686d79731e00fbee8ef43efe5fcd72baa241045209195d43dcc80
   languageName: node
   linkType: hard
 
