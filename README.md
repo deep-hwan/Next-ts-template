@@ -1,87 +1,83 @@
-# <div align="center">
+# Create Next Speed Template
 
-<h1 align="center">Next.js + Typescript Template</h1>
+This is a template set up to create Next.js App with fast speed and high performance<br/>
 
-<p align="center">
-개발하기 편하도록 미리 셋팅된 Next.js + Typescript 템플릿입니다
+**🇰🇷 Ko.**<br/>
+빠른 속도와 높은 성능으로 Next.js App을 만들 수 있도록 셋팅된 템플릿입니다
 
-V3 버전 업데이트는 yarn berry 의 Plug'n Play(PnP) 적용 가능한 버전 업데이트 되었습니다.
+**Demo URL (미리보기):**
+[This Click☝🏻 Please](https://next-typescript-tamplate.vercel.app)
 
-.yarnrc.yml << 참조
 
-: yarn 명령어를 통해 사용하세요
+## Getting Started
 
-</p>
-</div>
+    npx create-next-speed-template my-app
+    cd my-app
+    yarn run dev
 
-## Install
 
-(필수) yarn berry를 셋팅하세요
+---
+
+## Use Important Library
+
+-   langauage : **Typescript**
+-   State : **Recoil**
+-   Asynchronous State : **TanStack Query v5**
+-   Api : **Axios**
+-   Style(Css) : **Emotion/react**
+-   Authentication : **NextAuth**
+-   Bundler Doctor : **bundle-analyzer**
+-   SVG : **@svgr/webpack**
+
+
+
+---
+
+## Info
+
+This template is set to Yarn Berry - Plug'n Play.<br/> We recommend that you use the template through the Yarn command 🙏🏻
+
+**🇰🇷 Ko.**<br/>
+해당 템플릿은 Yarn Berry - Plug'n Play 으로 셋팅되었습니다. <br/>Yarn 명령어를 통해 템플릿을 사용할 것을 권장합니다 🙏🏻
+<br/>
+
+### ⚙️ Yarn Berry Plug'n Play (PnP) enabled or disabled
+**🇰🇷 Ko.**<br/>
+Yarn Berry Plug'n Play (PnP) 활성화 유무 (선택)
+
+yarn npm : .yarnrc.yml => nodeLinker: node-modules
+yarn pnp : .yarnrc.yml => nodeLinker: pnp
+
+
+
+
+### ✅ Essential : Set up yarn berry
+yarn berry를 초기 설치 및 셋팅하세요
 
     npm install -g yarn
     yarn set version berry
     yarn install
 
-(선택) vscode에서 yarn PnP : type or prettier 이슈 발생 시 아래를 설치하세요
+### ✔️ Optional : In Case of Type or Prettier Issue
+**🇰🇷 Ko.**<br/>
+Type 및 Prettier 이슈가 발생 시 아래 플러그인 및 명령어를 입력해보세요 🙏🏻
 
-    ZipFS - a zip file system << 플러그인 설치
+Install Plug-In : [ZipFS - a zip file system](https://marketplace.visualstudio.com/items?itemName=arcanis.vscode-zipfs)
+    
     yarn dlx @yarnpkg/sdks vscode
     yarn add --dev --exact prettier
 
-(선택) yarn run build 문제 시 아래 명령어를 입력하세요
+### ✔️ Optional : In the event of an Issue after the Yarn Run Build Command
+**🇰🇷 Ko.**<br/>
+Yarn run build 명령어 입력 이후 이슈가 발생할 때 아래 명령어를 입력해보세요 🙏🏻
 
     yarn add @babel/runtime --dev
     yarn cache clean
+    yarn set version berry
     yarn install
 
-(선택) typescript 및 emotion 적용 문제 시 아래를 설치하세요
-
-    yarn add @emotion/babel-plugin --dev
-
 ---
 
-## Yarn Plug'n Play (PnP) 활성화 유무 (선택)
-
-    yarn set version berry
-
-명령어를 통해 yarn berry를 설치 후
-
-.yarnrc.yml 에서 PnP 환경을 설정합니다
-
-nodeLinker: pnp << 추가 시 yarn Plug'n Play 사용 가능
-
----
-
-## SITE URL (사이트 데모)
-
-해당 링크에 접속하여 오직 **Next-Ts-Template**에서만 제공하는 다양한 위젯들을 경험할 수 있습니다.
-
-    https://next-typescript-tamplate.vercel.app/
-
----
-
-## Setting Library
-
-현재 패키지에 설치 및 적용된 **NPM 패키지 라이브러리 / 버전 정보** 입니다.
-
--   next : 14.2.13
--   typeScript : 5.5.4
--   next-pwa : 5.6.0
--   next-sitemap: 4.2.3
--   date-fns : 4.1.0
--   next-auth : 4.24.7
--   axios : 1.7.7
--   tanstack/react-query : 4.5
--   recoil: 0.7.7
--   emotion : 11.13.3
--   react-cookie : 7.2.0
--   react-flatlist-ui : 1.4.2 (자체 배포/개발 패키지)
--   react-layout-flexbox : 0.1.9 (자체 배포/개발 UI 패키지)
--   react-typogrphy-txt : 0.0.6 (자체 배포/개발 UI 패키지)
--   react-touchableopacity : 0.0.8 (자체 배포/개발 UI 패키지)
--   webpack-bundle-analyzer : 4.10.2 >> build : yarn analyze
-
----
 
 ## Design Systems
 
