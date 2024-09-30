@@ -1,6 +1,6 @@
 {
   "name": "create-next-speed-template",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "bin": "./bin/create-next-speed-template.js",
   "scripts": {
     "dev": "next dev",
@@ -66,6 +66,17 @@
   },
   "author": "deep-hwan <deep@deepcomu.com>",
   "license": "MIT",
+  "homepage": "https://www.deepfactory.kr/",
+  "keywords": [
+    "Next.js",
+    "Typescript",
+    "Reactjs",
+    "Template",
+    "Speed Code",
+    "React UI",
+    "sitemap",
+    "seo"
+  ],
   "packageManager": "yarn@4.5.0",
   "engines": {
     "node": ">=16",

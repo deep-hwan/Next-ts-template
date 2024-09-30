@@ -131,4 +131,4 @@ Make sure to check the contents below before deployment before building
 
 5. (Optional) You can create rss in **page > api > rss.ts** > modify the content
 
-6. npm run build
+6. **yarn run build** or **npm run build**

@@ -38,4 +38,4 @@ This file helps search engines understand your site structure and better index y
 ### Sitemap creation
 
 - When using Yarn PnP: Run the command **npx next-sitemap**
-- For build processes: Use **npm run build** or **yarn run build**
+- For build processes: Use **yarn run build** or **npm run build**

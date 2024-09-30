@@ -39,4 +39,4 @@ getServerSideProps를 사용해 서버 측에서 실시간으로 사이트맵을
 ### 사이트맵 생성
 
 - Yarn Pnp 사용 시 : **npx next-sitemap** 명령어 입력
-- **npm run build** or **yarn run build**
+- **yarn run build** or **npm run build**
