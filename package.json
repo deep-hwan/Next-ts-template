@@ -1,6 +1,6 @@
 {
   "name": "create-next-speed-template",
-  "version": "2.1.1",
+  "version": "2.1.4",
   "bin": "./bin/create-next-speed-template.js",
   "scripts": {
     "dev": "next dev",
@@ -11,8 +11,7 @@
     "analyze": "cross-env ANALYZE=true next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore .",
-    "preinstall": "rm -rf ./bin"
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
