@@ -1,6 +1,6 @@
 {
   "name": "create-next-speed-template",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "bin": "./bin/create-next-speed-template.js",
   "scripts": {
     "dev": "next dev",
@@ -11,7 +11,8 @@
     "analyze": "cross-env ANALYZE=true next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "format": "prettier --check --ignore-path .gitignore .",
-    "format:fix": "prettier --write --ignore-path .gitignore ."
+    "format:fix": "prettier --write --ignore-path .gitignore .",
+    "preinstall": "rm -rf ./bin"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -34,12 +35,7 @@
     "react": "^18.3.1",
     "react-cookie": "^7.2.0",
     "react-dom": "18.3.1",
-    "react-flatlist-ui": "^1.4.2",
-    "react-layout-flexbox": "^0.1.9",
-    "react-touchableopacity": "^0.0.6",
-    "react-typogrphy-txt": "^0.0.8",
     "recoil": "^0.7.7",
-    "run": "^1.5.0",
     "typescript": "^5.6.2",
     "webpack-bundle-analyzer": "^4.10.2"
   },
@@ -61,7 +57,7 @@
     "eslint-plugin-react": "^7.36.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "next-pwa": "^5.6.0",
-    "prettier": "^3.3.3"
+    "prettier": "3.3.3"
   },
   "main": "index.js",
   "repository": {

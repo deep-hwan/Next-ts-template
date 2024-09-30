@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
 export function usePlatformOs() {
-    const [platform, setPlatform] = useState('Unknown')
+  const [platform, setPlatform] = useState('Unknown');
 
-    useEffect(() => {
-        if (typeof navigator !== 'undefined' && 'userAgent' in navigator) {
-            const UA = navigator.userAgent.toLowerCase()
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && 'userAgent' in navigator) {
+      const UA = navigator.userAgent.toLowerCase();
 
-            if (UA.includes('android')) {
-                setPlatform('android')
-            } else if (UA.includes('iphone') || UA.includes('ipad') || UA.includes('ipod')) {
-                setPlatform('ios')
-            } else {
-                setPlatform('PC')
-            }
-        }
-    }, [])
+      if (UA.includes('android')) {
+        setPlatform('android');
+      } else if (UA.includes('iphone') || UA.includes('ipad') || UA.includes('ipod')) {
+        setPlatform('ios');
+      } else {
+        setPlatform('PC');
+      }
+    }
+  }, []);
 
-    return platform
+  return platform;
 }

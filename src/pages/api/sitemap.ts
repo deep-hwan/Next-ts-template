@@ -14,7 +14,7 @@ const generateSitemap = async () => {
     // ... other static routes
   ];
 
-  staticPages.forEach((slug) => {
+  staticPages.forEach(slug => {
     xml += '<url>';
     xml += `<loc>${process.env.NEXT_PUBLIC_SITE_URL}/${slug}</loc>`;
     xml += `<changefreq>daily</changefreq>`;

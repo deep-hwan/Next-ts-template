@@ -1,4 +1,4 @@
 type AssetType = React.SVGProps<SVGSVGElement> & {
-    size?: number | '100%'
-    fill?: string
-}
+  size?: number | '100%';
+  fill?: string;
+};

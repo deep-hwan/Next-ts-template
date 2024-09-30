@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 
 export function PopupAvatarWrapper({ children }: { children: ReactNode }) {
   return (
@@ -8,13 +8,13 @@ export function PopupAvatarWrapper({ children }: { children: ReactNode }) {
       <div
         css={{
           zIndex: 99998,
-          display: "flex",
+          display: 'flex',
           flex: 1,
-          width: "100%",
-          height: "100%",
-          minHeight: "100vh",
-          backgroundColor: "rgba(0,0,0,0.85)",
-          position: "fixed",
+          width: '100%',
+          height: '100%',
+          minHeight: '100vh',
+          backgroundColor: 'rgba(0,0,0,0.85)',
+          position: 'fixed',
           top: 0,
           bottom: 0,
           left: 0,
@@ -27,19 +27,19 @@ export function PopupAvatarWrapper({ children }: { children: ReactNode }) {
       />
 
       <div
-        className="zoom-pop-wrap"
+        className='zoom-pop-wrap'
         css={{
           zIndex: 999999,
-          position: "fixed",
+          position: 'fixed',
           top: 0,
           bottom: 0,
           left: 0,
           right: 0,
-          width: "100%",
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          width: '100%',
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           padding: 30,
         }}
       >

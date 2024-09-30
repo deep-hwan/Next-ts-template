@@ -1,7 +1,5 @@
 {
-  "githubPullRequests.ignoredPullRequestBranches": [
-    "main"
-  ],
+  "githubPullRequests.ignoredPullRequestBranches": ["main"],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "search.exclude": {

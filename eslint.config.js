@@ -32,14 +32,7 @@ export default [
       },
     },
     // 플러그인 설정
-    plugins: [
-      'react',
-      'react-hooks',
-      '@typescript-eslint',
-      'prettier',
-      'emotion',
-      'import',
-    ],
+    plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier', 'emotion', 'import'],
     // 규칙 설정
     rules: {
       quotes: ['error', 'single'],

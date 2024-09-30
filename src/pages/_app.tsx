@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { useState } from 'react';
 
 //hooks
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Hydrate 대신 HydrationBoundary 사용
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
 
