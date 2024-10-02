@@ -117,7 +117,7 @@ const Tab: React.FC<MenuProps> = forwardRef<HTMLAnchorElement, MenuProps>(
                 borderRadius={100}
                 backgroundColor={colors.red as any}
               >
-                {'w'}
+                {''}
               </P.Absolute>
             )}
           </V.Column>

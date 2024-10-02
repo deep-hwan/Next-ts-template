@@ -3,17 +3,17 @@ import { BlurLayer } from '@/_ui';
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
 
 interface Props extends HTMLAttributes<HTMLElement> {
+  zIndex?: number;
   children: ReactNode;
   open: boolean;
   onCancel: () => void;
   clickOutSideClose?: boolean;
   windowScreenScroll?: boolean;
   title?: string;
-  subTitle?:string
+  subTitle?: string;
   showCancelTab?: boolean;
-  zIndex?: number;
   modalSize?: number;
-  colors?: { background?: string; title?: string; subTitle?:string; cancelTab?: string };
+  colors?: { background?: string; title?: string; subTitle?: string; cancelTab?: string };
 }
 
 const screenSize = [1440, 1080, 780, 600, 438];
@@ -27,7 +27,8 @@ export const Modal = (props: Props) => {
     onCancel,
     windowScreenScroll = true,
     clickOutSideClose = true,
-    title,subTitle,
+    title,
+    subTitle,
     showCancelTab = true,
     zIndex,
     ...rest
@@ -113,7 +114,7 @@ export const Modal = (props: Props) => {
             <div
               css={{
                 zIndex: 10,
-                minHeight: (title && subTitle) &&  90 || title && 80 || 45,
+                minHeight: (title && subTitle && 90) || (title && 80) || 45,
                 position: 'sticky',
                 top: 0,
                 left: 0,
@@ -126,10 +127,24 @@ export const Modal = (props: Props) => {
                 backgroundColor: title ? (colors?.background ?? '#fff') : 'transparent',
               }}
             >
-              {(title || subTitle) &&<div css={{display:'flex', flexDirection:'column', alignItems:'start', gap:6}}>
-                <b css={{ fontSize: '1.25rem', color: colors?.title ?? '#555', [MQ[3]] :{fontSize: '1.125rem'} }}>{title}</b>
-              {!!subTitle &&  <p css={{ fontSize: '0.938rem', color: colors?.subTitle ?? '#888' , [MQ[3]] :{fontSize: '0.813rem'} }}>{subTitle}</p>}
-              </div>}
+              {(title || subTitle) && (
+                <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 6 }}>
+                  <b css={{ fontSize: '1.25rem', color: colors?.title ?? '#555', [MQ[3]]: { fontSize: '1.125rem' } }}>
+                    {title}
+                  </b>
+                  {!!subTitle && (
+                    <p
+                      css={{
+                        fontSize: '0.938rem',
+                        color: colors?.subTitle ?? '#888',
+                        [MQ[3]]: { fontSize: '0.813rem' },
+                      }}
+                    >
+                      {subTitle}
+                    </p>
+                  )}
+                </div>
+              )}
 
               {showCancelTab && (
                 <button onClick={onCancel} css={{ padding: 5, position: 'absolute', right: 10, top: 8 }}>

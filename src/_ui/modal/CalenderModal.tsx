@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import React, { useCallback, useEffect, useRef } from 'react';
+import { BlurLayer, Calendar, P, V } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import { Calendar, BlurLayer, V, P } from '@/_ui';
+import { useCallback, useEffect, useRef } from 'react';
 
 interface Props {
   zIndex?: number;
   format?: 'yyyy-mm-dd' | 'yyyy-mm' | 'yyyy';
   open: boolean;
   onCancel: () => void;
+  clickOutSideClose?: boolean;
+  windowScreenScroll?: boolean;
   date: Date;
   minDate?: Date;
   maxDate?: Date;
@@ -21,6 +23,8 @@ export function CalenderModal({
   format = 'yyyy-mm-dd',
   date,
   onClick,
+  windowScreenScroll = true,
+  clickOutSideClose = true,
   theme = 'light',
   zIndex,
   ...props
@@ -34,18 +38,34 @@ export function CalenderModal({
 
   const clickModalOutside = useCallback(
     (event: MouseEvent) => {
-      if (open && ref.current && !ref.current.contains(event.target as Node)) onCancel();
+      if (clickOutSideClose) if (open && ref.current && !ref.current.contains(event.target as Node)) onCancel();
     },
     [open, onCancel]
   );
 
   useEffect(() => {
-    if (open) document.body.style.overflowY = 'hidden';
-    else document.body.style.overflowY = 'auto';
+    if (windowScreenScroll) {
+      if (open) {
+        const scrollY = window.scrollY;
 
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.overflowY = 'hidden';
+      } else {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.overflowY = 'auto';
+
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    } else return;
+  }, [open, windowScreenScroll]);
+
+  useEffect(() => {
     document.addEventListener('mousedown', clickModalOutside);
     return () => document.removeEventListener('mousedown', clickModalOutside);
-  }, [open, clickModalOutside]);
+  }, [clickModalOutside, open]);
 
   return (
     <>

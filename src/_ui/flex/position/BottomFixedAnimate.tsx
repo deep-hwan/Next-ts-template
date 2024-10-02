@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+/** @jsxImportSource @emotion/react */
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -17,6 +18,17 @@ interface Props {
 }
 
 export function BottomFixedAnimate(props: Props) {
+  const fixedRef = useRef(null);
+
+  const [elementHeight, setElementHeight] = useState<number | null>(props.height ?? 60);
+
+  useEffect(() => {
+    if (fixedRef.current) {
+      const { clientHeight } = fixedRef.current;
+      setElementHeight(clientHeight);
+    }
+  }, [fixedRef]);
+
   const p_all = props.padding?.all;
   const p_V = props.padding?.vertical;
   const p_H = props.padding?.horizontal;
@@ -25,20 +37,28 @@ export function BottomFixedAnimate(props: Props) {
   const p_L = props.padding?.left;
   const p_R = props.padding?.right;
 
+  const safe_area_padding = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 'max(0px, env(safe-area-inset-bottom))',
+    paddingInlineStart: 'max(0px, env(safe-area-inset-left))',
+    paddingInlineEnd: 'max(0px, env(safe-area-inset-right))',
+    transition: '0.25s ease-in-out',
+  };
+
   return (
     <div
       css={{
+        ...safe_area_padding,
         width: '100%',
-        maxHeight: props.animate ? props.height : 0,
-        minHeight: props.animate ? props.height : 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: '0.2s ease-in-out',
+        maxHeight: props.animate ? (elementHeight ?? props.height) : 0,
+        minHeight: props.animate ? (elementHeight ?? props.height) : 0,
       }}
     >
       <div
         css={{
+          ...safe_area_padding,
           height: '100%',
           minHeight: props.height ?? 60,
           maxHeight: props.height ?? 60,
@@ -46,14 +66,6 @@ export function BottomFixedAnimate(props: Props) {
           position: 'fixed',
           left: 0,
           right: 0,
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: props.backgroundColor,
-          paddingTop: 'max(0px, env(safe-area-inset-top))',
-          paddingBottom: 'max(0px, env(safe-area-inset-bottom))',
-          paddingInlineStart: 'max(0px, env(safe-area-inset-left))',
-          paddingInlineEnd: 'max(0px, env(safe-area-inset-right))',
-          transition: '0.3s ease-in-out',
         }}
       >
         <div

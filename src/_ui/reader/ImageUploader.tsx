@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
+import { P, TxtSpan, V } from '@/_ui';
 import React, { ChangeEvent, ReactNode, useRef } from 'react';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
-import { V, P, TxtSpan } from '@/_ui';
 
 interface Props {
   children?: ReactNode;
@@ -29,9 +29,9 @@ interface Props {
 export function ImageUploader(props: Props) {
   const { source, alt = '업로드 이미지', onUpload, onCancel, loading } = props;
   const { width = '100%', minWidth, maxWidth } = props.size ?? {};
-  const { height, minHeight, maxHeight } = props.size ?? {};
+  const { height, minHeight = 360, maxHeight } = props.size ?? {};
   const { theme = 'light', ratio = { x: 2, y: 1 } } = props;
-  const { backgroundColor, borderRadius = 12 } = props;
+  const { backgroundColor, borderRadius = 18 } = props;
 
   const uploadRef = useRef<HTMLInputElement>(null);
 
@@ -85,10 +85,10 @@ export function ImageUploader(props: Props) {
               borderRadius,
               width: '100%',
               height: '100%',
-              minWidth: `${minWidth}px`,
-              minHeight: `${minHeight}px`,
-              maxWidth: `${minWidth}px`,
-              maxHeight: `${maxHeight}px`,
+              minWidth: minWidth,
+              minHeight: minHeight,
+              maxWidth: maxWidth,
+              maxHeight: maxHeight,
               objectFit: 'cover',
             }}
           />
@@ -118,7 +118,15 @@ export function ImageUploader(props: Props) {
           borderRadius={borderRadius}
           crossAlign='center'
           align='center'
-          css={{ aspectRatio: `${ratio?.x} / ${ratio.y}` }}
+          css={{
+            aspectRatio: `${ratio?.x} / ${ratio.y}`,
+            width: '100%',
+            height: '100%',
+            minWidth: minWidth,
+            minHeight: minHeight,
+            maxWidth: maxWidth,
+            maxHeight: maxHeight,
+          }}
         >
           {loading ? (
             <LoadingSpinner />

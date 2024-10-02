@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -25,6 +25,16 @@ interface Props {
 
 export function BottomFixed(props: Props) {
   const { padding, height = 60, zIndex, backgroundColor, borderTop, ...rest } = props;
+  const fixedRef = useRef(null);
+
+  const [elementHeight, setElementHeight] = useState<number | null>(height);
+
+  useEffect(() => {
+    if (fixedRef.current) {
+      const { clientHeight } = fixedRef.current;
+      setElementHeight(clientHeight);
+    }
+  }, [fixedRef]);
 
   const p_all = padding?.all;
   const p_V = padding?.vertical;
@@ -38,25 +48,25 @@ export function BottomFixed(props: Props) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 'max(0px, env(safe-area-inset-top))',
     paddingBottom: 'max(0px, env(safe-area-inset-bottom))',
     paddingInlineStart: 'max(0px, env(safe-area-inset-left))',
     paddingInlineEnd: 'max(0px, env(safe-area-inset-right))',
+    transition: '0.25s ease-in-out',
   };
 
   return (
     <>
       <div
         css={{
-          width: '100%',
-          maxHeight: height,
-          minHeight: height,
-          transition: '0.3s ease-in-out',
           ...safe_area_padding,
+          width: '100%',
+          minHeight: elementHeight ?? height,
         }}
       />
 
       <div
+        ref={fixedRef}
+        className='fixed_bottomFixed'
         css={{
           ...safe_area_padding,
           zIndex: zIndex ?? 1000,
@@ -65,12 +75,8 @@ export function BottomFixed(props: Props) {
           bottom: 0,
           left: 0,
           right: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
           backgroundColor: backgroundColor,
           borderTop: `${props?.border?.solid ?? 0}px solid ${(props?.border?.color as string) ?? '#eee'}`,
-          transition: '0.3s ease-in-out',
         }}
       >
         <div

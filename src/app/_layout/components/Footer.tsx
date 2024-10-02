@@ -1,5 +1,5 @@
 //libs
-import { V, Spacing, Txt, TxtSpan } from '@/_ui';
+import { Spacing, Txt, V } from '@/_ui';
 import { MQ, colors, fontSize } from '@/libs/themes';
 import Link from 'next/link';
 //
@@ -56,23 +56,23 @@ export default function Footer() {
           css={{ fontStyle: 'normal', fontSize: 13, color: '#888' }}
         >
           <Txt itemProp='name' as='strong' size={14} weight='medium' color={colors.grey[500]}>
-            딥팩토리 디자인
+            nextTemplate
           </Txt>
           <Spacing size={14} />
           <V.Row gap={8}>
             <a href='mailto:deep@deepcomu.com' css={{ color: '#888' }}>
-              이메일 : deep@deepcomu.com
+              email : deep@deepcomu.com
             </a>
             <span>|</span>
             <a href='tel:07040077561' css={{ color: '#888' }}>
-              연락처 : 070-4007-7561
+            tel : 070-1234-5678
             </a>
           </V.Row>
           <Spacing size={4} />
 
           <span itemProp='address' itemScope itemType='https://schema.org/PostalAddress'>
-            주소 : <span itemProp='addressRegion'>서울특별시</span> <span itemProp='addressLocality'>동작구</span>{' '}
-            <span itemProp='streetAddress'>시흥대로 606 오피스동 354호</span>
+            address : <span itemProp='addressRegion'>서울특별시</span> <span itemProp='addressLocality'>동작구</span>{' '}
+            <span itemProp='streetAddress'>시흥대로 12로 123동 456호</span>
           </span>
         </address>
       </V.Column>

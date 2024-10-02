@@ -1,20 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import React, { HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
-import { Interpolation, Theme } from '@emotion/react';
+import { BlurLayer, P, TouchableOpacity, V } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import { BlurLayer, V, TouchableOpacity, P } from '@/_ui';
+import { Interpolation, Theme } from '@emotion/react';
+import React, { HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
 
 // --------------------------------------------
 // -------------- Type Interface --------------
 // --------------------------------------------
 interface BottomSheetProps extends HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
+  zIndex?: number;
   open: boolean;
   onCancel: () => void;
   theme?: 'light' | 'dark';
   clickOutSideClose?: boolean;
   windowScreenScroll?: boolean;
-  zIndex?: number;
 }
 
 // -----------------------------------------

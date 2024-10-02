@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { useCallback, useEffect, useRef, HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
 
-import { Button, Txt, BlurLayer, V, P, TouchableOpacity } from '../index';
 import { colors } from 'src/libs/themes';
+import { BlurLayer, Button, P, TouchableOpacity, Txt, V } from '../index';
 
 interface Props extends HTMLAttributes<HTMLElement> {
+  zIndex?: number;
   theme?: 'light' | 'dark';
   open: boolean;
   children?: ReactNode;
@@ -14,7 +15,6 @@ interface Props extends HTMLAttributes<HTMLElement> {
   description?: string;
   tabSpaceGap?: number;
   tabSpaceTop?: number;
-  zIndex?: number;
   tabs?:
     | {
         name: string;
