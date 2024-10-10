@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, { useRef } from 'react';
-import { V, P, Avatar } from '@/_ui';
+import { P, V } from '@/_ui';
+import { useRef } from 'react';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 // --------------------------------------------
@@ -26,7 +26,12 @@ export function AvatarUploader({ size = 100, source, alt = '업로드 이미지'
     <V.Column maxWidth={size} minWidth={size} maxHeight={size} minHeight={size}>
       {source ? (
         <>
-          <Avatar source={source} alt={alt} size={size} onClick={handleClick} />
+          <img
+            src={source}
+            alt={alt}
+            onClick={handleClick}
+            css={{ width: size, maxWidth: size, height: size, maxHeight: size, objectFit: 'cover', borderRadius: 1000 }}
+          />
           <P.Absolute
             position={{ bottom: 0, right: 0 }}
             backgroundColor='#fff'

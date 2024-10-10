@@ -21,9 +21,13 @@ export default function Header() {
 
   return (
     <>
-      <AppBar width={1200} serviceName='서비스명'>
+      <AppBar width={1200} serviceName='service_name'>
         <V.Row align='center' height='100%' crossAlign='space-between' padding={{ left: 20, right: 15 }}>
-          <Link href='/' css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Link
+            href='/'
+            aria-label='service_description'
+            css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          >
             <Logo alt='서비스명' />
           </Link>
 

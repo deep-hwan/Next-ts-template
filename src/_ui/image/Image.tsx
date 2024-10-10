@@ -181,7 +181,7 @@ const ImageInstance = forwardRef(function ImageInstance(
         [MQ[3]]: { ...imageRasiedWrap(props?._mediaQuery?.s768 ?? {}) },
         [MQ[4]]: { ...imageRasiedWrap(props?._mediaQuery?.s600 ?? {}) },
         [MQ[5]]: { ...imageRasiedWrap(props?._mediaQuery?.s428 ?? {}) },
-        cursor: props.onClick && 'pointer',
+        cursor: (props.onClick || zoomUp) && 'pointer',
       }}
     >
       <Image
@@ -195,6 +195,7 @@ const ImageInstance = forwardRef(function ImageInstance(
         loading='lazy'
         placeholder='blur'
         quality={90}
+        onClick={handleOnClick}
         blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
         {...elementProps}
         css={{
