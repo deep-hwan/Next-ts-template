@@ -62,7 +62,7 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
   return (
     <V.Row
       align='start'
-      gap={10}
+      gap={8}
       width='auto'
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}

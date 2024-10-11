@@ -134,9 +134,9 @@ const ImageInstance = forwardRef(function ImageInstance(
     return {
       position: 'relative',
       width: props?.size?.width,
-      height: props?.size?.height,
       minWidth: props?.size?.minWidth,
       maxWidth: props?.size?.maxWidth,
+      height: props?.size?.height ?? '100%',
       minHeight: props?.size?.minHeight,
       maxHeight: props?.size?.maxHeight,
       borderRadius: props?.borderRadius,
@@ -181,7 +181,7 @@ const ImageInstance = forwardRef(function ImageInstance(
         [MQ[3]]: { ...imageRasiedWrap(props?._mediaQuery?.s768 ?? {}) },
         [MQ[4]]: { ...imageRasiedWrap(props?._mediaQuery?.s600 ?? {}) },
         [MQ[5]]: { ...imageRasiedWrap(props?._mediaQuery?.s428 ?? {}) },
-        cursor: (props.onClick || zoomUp) && 'pointer',
+        cursor: props.onClick && 'pointer',
       }}
     >
       <Image
@@ -195,7 +195,6 @@ const ImageInstance = forwardRef(function ImageInstance(
         loading='lazy'
         placeholder='blur'
         quality={90}
-        onClick={handleOnClick}
         blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
         {...elementProps}
         css={{
@@ -211,7 +210,7 @@ const ImageInstance = forwardRef(function ImageInstance(
           [MQ[4]]: { ...imageRasied(props?._mediaQuery?.s600 ?? {}) },
           [MQ[5]]: { ...imageRasied(props?._mediaQuery?.s428 ?? {}) },
           scale: props.isHover && os === 'PC' ? '1.07' : 1,
-          objectFit: objectFit ?? 'cover',
+          objectFit: objectFit ?? 'fill',
         }}
       />
     </div>

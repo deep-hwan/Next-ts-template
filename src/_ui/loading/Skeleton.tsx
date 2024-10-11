@@ -1,8 +1,8 @@
-import React, { ForwardedRef, HTMLAttributes, forwardRef, memo } from 'react';
+import { ForwardedRef, HTMLAttributes, forwardRef, memo } from 'react';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   borderRadius?: number | string;
-  height: number;
+  height?: number;
   width?: number;
   opacity?: number;
 }

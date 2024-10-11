@@ -66,13 +66,10 @@ export const Button = forwardRef<HTMLButtonElement, Types>((props: Types, ref: F
 
     '&:hover': TabTheme({
       ...props._hover,
-      filter: 'saturate(88%)',
-      shadow: { x: 0, y: 0, blur: 0 },
     }),
     '&:active': TabTheme({
       ...props._active,
       opacity: 0.8,
-      shadow: { x: 0, y: 0, blur: 0 },
     }),
     '&:disabled': TabTheme({
       ...props._disabled,

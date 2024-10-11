@@ -1,7 +1,7 @@
 import { NextRouter, useRouter } from 'next/router';
 
 //assets
-import { Button, Spacing, Image } from '@/_ui';
+import { Button, Image, Spacing } from '@/_ui';
 
 //libs
 

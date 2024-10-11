@@ -39,19 +39,19 @@ export const Divider = memo(
           {
             zIndex,
             backgroundColor: color,
-            spacingTop:
+            marginTop:
               (spacing?.all && spacing?.all) ||
               (spacing?.vertical && spacing?.vertical) ||
               (spacing?.top && spacing?.top),
-            spacingBottom:
+            marginBottom:
               (spacing?.all && spacing?.all) ||
               (spacing?.vertical && spacing?.vertical) ||
               (spacing?.bottom && spacing?.bottom),
-            spacingLeft:
+            marginLeft:
               (spacing?.all && spacing?.all) ||
               (spacing?.horizontal && spacing?.horizontal) ||
               (spacing?.left && spacing?.left),
-            spacingRight:
+            marginRight:
               (spacing?.all && spacing?.all) ||
               (spacing?.horizontal && spacing?.horizontal) ||
               (spacing?.right && spacing?.right),

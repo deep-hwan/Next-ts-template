@@ -9,23 +9,18 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: never[];
   size?: number;
   storkeSize?: number;
-  variant?: 'light' | 'dark';
+  color?: string;
 }
 
 // --------------------------------------------
 // -------------- LoadingSpinner --------------
 // --------------------------------------------
 const LoadingSpinnerUi = forwardRef(
-  ({ size = 40, storkeSize = 3, variant = 'light', ...props }: Props, ref?: ForwardedRef<HTMLDivElement>) => {
+  ({ size = 40, storkeSize = 3, color = 'eee', ...props }: Props, ref?: ForwardedRef<HTMLDivElement>) => {
     const rotation = keyframes`
     0% {transform: rotate(0deg)}
   100% {transform: rotate(360deg)}
 `;
-
-    const VARIANTS = {
-      light: { color: '#ccc' },
-      dark: { color: '#999' },
-    };
 
     return (
       <div
@@ -43,7 +38,7 @@ const LoadingSpinnerUi = forwardRef(
             minWidth: `${size}px`,
             height: `${size}px`,
             minHeight: `${size}px`,
-            border: `${storkeSize}px solid ${VARIANTS[variant].color}`,
+            border: `${storkeSize}px solid ${color}`,
             borderBottomColor: 'transparent',
             borderRadius: '50%',
             display: 'inline-block',

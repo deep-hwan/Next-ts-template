@@ -24,33 +24,16 @@ export function TxtSpan(props: Types & { [key: string]: any }) {
     bold: { fontWeight: '600' },
   } as const;
 
-  const txt_ellipsis_extend = {
-    maxWidth: restProps?.ellipsis?.width ?? restProps.maxWidth,
-    display: '-webkit-box',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    WebkitBoxOrient: 'vertical',
-    WebkitLineClamp: restProps?.ellipsis?.line,
-  } as any;
-
   const txt_theme = TxtTheme({
     ...restProps,
-    size: typeof size === 'string' ? size : (size ?? 15) / 16 + 'rem',
-    weight: TYPOGRAPH_WEIGHT[weight ?? 'normal'].fontWeight,
-    color: restProps.color,
-    txtAlign: restProps.txtAlign ?? 'start',
-    whiteSpace: props?.ellipsis?.ellipsis ? 'normal' : (props.whiteSpace ?? 'nowrap'),
+    size: typeof size === 'string' ? size : (size as number) / 16 + 'rem',
+    weight: TYPOGRAPH_WEIGHT[weight ?? 'normal'].fontWeight as any,
     userSelect: props.userSelect ? props.userSelect : onClick && 'none',
     cursor: props.cursor ? props.cursor : onClick && 'pointer',
-    ...(restProps.ellipsis?.ellipsis && txt_ellipsis_extend),
   });
 
   const globel_theme = {
     ...(txt_theme as any),
-    ...mq_styles,
-    '&:hover': TxtTheme({ ...restProps._hover }),
-    '&:active': TxtTheme({ ...restProps._active }),
-    '&:disabled': TxtTheme({ ...restProps._disabled }),
   };
 
   //

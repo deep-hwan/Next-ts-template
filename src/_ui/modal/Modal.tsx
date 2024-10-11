@@ -81,80 +81,104 @@ export const Modal = (props: Props) => {
           right: 0,
           left: 0,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           padding: 20,
           transition: '0.3s ease-in-out',
           overscrollBehavior: 'contain',
-          [MQ[2]]: { padding: '20px 0 0', alignItems: 'start' },
+          [MQ[3]]: { padding: '20px 0 0' },
         }}
       >
         <div
           ref={ref}
           css={{
+            width: '100%',
             maxWidth: modalSize,
             height: '100%',
-            maxHeight: 500,
-            borderRadius: 26,
-            backgroundColor: colors?.background ?? '#fff',
-            overscrollBehavior: 'contain',
-            overflowY: 'auto',
-
-            [MQ[2]]: {
-              height: '100%',
-              maxHeight: '100%',
-              borderRadius: '26px 26px 0 0',
-            },
-
-            '::-webkit-scrollbar': { display: 'none' },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
           }}
-          {...rest}
         >
-          {(!!title || showCancelTab) && (
-            <div
+          {showCancelTab && (
+            <button
+              onClick={onCancel}
               css={{
-                zIndex: 10,
-                minHeight: (title && subTitle && 90) || (title && 80) || 45,
-                position: 'sticky',
-                top: 0,
-                left: 0,
-                right: 0,
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0 20px',
-                borderRadius: '26px 26px 0 0',
-                backgroundColor: title ? (colors?.background ?? '#fff') : 'transparent',
+                order: 2,
+                backgroundColor: colors?.background ?? '#fff',
+                padding: 13,
+                borderRadius: 100,
+                [MQ[3]]: { order: 0 },
               }}
             >
-              {(title || subTitle) && (
-                <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 6 }}>
-                  <b css={{ fontSize: '1.25rem', color: colors?.title ?? '#555', [MQ[3]]: { fontSize: '1.125rem' } }}>
-                    {title}
-                  </b>
-                  {!!subTitle && (
-                    <p
-                      css={{
-                        fontSize: '0.938rem',
-                        color: colors?.subTitle ?? '#888',
-                        [MQ[3]]: { fontSize: '0.813rem' },
-                      }}
-                    >
-                      {subTitle}
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {showCancelTab && (
-                <button onClick={onCancel} css={{ padding: 5, position: 'absolute', right: 10, top: 8 }}>
-                  <CancelIcon fill={colors?.cancelTab ?? '#ccc'} />
-                </button>
-              )}
-            </div>
+              <CancelIcon fill={colors?.cancelTab ?? '#ccc'} />
+            </button>
           )}
 
-          {props.children}
+          <div
+            css={{
+              width: '100%',
+              height: '100%',
+              maxHeight: 500,
+              borderRadius: 26,
+              backgroundColor: colors?.background ?? '#fff',
+              overscrollBehavior: 'contain',
+              overflowY: 'auto',
+
+              [MQ[3]]: {
+                height: '100%',
+                maxHeight: '100%',
+                borderRadius: '26px 26px 0 0',
+              },
+
+              '::-webkit-scrollbar': { display: 'none' },
+            }}
+            {...rest}
+          >
+            {!!title && (
+              <div
+                css={{
+                  zIndex: 10,
+                  minHeight: (title && subTitle && 90) || (title && 70) || 45,
+                  position: 'sticky',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 20px',
+                  borderRadius: '26px 26px 0 0',
+                  backgroundColor: title ? (colors?.background ?? '#fff') : 'transparent',
+                }}
+              >
+                {(title || subTitle) && (
+                  <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 6 }}>
+                    <b css={{ fontSize: '1.25rem', color: colors?.title ?? '#555', [MQ[3]]: { fontSize: '1.125rem' } }}>
+                      {title}
+                    </b>
+                    {!!subTitle && (
+                      <p
+                        css={{
+                          fontSize: '0.938rem',
+                          color: colors?.subTitle ?? '#888',
+                          [MQ[3]]: { fontSize: '0.813rem' },
+                        }}
+                      >
+                        {subTitle}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {props.children}
+          </div>
         </div>
       </div>
     </>
@@ -165,15 +189,18 @@ export const Modal = (props: Props) => {
 // -------------- Icon --------------
 function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
   return (
-    <svg width='22' height='22' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
-      <path
-        d='M11 22.001C17.0751 22.001 22 17.0761 22 11.001C22 4.92587 17.0751 0.00100708 11 0.00100708C4.92487 0.00100708 0 4.92587 0 11.001C0 17.0761 4.92487 22.001 11 22.001Z'
-        fill='white'
-      />
-      <path
-        d='M18.779 3.222C17.2407 1.68358 15.2807 0.63588 13.1468 0.211403C11.013 -0.213075 8.80128 0.00473368 6.79127 0.837283C4.78125 1.66983 3.06326 3.07973 1.85454 4.88868C0.645823 6.69763 0.000671387 8.82439 0.000671387 11C0.000671387 13.1756 0.645823 15.3024 1.85454 17.1113C3.06326 18.9203 4.78125 20.3302 6.79127 21.1627C8.80128 21.9953 11.013 22.2131 13.1468 21.7886C15.2807 21.3641 17.2407 20.3164 18.779 18.778C20.8418 16.7151 22.0007 13.9173 22.0007 11C22.0007 8.08271 20.8418 5.28489 18.779 3.222ZM13.217 14.507L11.001 12.291L8.78302 14.508C8.61087 14.6745 8.38017 14.7668 8.14065 14.7648C7.90114 14.7628 7.67199 14.6668 7.50262 14.4974C7.33325 14.328 7.23722 14.0989 7.23524 13.8594C7.23326 13.6199 7.32548 13.3892 7.49202 13.217L9.71002 10.999L7.49702 8.78601C7.33048 8.61386 7.23826 8.38315 7.24024 8.14364C7.24222 7.90412 7.33825 7.67497 7.50762 7.50561C7.67699 7.33624 7.90613 7.24021 8.14565 7.23823C8.38517 7.23624 8.61587 7.32846 8.78802 7.49501L11.001 9.70901L13.214 7.496C13.3861 7.33171 13.6157 7.24128 13.8536 7.24405C14.0916 7.24682 14.319 7.34256 14.4872 7.51081C14.6555 7.67907 14.7512 7.90647 14.754 8.14439C14.7567 8.38232 14.6663 8.61189 14.502 8.78401L12.289 10.997L14.507 13.213C14.6736 13.3852 14.7658 13.6159 14.7638 13.8554C14.7618 14.0949 14.6658 14.324 14.4964 14.4934C14.3271 14.6628 14.0979 14.7588 13.8584 14.7608C13.6189 14.7628 13.3882 14.6705 13.216 14.504'
-        fill={fill}
-      />
+    <svg width='18' height='18' viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <g clip-path='url(#clip0_852_3)'>
+        <path
+          d='M19.0816 17.1019L12.5963 10.6166L19.1079 4.10502C19.3615 3.83954 19.5029 3.48643 19.5027 3.11912C19.5082 2.92501 19.4729 2.73187 19.3993 2.55212C19.3256 2.37237 19.2151 2.20998 19.075 2.07541C18.8077 1.81303 18.4483 1.66567 18.0739 1.66488C17.6995 1.6641 17.3399 1.80995 17.072 2.07121L10.5678 8.57537L4.06343 2.071C3.79597 1.8075 3.43629 1.65875 3.06103 1.65644C2.68577 1.65413 2.32458 1.79843 2.05442 2.05862C1.78425 2.3188 1.62647 2.67429 1.61468 3.04936C1.60288 3.42443 1.73801 3.78943 1.99128 4.0666L8.53393 10.6093L2.02446 17.1187C1.78144 17.3932 1.6528 17.7503 1.66496 18.1169C1.67712 18.4835 1.82915 18.8316 2.08983 19.0898C2.35052 19.3481 2.70007 19.4968 3.06673 19.5055C3.43339 19.5142 3.78933 19.3822 4.06145 19.1366L10.555 12.6431L17.0583 19.1464C17.3341 19.3897 17.6924 19.5184 18.0598 19.5058C18.4271 19.4933 18.7756 19.3406 19.0336 19.079C19.2917 18.8175 19.4396 18.4669 19.4472 18.0994C19.4547 17.7319 19.3212 17.3753 19.0741 17.1029'
+          fill={fill}
+        />
+      </g>
+      <defs>
+        <clipPath id='clip0_852_3'>
+          <rect width='22' height='22' fill='white' />
+        </clipPath>
+      </defs>
     </svg>
   );
 }
