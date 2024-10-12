@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { usePlatformOs, useUid } from '@/libs/hooks';
+import { useUid } from '@/libs/hooks';
 import Image from 'next/image';
 import { ForwardedRef, forwardRef, HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
 import { PopupImageWrapper } from './instances/PopupImageWrapper';
 
-//
 type SizeThemeType = {
   size?: {
     width?: 'auto' | '100%' | string | number;
@@ -14,19 +13,12 @@ type SizeThemeType = {
     minHeight?: number | string;
     maxHeight?: number | string;
   };
-
   ratio?: { x?: number; y?: number };
-  shadow?: {
-    x?: number;
-    y?: number;
-    blur?: number;
-    color?: string;
-  };
+  shadow?: { x?: number; y?: number; blur?: number; color?: string };
   scale?: number;
   borderRadius?: string | number;
 };
 
-//
 type Types = {
   source: string;
   alt: string;
@@ -45,111 +37,58 @@ type Types = {
 } & SizeThemeType &
   Omit<HTMLAttributes<HTMLImageElement>, 'objectFit'>;
 
-//
 const ImageInstance = forwardRef(function ImageInstance(
   { source, alt, objectFit, zoomUp, ...props }: Types,
   ref?: ForwardedRef<HTMLImageElement>
 ) {
   const uid = useUid();
-  const os = usePlatformOs();
 
   const imgRef = useRef<HTMLImageElement>(null);
   const [isHover, setIsHover] = useState(props.isHover ?? false);
   const [zoomImg, setZoomImg] = useState(false);
+  const [calculatedHeight, setCalculatedHeight] = useState<string | number>('200px');
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
-  const screenSize = [1440, 1280, 1080, 768, 600, 428];
-  const MQ = screenSize.map(bp => `@media (max-width: ${bp}px)`);
+  // 이미지 로드 후 비율 계산하여 height 설정
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = event.currentTarget;
+    const aspectRatio = naturalHeight / naturalWidth;
 
-  const styleProps: Partial<SizeThemeType> = {};
-  const elementProps: Partial<HTMLAttributes<HTMLImageElement>> = { ...props };
-
-  //
-  // ZoomUp
-  useEffect(() => {
-    const clickModalOutside = (event: MouseEvent) => {
-      if (zoomImg && imgRef.current && !imgRef.current.contains(event.target as Node)) setZoomImg(false);
-    };
-
-    if (zoomImg) document.body.style.overflowY = 'hidden';
-    else document.body.style.overflowY = 'auto';
-
-    document.addEventListener('mousedown', clickModalOutside);
-    return () => {
-      document.removeEventListener('mousedown', clickModalOutside);
-    };
-  }, [zoomImg]);
-
-  useEffect(() => {
-    if (zoomImg) {
-      const scrollY = window.scrollY;
-
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.overflowY = 'hidden';
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.overflowY = 'auto';
-
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    const width = props.size?.width ?? '100%';
+    if (typeof width === 'number') {
+      setCalculatedHeight(width * aspectRatio);
+    } else if (width === '100%') {
+      setCalculatedHeight(`${aspectRatio * 100}vw`);
     }
-  }, [zoomImg]);
+  };
 
-  //
-  // handleOnClick
   const handleOnClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    if (!!source && zoomUp) {
+    if (source && zoomUp) {
       setZoomImg(true);
-      props.onClick && props.onClick(event);
-    } else if (props.onClick) props.onClick(event);
-  };
-
-  //
-  // hover
-  const onHover = useCallback(() => {
-    if (props.isHover) setIsHover(!isHover);
-  }, [isHover]);
-
-  const stylePropKeys = [
-    'size',
-    'objectFit',
-    'ratio',
-    'borderRadius',
-    'shadow',
-    '_mediaQuery',
-    'qualitySize',
-    'position',
-    'scale',
-  ] as const;
-
-  Object.keys(props).forEach(key => {
-    if (stylePropKeys.includes(key as keyof SizeThemeType)) {
-      styleProps[key as keyof SizeThemeType] = props[key as keyof SizeThemeType] as any;
-      delete elementProps[key as keyof HTMLAttributes<HTMLImageElement>];
+      props.onClick?.(event);
+    } else {
+      props.onClick?.(event);
     }
-  });
-
-  const imageRasiedWrap = (props: SizeThemeType) => {
-    return {
-      position: 'relative',
-      width: props?.size?.width,
-      minWidth: props?.size?.minWidth,
-      maxWidth: props?.size?.maxWidth,
-      height: props?.size?.height ?? '100%',
-      minHeight: props?.size?.minHeight,
-      maxHeight: props?.size?.maxHeight,
-      borderRadius: props?.borderRadius,
-      aspectRatio: props?.ratio ? `${props?.ratio.x}/${props?.ratio.y}` : '',
-      transition: '0.3s ease-in-out',
-      boxShadow: props?.shadow
-        ? `${props?.shadow?.x}px ${props?.shadow?.y}px ${props?.shadow?.blur}px ${props?.shadow?.color}`
-        : undefined,
-      userSelect: 'none',
-      overflow: 'hidden',
-      scale: props.scale,
-    };
   };
+
+  const imageWrapperStyle = (props: SizeThemeType) => ({
+    position: 'relative',
+    width: props.size?.width ?? '100%',
+    height: props.size?.height || calculatedHeight,
+    minWidth: props.size?.minWidth,
+    maxWidth: props.size?.maxWidth,
+    minHeight: props.size?.minHeight || calculatedHeight,
+    maxHeight: props.size?.maxHeight,
+    borderRadius: props.borderRadius,
+    aspectRatio: props.ratio ? `${props.ratio.x}/${props.ratio.y}` : '',
+    transition: '0.3s ease-in-out',
+    boxShadow: props.shadow
+      ? `${props.shadow.x}px ${props.shadow.y}px ${props.shadow.blur}px ${props.shadow.color}`
+      : undefined,
+    userSelect: 'none',
+    overflow: 'hidden',
+    scale: props.scale,
+  });
 
   const imageRasied = (props: SizeThemeType) => {
     return {
@@ -168,57 +107,74 @@ const ImageInstance = forwardRef(function ImageInstance(
     };
   };
 
-  const ImageInstance = () => (
-    <div
-      id={'image-wrap-' + uid}
-      onMouseEnter={onHover}
-      onMouseLeave={onHover}
-      css={{
-        ...(imageRasiedWrap(props) as any),
-        [MQ[0]]: { ...imageRasiedWrap(props?._mediaQuery?.s1440 ?? {}) },
-        [MQ[1]]: { ...imageRasiedWrap(props?._mediaQuery?.s1280 ?? {}) },
-        [MQ[2]]: { ...imageRasiedWrap(props?._mediaQuery?.s1080 ?? {}) },
-        [MQ[3]]: { ...imageRasiedWrap(props?._mediaQuery?.s768 ?? {}) },
-        [MQ[4]]: { ...imageRasiedWrap(props?._mediaQuery?.s600 ?? {}) },
-        [MQ[5]]: { ...imageRasiedWrap(props?._mediaQuery?.s428 ?? {}) },
-        cursor: props.onClick && 'pointer',
-      }}
-    >
-      <Image
-        id={'image-' + uid}
-        itemProp='image'
-        ref={ref}
-        src={source}
-        alt={alt}
-        priority={props.priority}
-        fill
-        loading='lazy'
-        placeholder='blur'
-        quality={90}
-        blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
-        {...elementProps}
-        css={{
-          overflow: 'hidden',
-          ...imageRasied({
-            ...props,
-            size: { width: props.size?.width ?? '100%', height: props.size?.height ?? '100%' },
-          }),
-          [MQ[0]]: { ...imageRasied(props?._mediaQuery?.s1440 ?? {}) },
-          [MQ[1]]: { ...imageRasied(props?._mediaQuery?.s1280 ?? {}) },
-          [MQ[2]]: { ...imageRasied(props?._mediaQuery?.s1080 ?? {}) },
-          [MQ[3]]: { ...imageRasied(props?._mediaQuery?.s768 ?? {}) },
-          [MQ[4]]: { ...imageRasied(props?._mediaQuery?.s600 ?? {}) },
-          [MQ[5]]: { ...imageRasied(props?._mediaQuery?.s428 ?? {}) },
-          scale: props.isHover && os === 'PC' ? '1.07' : 1,
-          objectFit: objectFit ?? 'fill',
-        }}
-      />
-    </div>
+  //
+  // 팝업 제거
+  const clickModalOutside = useCallback(
+    (event: MouseEvent) => {
+      if (zoomImg && imgRef.current && !imgRef.current.contains(event.target as Node)) setZoomImg(false);
+    },
+    [zoomImg, setZoomImg]
   );
+
+  useEffect(() => {
+    if (zoomImg) {
+      const scrollY = window.scrollY;
+
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.overflowY = 'hidden';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.overflowY = 'auto';
+
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+
+    document.addEventListener('mousedown', clickModalOutside);
+    return () => document.removeEventListener('mousedown', clickModalOutside);
+  }, [zoomImg]);
 
   return (
     <>
-      <ImageInstance />
+      <div
+        id={`image-wrap-${uid}`}
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        css={{
+          ...(imageWrapperStyle(props) as any),
+          cursor: props.onClick || zoomUp ? 'pointer' : 'default',
+        }}
+        {...props}
+      >
+        <Image
+          id={`image-${uid}`}
+          itemProp='image'
+          ref={ref}
+          src={source}
+          alt={alt}
+          priority={props.priority}
+          fill
+          loading='lazy'
+          placeholder='blur'
+          quality={90}
+          onClick={handleOnClick}
+          onLoad={event => {
+            handleImageLoad(event);
+            setIsLoading(false); // 이미지 로드 완료 시 로딩 상태 업데이트
+          }}
+          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
+          css={{
+            overflow: 'hidden',
+            objectFit: objectFit ?? 'cover',
+            height: calculatedHeight,
+            filter: isLoading ? 'blur(10px)' : 'none', // 로딩 중 blur 효과 적용
+            transition: '0.3s ease-in-out',
+            scale: isHover ? 1.05 : 1,
+          }}
+        />
+      </div>
 
       {zoomImg && (
         <PopupImageWrapper onCancel={() => setZoomImg(false)}>
@@ -234,27 +190,19 @@ const ImageInstance = forwardRef(function ImageInstance(
               justifyContent: 'center',
             }}
           >
-            <div
-              css={{
-                width: '100%',
-                height: 'auto',
-              }}
-            >
-              <Image
-                ref={ref}
-                src={source}
-                alt={alt}
-                priority={props.priority}
-                layout='fill'
-                loading='lazy'
-                placeholder='blur'
-                blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
-                objectFit='contain'
-                {...elementProps}
-                style={{ objectFit: 'contain' }}
-                css={{ ...imageRasied({ ...props }) }}
-              />
-            </div>
+            <Image
+              ref={ref}
+              src={source}
+              alt={alt}
+              priority={props.priority}
+              layout='fill'
+              loading='lazy'
+              placeholder='blur'
+              blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
+              objectFit='contain'
+              style={{ objectFit: 'contain' }}
+              css={{ ...imageRasied({ ...props }) }}
+            />
           </div>
         </PopupImageWrapper>
       )}

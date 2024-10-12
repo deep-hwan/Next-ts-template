@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function usePlatformOs() {
-  const [platform, setPlatform] = useState('Unknown');
+  const [platform, setPlatform] = useState<'android' | 'ios' | 'pc' | 'Unknown'>('Unknown');
 
   useEffect(() => {
     if (typeof navigator !== 'undefined' && 'userAgent' in navigator) {
@@ -12,7 +12,7 @@ export function usePlatformOs() {
       } else if (UA.includes('iphone') || UA.includes('ipad') || UA.includes('ipod')) {
         setPlatform('ios');
       } else {
-        setPlatform('PC');
+        setPlatform('pc');
       }
     }
   }, []);

@@ -10,6 +10,7 @@ import { useOpenWebBrowser } from './useOpenWebBrowser';
 import { usePlatformOs } from './usePlatformOs';
 import { useRouteOnload } from './useRouteOnload';
 import { useSafeArea } from './useSafeArea';
+import { useScrollRestoration } from './useScrollRestoration';
 import { useStopSwipe } from './useStopSwipe';
 import { useTanstackQuery } from './useTanstackQuery';
 import { useUid } from './useUid';
@@ -30,6 +31,7 @@ export {
   usePlatformOs,
   useRouteOnload,
   useSafeArea,
+  useScrollRestoration,
   useState,
   useStopSwipe,
   useTanstackQuery,

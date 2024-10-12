@@ -32,3 +32,5 @@ Custom hooks will be constantly updated!
 - useUid : This is a hook that randomly generates an arbitrary string (id)
 
 - useViewport: This is a hook that can check the width and height values of the current screen layout
+
+- useScrollRestoration: It's a hook that reaches the scroll position of the page you moved when you do router.back(), and it's managed globally by \_app.tsx

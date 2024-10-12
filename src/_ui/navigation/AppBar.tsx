@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { ForwardedRef, ReactNode, forwardRef, useEffect, useState } from 'react';
+import { ForwardedRef, ReactNode, forwardRef, useEffect, useState } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -19,10 +19,9 @@ export const AppBar = forwardRef(
     const [isActive, setIsActive] = useState<boolean>(false);
 
     useEffect(() => {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY >= 100) setIsActive(true);
-        else setIsActive(false);
-      });
+      const handleScroll = () => setIsActive(window.scrollY >= 100);
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     // VARIANTS

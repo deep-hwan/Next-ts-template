@@ -44,7 +44,7 @@ export const Modal = (props: Props) => {
   );
 
   useEffect(() => {
-    if (windowScreenScroll) {
+    if (!windowScreenScroll) {
       if (open) {
         const scrollY = window.scrollY;
 
