@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import React, { Children, cloneElement, useId } from 'react';
+import { Children, cloneElement, useId } from 'react';
 
-import { TextField } from './TextField';
-import { Textarea } from './Textarea';
-import { PhoneNumberField } from './PhoneNumberField';
-import { NumbericField } from './NumbericField';
-import { SearchField } from './SearchField';
-import { InputContainer } from './container/InputContainer';
+import NumbericField from './NumbericField';
+import PhoneNumberField from './PhoneNumberField';
+import SearchField from './SearchField';
+import TextField from './TextField';
+import Textarea from './Textarea';
+import InputContainer from './container/InputContainer';
 
-export function Input({ label, labelSize, labelColor, minWidth, maxWidth, important, ...props }: InputTypes) {
+export const Input = ({ label, labelSize, labelColor, minWidth, maxWidth, important, ...props }: InputTypes) => {
   const child = Children.only(props.children);
 
   const { error, tolTip } = child?.props ?? {};
@@ -30,7 +30,7 @@ export function Input({ label, labelSize, labelColor, minWidth, maxWidth, import
       {cloneElement(child, { id, ...child.props })}
     </InputContainer>
   );
-}
+};
 
 Input.TextField = TextField;
 Input.Textarea = Textarea;

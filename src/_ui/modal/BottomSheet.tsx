@@ -2,6 +2,7 @@
 import { BlurLayer, P, TouchableOpacity, V } from '@/_ui';
 import { MQ } from '@/libs/themes';
 import { Interpolation, Theme } from '@emotion/react';
+import dynamic from 'next/dynamic';
 import React, { HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
 
 // --------------------------------------------
@@ -20,7 +21,7 @@ interface BottomSheetProps extends HTMLAttributes<HTMLElement> {
 // -----------------------------------------
 // -------------- BottomSheet --------------
 // -----------------------------------------
-export function BottomSheet({
+const BottomSheetComponent = ({
   children,
   open,
   onCancel,
@@ -29,7 +30,7 @@ export function BottomSheet({
   clickOutSideClose = true,
   zIndex,
   ...props
-}: BottomSheetProps) {
+}: BottomSheetProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const viewRef = useRef<HTMLDivElement>(null);
   const [startY, setStartY] = useState(0);
@@ -161,7 +162,7 @@ export function BottomSheet({
       </P.Fixed>
     </>
   );
-}
+};
 
 // ------------------------------------
 // -------------- Styles --------------
@@ -183,3 +184,9 @@ function BoxTheme(isActive?: boolean): Interpolation<Theme> {
     },
   };
 }
+
+const BottomSheet = dynamic(() => Promise.resolve(BottomSheetComponent), {
+  ssr: false,
+});
+
+export default BottomSheet;

@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { P, V } from '@/_ui';
+import { P, Skeleton, V } from '@/_ui';
+import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
@@ -16,7 +17,7 @@ interface Props {
 }
 
 //
-export function AvatarUploader({ size = 100, source, alt = '업로드 이미지', onUpload, onCancel, loading }: Props) {
+const AvatarUploaderComponent = ({ size = 100, source, alt = '업로드 이미지', onUpload, onCancel, loading }: Props) => {
   const uploadRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     if (!loading) uploadRef.current?.click();
@@ -85,7 +86,7 @@ export function AvatarUploader({ size = 100, source, alt = '업로드 이미지'
       />
     </V.Column>
   );
-}
+};
 
 // -----------------------------------
 // -------------- Icons --------------
@@ -116,3 +117,10 @@ const CancelIcon = () => {
     </svg>
   );
 };
+
+const AvatarUploader = dynamic(() => Promise.resolve(AvatarUploaderComponent), {
+  ssr: false,
+  loading: () => <Skeleton width={120} height={120} borderRadius={120} />,
+});
+
+export default AvatarUploader;

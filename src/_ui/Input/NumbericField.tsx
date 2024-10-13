@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import React, { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 
 import { useUid } from '@/libs/hooks';
-import { FieldContainer } from './container/FieldContainer';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '../loading/Skeleton';
+import FieldContainer from './container/FieldContainer';
 
-const NumbericField = forwardRef(
+const NumbericFieldComponent = forwardRef(
   (
     { error, edge, disabled, value, onChange, sizes, themes, ...props }: NumbericType,
     ref: ForwardedRef<HTMLInputElement>
@@ -60,4 +62,9 @@ const NumbericField = forwardRef(
   }
 );
 
-export { NumbericField };
+const NumbericField = dynamic(() => Promise.resolve(NumbericFieldComponent), {
+  ssr: false,
+  loading: () => <Skeleton height={48} borderRadius={14} />,
+});
+
+export default NumbericField;

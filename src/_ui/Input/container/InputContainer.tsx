@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React, { ReactNode } from 'react';
-import { V, Txt } from '@/_ui';
+import { Skeleton, Txt, V } from '@/_ui';
+import dynamic from 'next/dynamic';
+import { ReactNode } from 'react';
 
-function InputContainer({
+function InputContainerComponent({
   id,
   children,
   label,
@@ -59,4 +60,9 @@ function InputContainer({
   );
 }
 
-export { InputContainer };
+const InputContainer = dynamic(() => Promise.resolve(InputContainerComponent), {
+  ssr: false,
+  loading: () => <Skeleton height={48} borderRadius={14} />,
+});
+
+export default InputContainer;

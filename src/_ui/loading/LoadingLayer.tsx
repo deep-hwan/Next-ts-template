@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
 import { keyframes } from '@emotion/react';
-import { BlurLayer } from '../display/BlurLayer';
+import BlurLayer from '../display/BlurLayer';
 import { useEffect } from 'react';
 
 export function LoadingLayer({ size = 48, open }: { size?: number; open?: boolean }) {

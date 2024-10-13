@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
 
+import dynamic from 'next/dynamic';
 import { colors } from 'src/libs/themes';
 import { BlurLayer, Button, P, TouchableOpacity, Txt, V } from '../index';
 
@@ -26,7 +27,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
     | undefined;
 }
 
-export function Dialog(props: Props) {
+const DialogComponent = (props: Props) => {
   const {
     theme = 'light',
     dialogSizes = 500,
@@ -160,7 +161,7 @@ export function Dialog(props: Props) {
       </P.Fixed>
     </>
   );
-}
+};
 
 // ----------------------------------
 // -------------- Icon --------------
@@ -177,3 +178,7 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
     </svg>
   );
 }
+
+const Dialog = dynamic(() => Promise.resolve(DialogComponent), { ssr: false });
+
+export default Dialog;

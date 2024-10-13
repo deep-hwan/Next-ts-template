@@ -1,7 +1,7 @@
-import { NextRouter, useRouter } from 'next/router';
-import { colors } from '@/libs/themes/colors';
 import { BottomNavigator } from '@/_ui';
-import { HomeIcon, MessageIcon, CopyIcon, ProfileIcon, SettingIcon } from '../../../libs/assets/icon-fill';
+import { colors } from '@/libs/themes/colors';
+import { NextRouter, useRouter } from 'next/router';
+import { CopyIcon, HomeIcon, MessageIcon, ProfileIcon, SettingIcon } from '../../../libs/assets/icon-fill';
 
 export default function BottomNaviTabBar() {
   const router: NextRouter = useRouter();

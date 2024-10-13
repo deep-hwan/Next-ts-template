@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { ForwardedRef, forwardRef, useCallback, useState } from 'react';
 import { V } from '@/_ui';
 import { useUid } from '@/libs/hooks';
-import { FieldContainer } from './container/FieldContainer';
+import dynamic from 'next/dynamic';
+import React, { ForwardedRef, forwardRef, useCallback, useState } from 'react';
+import FieldContainer from './container/FieldContainer';
 
-const SearchField = forwardRef((props: SearchType, ref: ForwardedRef<HTMLInputElement>) => {
+const SearchFieldComponent = forwardRef((props: SearchType, ref: ForwardedRef<HTMLInputElement>) => {
   const { disabled, tab, sizes, themes, placeholder, ...rest } = props;
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -70,3 +71,9 @@ function SearchIcon() {
     </svg>
   );
 }
+
+const SearchField = dynamic(() => Promise.resolve(SearchFieldComponent), {
+  ssr: false,
+});
+
+export default SearchField;

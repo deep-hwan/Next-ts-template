@@ -1,4 +1,5 @@
 import { V, TouchableOpacity } from '@/_ui';
+import dynamic from 'next/dynamic';
 
 type Props = {
   prev: () => void;
@@ -7,7 +8,7 @@ type Props = {
   title: string;
 };
 
-export function CalenderTitle({ prev, next, onClickTitle, title }: Props) {
+const CalenderTitleComponent = ({ prev, next, onClickTitle, title }: Props) => {
   return (
     <V.Row align='center' crossAlign='space-between' maxWidth={300} padding={{ horizontal: 12 }}>
       <TouchableOpacity txtColor='#797979' txtSize={13} onClick={prev} padding={{ all: 5 }}>
@@ -31,4 +32,11 @@ export function CalenderTitle({ prev, next, onClickTitle, title }: Props) {
       </TouchableOpacity>
     </V.Row>
   );
-}
+};
+
+const CalenderTitle = dynamic(() => Promise.resolve(CalenderTitleComponent), {
+  ssr: false,
+  loading: () => <p>...loading</p>,
+});
+
+export default CalenderTitle;

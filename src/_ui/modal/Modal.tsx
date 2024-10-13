@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { BlurLayer } from '@/_ui';
+import dynamic from 'next/dynamic';
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
 
 interface Props extends HTMLAttributes<HTMLElement> {
@@ -19,7 +20,7 @@ interface Props extends HTMLAttributes<HTMLElement> {
 const screenSize = [1440, 1080, 780, 600, 438];
 const MQ = screenSize.map(bp => `@media (max-width: ${bp}px)`);
 
-export const Modal = (props: Props) => {
+const ModalComponent = (props: Props) => {
   const {
     colors,
     modalSize = 700,
@@ -204,3 +205,7 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
     </svg>
   );
 }
+
+const Modal = dynamic(() => Promise.resolve(ModalComponent), { ssr: false });
+
+export default Modal;

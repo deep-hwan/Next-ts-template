@@ -33,7 +33,7 @@ interface BottomNavigatorComponent extends ForwardRefExoticComponent<Props & Ref
   Tab: React.FC<MenuProps>;
 }
 
-export const BottomNavigator: BottomNavigatorComponent = forwardRef<HTMLDivElement, Props>((props, ref) => {
+const BottomNavigator: BottomNavigatorComponent = forwardRef<HTMLDivElement, Props>((props, ref) => {
   let childrenArray = React.Children.toArray(props.children);
 
   childrenArray = childrenArray.filter(child => true);
@@ -180,3 +180,5 @@ const ScrollDragHorizontal = ({ children }: { children: ReactNode }) => {
     </div>
   );
 };
+
+export { BottomNavigator };

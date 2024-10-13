@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
 import { NextRouter, useRouter } from 'next/router';
+import { ReactNode } from 'react';
 
 // Components
-import Header from './Header';
 import BottomNaviTabBar from './BottomNaviTabBar';
 import Drawer from './Drawer';
 import Footer from './Footer';
+import Header from './Header';
 
 //
 export default function App({ children }: { children: ReactNode }): JSX.Element {

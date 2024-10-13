@@ -25,6 +25,8 @@ type Types = {
   zoomUp?: boolean;
   objectFit?: 'cover' | 'fill' | 'contain';
   priority?: boolean;
+  quality?: number;
+  isHover?: boolean;
   _mediaQuery?: {
     s1440?: SizeThemeType;
     s1280?: SizeThemeType;
@@ -33,7 +35,6 @@ type Types = {
     s600?: SizeThemeType;
     s428?: SizeThemeType;
   };
-  isHover?: boolean;
 } & SizeThemeType &
   Omit<HTMLAttributes<HTMLImageElement>, 'objectFit'>;
 
@@ -74,10 +75,10 @@ const ImageInstance = forwardRef(function ImageInstance(
   const imageWrapperStyle = (props: SizeThemeType) => ({
     position: 'relative',
     width: props.size?.width ?? '100%',
-    height: props.size?.height || calculatedHeight,
+    height: props.size?.height ?? calculatedHeight,
     minWidth: props.size?.minWidth,
     maxWidth: props.size?.maxWidth,
-    minHeight: props.size?.minHeight || calculatedHeight,
+    minHeight: props.size?.minHeight,
     maxHeight: props.size?.maxHeight,
     borderRadius: props.borderRadius,
     aspectRatio: props.ratio ? `${props.ratio.x}/${props.ratio.y}` : '',
@@ -89,23 +90,6 @@ const ImageInstance = forwardRef(function ImageInstance(
     overflow: 'hidden',
     scale: props.scale,
   });
-
-  const imageRasied = (props: SizeThemeType) => {
-    return {
-      width: props?.size?.width,
-      height: props?.size?.height,
-      minWidth: props?.size?.minWidth,
-      maxWidth: props?.size?.maxWidth,
-      minHeight: props?.size?.minHeight,
-      maxHeight: props?.size?.maxHeight,
-      borderRadius: props?.borderRadius,
-      aspectRatio: props?.ratio ? `${props?.ratio.x}/${props?.ratio.y}` : '',
-      transition: '0.3s ease-in-out',
-      boxShadow: props?.shadow
-        ? `${props?.shadow?.x}px ${props?.shadow?.y}px ${props?.shadow?.blur}px ${props?.shadow?.color}`
-        : undefined,
-    };
-  };
 
   //
   // 팝업 제거
@@ -136,12 +120,18 @@ const ImageInstance = forwardRef(function ImageInstance(
     return () => document.removeEventListener('mousedown', clickModalOutside);
   }, [zoomImg]);
 
+  //
+  //
+  const onHover = useCallback(() => {
+    if (props.isHover) setIsHover(!isHover);
+  }, [props.isHover]);
+
   return (
     <>
       <div
         id={`image-wrap-${uid}`}
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+        onMouseEnter={onHover}
+        onMouseLeave={onHover}
         css={{
           ...(imageWrapperStyle(props) as any),
           cursor: props.onClick || zoomUp ? 'pointer' : 'default',
@@ -158,18 +148,19 @@ const ImageInstance = forwardRef(function ImageInstance(
           fill
           loading='lazy'
           placeholder='blur'
-          quality={90}
+          quality={props?.quality ?? 75}
           onClick={handleOnClick}
           onLoad={event => {
             handleImageLoad(event);
-            setIsLoading(false); // 이미지 로드 완료 시 로딩 상태 업데이트
+            setIsLoading(false);
           }}
           blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
           css={{
             overflow: 'hidden',
             objectFit: objectFit ?? 'cover',
-            height: calculatedHeight,
-            filter: isLoading ? 'blur(10px)' : 'none', // 로딩 중 blur 효과 적용
+            width: '100%',
+            height: '100%',
+            filter: isLoading ? 'blur(10px)' : 'none',
             transition: '0.3s ease-in-out',
             scale: isHover ? 1.05 : 1,
           }}
@@ -196,12 +187,13 @@ const ImageInstance = forwardRef(function ImageInstance(
               alt={alt}
               priority={props.priority}
               layout='fill'
+              quality={props?.quality ?? 75}
               loading='lazy'
               placeholder='blur'
               blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
               objectFit='contain'
               style={{ objectFit: 'contain' }}
-              css={{ ...imageRasied({ ...props }) }}
+              css={{ width: '100%' }}
             />
           </div>
         </PopupImageWrapper>

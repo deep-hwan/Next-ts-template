@@ -9,7 +9,7 @@ import { RecoilRoot } from 'recoil';
 //libs
 import App from '@/app/_layout/components/App';
 import { GlobalThemes } from '@/app/_layout/components/GlobalThemes';
-import useScrollRestoration from '@/libs/hooks/useScrollRestoration';
+import { useScrollRestoration } from '@/libs/hooks/useScrollRestoration';
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   useScrollRestoration(router);

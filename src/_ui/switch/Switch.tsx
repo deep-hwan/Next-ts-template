@@ -3,6 +3,7 @@ import { ForwardedRef, forwardRef } from 'react';
 //libs
 import { P, TouchableOpacity } from '@/_ui';
 import { colors } from '@/libs/themes';
+import dynamic from 'next/dynamic';
 
 //type
 type Type = {
@@ -14,7 +15,7 @@ type Type = {
 };
 
 //
-const Switch = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivElement | any>) => {
+const SwitchComponent = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivElement | any>) => {
   return (
     <TouchableOpacity
       width='auto'
@@ -48,4 +49,6 @@ const Switch = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivE
   );
 });
 
-export { Switch };
+const Switch = dynamic(() => Promise.resolve(SwitchComponent), { ssr: true, loading: () => <p>...loading</p> });
+
+export default Switch;

@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import { useUid } from '@/libs/hooks';
-import { FieldContainer } from './container/FieldContainer';
+import dynamic from 'next/dynamic';
+import { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
+import FieldContainer from './container/FieldContainer';
+import { Skeleton } from '../loading/Skeleton';
 
-const PhoneNumberField = forwardRef(
+const PhoneNumberFieldComponent = forwardRef(
   (
     {
       disabled = false,
@@ -67,4 +69,9 @@ const PhoneNumberField = forwardRef(
   }
 );
 
-export { PhoneNumberField };
+const PhoneNumberField = dynamic(() => Promise.resolve(PhoneNumberFieldComponent), {
+  ssr: false,
+  loading: () => <Skeleton height={48} borderRadius={14} />,
+});
+
+export default PhoneNumberField;

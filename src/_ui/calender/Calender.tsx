@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react';
-import { V, TxtSpan } from '@/_ui';
+import { TxtSpan, V } from '@/_ui';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
+import CalenderTitle from './CalenderTitle';
 import { CalenderGrid, dd_theme, mm_theme, year_theme } from './theme';
-import { CalenderTitle } from './CalenderTitle';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -14,7 +15,7 @@ interface CalendarProps {
   format?: 'yyyy-mm-dd' | 'yyyy-mm' | 'yyyy';
 }
 
-export function Calendar({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) {
+const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) => {
   const [selectedDate, setSelectedDate] = useState(() => date || new Date());
 
   useEffect(() => {
@@ -217,4 +218,8 @@ export function Calendar({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd
       )}
     </V.Column>
   );
-}
+};
+
+const Calender = dynamic(() => Promise.resolve(CalenderComponent), { ssr: false, loading: () => <p>...loading</p> });
+
+export default Calender;

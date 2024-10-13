@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import React, { memo } from 'react';
+import dynamic from 'next/dynamic';
+import { memo } from 'react';
 
-export const BlurLayer = memo(({ zIndex }: { zIndex?: number }) => {
+const BlurLayerComponent = memo(({ zIndex }: { zIndex?: number }) => {
   return (
     <div
       css={{
@@ -26,3 +27,7 @@ export const BlurLayer = memo(({ zIndex }: { zIndex?: number }) => {
     />
   );
 });
+
+const BlurLayer = dynamic(() => Promise.resolve(BlurLayerComponent), { ssr: false, loading: () => <p>...loading</p> });
+
+export default BlurLayer;

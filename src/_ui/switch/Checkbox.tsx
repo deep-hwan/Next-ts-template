@@ -1,6 +1,7 @@
-import { Txt, V } from '@/_ui';
+import { Skeleton, Txt, V } from '@/_ui';
 import { colors } from '@/libs/themes';
 import { Interpolation, Theme } from '@emotion/react';
+import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, HTMLAttributes, useState } from 'react';
 
 //
@@ -40,7 +41,7 @@ type Types = {
 } & Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>;
 //
 //
-const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | undefined) => {
+const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | undefined) => {
   const [hover, setHover] = useState(false);
 
   const checkColors = () => {
@@ -115,8 +116,6 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
   );
 });
 
-export { Checkbox };
-
 const CheckIcon = ({ size, fill }: { size: any; fill: string }) => (
   <svg width={size} height={size} viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <g clip-path='url(#clip0_1025_25)'>
@@ -132,3 +131,30 @@ const CheckIcon = ({ size, fill }: { size: any; fill: string }) => (
     </defs>
   </svg>
 );
+
+const Checkbox = dynamic(() => Promise.resolve(CheckboxComponent), {
+  ssr: false,
+  loading: () => (
+    <div css={{ gap: 10, display: 'flex', alignItems: 'center' }}>
+      <div
+        css={{
+          width: 17,
+          height: 17,
+          backgroundColor: '#e2e2e2',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: '0.2s ease-in-out',
+          marginTop: 2.5,
+          borderRadius: 6,
+        }}
+      >
+        <CheckIcon size={10} fill='#bbb' />
+      </div>
+
+      <Skeleton height={10} width={50} />
+    </div>
+  ),
+});
+
+export default Checkbox;

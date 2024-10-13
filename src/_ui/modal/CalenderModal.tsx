@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { BlurLayer, Calendar, P, V } from '@/_ui';
 import { MQ } from '@/libs/themes';
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef } from 'react';
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
   theme?: 'light' | 'dark';
 }
 
-export function CalenderModal({
+const CalenderModalComponent = ({
   open,
   onCancel,
   format = 'yyyy-mm-dd',
@@ -28,7 +29,7 @@ export function CalenderModal({
   theme = 'light',
   zIndex,
   ...props
-}: Props) {
+}: Props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const THEME_VARIANT = {
@@ -128,7 +129,7 @@ export function CalenderModal({
       </P.Fixed>
     </>
   );
-}
+};
 //
 
 function IconTheme({ onClick }: { onClick: () => void }) {
@@ -173,3 +174,9 @@ function IconTheme({ onClick }: { onClick: () => void }) {
     </button>
   );
 }
+
+const CalenderModal = dynamic(() => Promise.resolve(CalenderModalComponent), {
+  ssr: false,
+});
+
+export default CalenderModal;

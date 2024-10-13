@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import React, {
+import { P, Skeleton } from '@/_ui';
+import dynamic from 'next/dynamic';
+import {
   ForwardedRef,
   forwardRef,
   ForwardRefExoticComponent,
@@ -8,11 +10,11 @@ import React, {
   useId,
   useState,
 } from 'react';
-import { Option } from './Option';
-import { P } from '@/_ui';
-import { InputContainer } from './container/InputContainer';
-import { FieldContainer } from './container/FieldContainer';
+import FieldContainer from './container/FieldContainer';
+import InputContainer from './container/InputContainer';
+import Option from './Option';
 
+// Define SelectComponent with forwardRef
 const SelectComponent = forwardRef((props: SelectType, ref: ForwardedRef<HTMLSelectElement>) => {
   const {
     id,
@@ -62,7 +64,6 @@ const SelectComponent = forwardRef((props: SelectType, ref: ForwardedRef<HTMLSel
               {placeholder}
             </option>
           )}
-
           {options?.map((item, index) => renderItem(item, index)).flat()}
         </select>
 
@@ -78,7 +79,6 @@ const Select = SelectComponent as ForwardRefExoticComponent<SelectType & RefAttr
   Option: typeof Option;
 };
 Select.Option = Option;
-export { Select };
 
 const SelectIcon = ({ fill, size }: { fill: string; size: number }) => {
   return (
@@ -92,3 +92,10 @@ const SelectIcon = ({ fill, size }: { fill: string; size: number }) => {
     </div>
   );
 };
+
+const DynamicSelect = dynamic(() => Promise.resolve(Select), {
+  ssr: false,
+  loading: () => <Skeleton height={48} borderRadius={14} />,
+});
+
+export default DynamicSelect;

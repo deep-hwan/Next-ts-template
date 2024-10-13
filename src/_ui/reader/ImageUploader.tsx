@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { P, TxtSpan, V } from '@/_ui';
+import { P, Skeleton, TxtSpan, V } from '@/_ui';
 import React, { ChangeEvent, ReactNode, useRef } from 'react';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
+import dynamic from 'next/dynamic';
 
 interface Props {
   children?: ReactNode;
@@ -26,7 +27,7 @@ interface Props {
 }
 
 //
-export function ImageUploader(props: Props) {
+const ImageUploaderComponent = (props: Props) => {
   const { source, alt = '업로드 이미지', onUpload, onCancel, loading } = props;
   const { width = '100%', minWidth, maxWidth } = props.size ?? {};
   const { height, minHeight = 360, maxHeight } = props.size ?? {};
@@ -147,7 +148,7 @@ export function ImageUploader(props: Props) {
       />
     </V.Column>
   );
-}
+};
 
 // -----------------------------------
 // -------------- Icons --------------
@@ -195,3 +196,10 @@ const themes: any = {
     cursor: 'pointer',
   },
 };
+
+const ImageUploader = dynamic(() => Promise.resolve(ImageUploaderComponent), {
+  ssr: false,
+  loading: () => <Skeleton height={300} borderRadius={18} />,
+});
+
+export default ImageUploader;
