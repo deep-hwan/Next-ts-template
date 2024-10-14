@@ -1,4 +1,5 @@
-import { V, TouchableOpacity } from '@/_ui';
+/** @jsxImportSource @emotion/react */
+import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
 
 type Props = {
@@ -10,27 +11,19 @@ type Props = {
 
 const CalenderTitleComponent = ({ prev, next, onClickTitle, title }: Props) => {
   return (
-    <V.Row align='center' crossAlign='space-between' maxWidth={300} padding={{ horizontal: 12 }}>
-      <TouchableOpacity txtColor='#797979' txtSize={13} onClick={prev} padding={{ all: 5 }}>
+    <div css={themes.wrapper}>
+      <button type='button' css={themes.tab} onClick={prev}>
         이전
-      </TouchableOpacity>
+      </button>
 
-      <TouchableOpacity
-        as='span'
-        id='swiper-tab'
-        txtSize={16}
-        txtColor='#444'
-        padding={{ horizontal: 5, top: 5, bottom: 7 }}
-        onClick={onClickTitle}
-        css={{ fontWeight: 500 }}
-      >
+      <div onClick={onClickTitle} css={themes.title}>
         {title}
-      </TouchableOpacity>
+      </div>
 
-      <TouchableOpacity txtColor='#94A0AF' txtSize={13} onClick={next} padding={{ all: 5 }}>
+      <button type='button' css={themes.tab} onClick={next}>
         다음
-      </TouchableOpacity>
-    </V.Row>
+      </button>
+    </div>
   );
 };
 
@@ -40,3 +33,44 @@ const CalenderTitle = dynamic(() => Promise.resolve(CalenderTitleComponent), {
 });
 
 export default CalenderTitle;
+
+//
+//
+const themes = {
+  wrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    maxWidth: 300,
+    padding: '0 12px',
+    userSelect: 'none',
+  } as Interpolation<Theme>,
+
+  tab: {
+    color: '#797979',
+    padding: 5,
+    fontSize: '0.875rem',
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+    outline: 'none',
+    border: 'none',
+    whiteSpace: 'nowrap',
+    transition: '0.15s ease-in-out',
+    '&:active': { opacity: 0.7 },
+  } as Interpolation<Theme>,
+
+  title: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '1rem',
+    fontWeight: 500,
+    color: '#444',
+    padding: '5px 5px 7px',
+    whiteSpace: 'nowrap',
+    cursor: 'pointer',
+    transition: '0.15s ease-in-out',
+    '&:active': { opacity: 0.7 },
+  } as Interpolation<Theme>,
+};

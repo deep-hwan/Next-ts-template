@@ -1,11 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
-
+import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import { colors } from 'src/libs/themes';
-import { BlurLayer, Button, P, TouchableOpacity, Txt, V } from '../index';
+import { HTMLAttributes, ReactNode, useRef } from 'react';
 
-interface Props extends HTMLAttributes<HTMLElement> {
+//
+import { colors, MQ } from 'src/libs/themes';
+import { BlurLayer } from '../index';
+import useHandleEvent from './useHadleEvent';
+
+interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
   theme?: 'light' | 'dark';
   open: boolean;
@@ -25,6 +28,12 @@ interface Props extends HTMLAttributes<HTMLElement> {
         disabled?: boolean;
       }[]
     | undefined;
+  colors?: {
+    backgroundColor?: string;
+    titleColor?: string;
+    txtColor?: string;
+    cancelColor?: string;
+  };
 }
 
 const DialogComponent = (props: Props) => {
@@ -36,136 +45,121 @@ const DialogComponent = (props: Props) => {
     title,
     description,
     tabs,
-    tabSpaceGap = 5,
+    tabSpaceGap = 6,
     tabSpaceTop,
     zIndex,
     ...rest
   } = props;
+
   const ref = useRef<HTMLDivElement>(null);
-
-  const THEME_VARIANT = {
-    light: {
-      bg: '#fff',
-      titleColor: '#555',
-      txtColor: '#797979',
-      cancelColor: '#ccc',
-    },
-    dark: {
-      bg: '#222',
-      titleColor: '#e2e2e2',
-      txtColor: '#999',
-      cancelColor: '#555',
-    },
-  };
-
-  // 외부 모달 닫기
-  const clickModalOutside = useCallback(
-    (event: MouseEvent) => {
-      if (open && ref.current && !ref.current.contains(event.target as Node)) onCancel();
-    },
-    [open, onCancel]
-  );
-
-  useEffect(() => {
-    if (open) {
-      const scrollY = window.scrollY;
-
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.overflowY = 'hidden';
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.overflowY = 'auto';
-
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
-    }
-
-    document.addEventListener('mousedown', clickModalOutside);
-    return () => document.removeEventListener('mousedown', clickModalOutside);
-  }, [open]);
+  useHandleEvent({ ref, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
 
   return (
     <>
       {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9999} />}
 
-      <P.Fixed
-        zIndex={zIndex ?? 10000}
-        align='center'
-        crossAlign='center'
-        width='100%'
-        height='100%'
-        padding={{ horizontal: 25, top: 20, bottom: 40 }}
-        position={{
-          top: open ? 0 : ('120%' as any),
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-        transitionTime={0.3}
-        css={{ overscrollBehavior: 'contain' }}
-      >
-        <V.Column
-          maxWidth={dialogSizes}
-          minWidth={320}
-          padding={{ horizontal: 40, top: 46, bottom: 36 }}
-          align='start'
-          borderRadius={20}
-          backgroundColor={THEME_VARIANT[theme].bg}
-          css={{ overscrollBehavior: 'contain' }}
-          _mediaQuery={{
-            s600: {
-              padding: { horizontal: 18, top: 26, bottom: 16 },
-            },
-          }}
+      <Fixed open={open} zIndex={zIndex}>
+        <div
           ref={ref}
+          css={{
+            ...(flexT as []),
+
+            height: 'auto',
+            maxWidth: dialogSizes,
+            minWidth: 320,
+            padding: '46px 40px 36px',
+            alignItems: 'start',
+            borderRadius: 20,
+            overscrollBehavior: 'contain',
+            backgroundColor: props?.colors?.backgroundColor ?? '#fff',
+            [MQ[3]]: { padding: '26px 25px 16px' },
+          }}
           {...rest}
         >
-          <P.Absolute width='100%' crossAlign='end' position={{ top: 3, right: 3 }}>
-            <TouchableOpacity padding={{ all: 8 }} onClick={onCancel}>
-              <CancelIcon fill={THEME_VARIANT[theme].cancelColor} />
-            </TouchableOpacity>
-          </P.Absolute>
+          <div
+            css={{
+              ...(flexT as []),
+              alignItems: 'end',
+              height: 'auto',
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              left: 0,
+            }}
+          >
+            <div css={{ padding: 8, cursor: 'pointer' }} onClick={onCancel}>
+              <CancelIcon fill={props?.colors?.cancelColor ?? '#e0e0e0'} />
+            </div>
+          </div>
 
-          <V.Column>
-            <Txt as='b' weight='bold' size={20} color={THEME_VARIANT[theme].titleColor}>
+          <div css={{ ...(flexT as []), alignItems: 'start', rowGap: 10 }}>
+            <b
+              css={{
+                fontSize: '1.25rem',
+                color: props.colors?.titleColor ?? '#555',
+              }}
+            >
               {title}
-            </Txt>
+            </b>
 
-            <Txt size={15} padding={{ top: 10 }} color={THEME_VARIANT[theme].txtColor}>
+            <p
+              css={{
+                fontSize: '0.938rem',
+                color: props.colors?.txtColor ?? '#888',
+              }}
+            >
               {description}
-            </Txt>
+            </p>
 
             {props?.children}
 
             {tabs?.length !== 0 && !!tabs && (
-              <V.Row gap={tabSpaceGap} margin={{ top: tabSpaceTop ?? 22 }}>
+              <div
+                css={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'stretch',
+                  columnGap: tabSpaceGap,
+                  paddingTop: tabSpaceTop ?? 22,
+                }}
+              >
                 {tabs?.map((item: any) => (
-                  <Button
-                    minHeight={52}
-                    width='100%'
-                    type='button'
+                  <button
                     onClick={() => item.onClick()}
-                    backgroundColor={item?.buttonColor ?? colors.keyColor}
-                    txtColor={item?.txtColor ?? '#fff'}
                     disabled={item?.disabled}
+                    css={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '100%',
+                      borderRadius: 18,
+                      minHeight: 52,
+                      backgroundColor: item?.buttonColor ?? colors.keyColor,
+                      color: item?.txtColor ?? '#fff',
+                      cursor: 'pointer',
+                      outline: 'none',
+                      border: 'none',
+                      fontSize: '1rem',
+                      transition: '0.3s ease-in-out',
+
+                      '&:hover': { opacity: 0.9 },
+                      '&:active': { opacity: 8 },
+                    }}
                   >
                     {item?.name}
-                  </Button>
+                  </button>
                 ))}
-              </V.Row>
+              </div>
             )}
-          </V.Column>
-        </V.Column>
-      </P.Fixed>
+          </div>
+        </div>
+      </Fixed>
     </>
   );
 };
 
-// ----------------------------------
-// -------------- Icon --------------
-// ----------------------------------
+//
+//
 function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 26 26'>
@@ -182,3 +176,35 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
 const Dialog = dynamic(() => Promise.resolve(DialogComponent), { ssr: false });
 
 export default Dialog;
+
+//
+//
+const flexT: Interpolation<Theme> = {
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  transition: '0.2s ease-in-out',
+};
+
+//
+const Fixed = ({ children, open, zIndex }: { children: ReactNode; open: boolean; zIndex?: number }) => (
+  <div
+    css={{
+      ...flexT,
+      overscrollBehavior: 'contain',
+      justifyContent: 'center',
+      position: 'fixed',
+      top: open ? 0 : '200%',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: zIndex ?? 10000,
+      padding: '20px 25px 50px',
+    }}
+  >
+    {children}
+  </div>
+);

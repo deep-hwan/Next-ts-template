@@ -1,8 +1,9 @@
-import { Skeleton, Txt, V } from '@/_ui';
-import { colors } from '@/libs/themes';
 import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, HTMLAttributes, useState } from 'react';
+//
+import { Skeleton } from '@/_ui';
+import { colors } from '@/libs/themes';
 
 //
 type Types = {
@@ -45,13 +46,13 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
   const [hover, setHover] = useState(false);
 
   const checkColors = () => {
-    if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#bbb';
+    if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#fafafa';
     if (!!props?.checked) return props?.themes?.check?.checkColor ?? colors.keyColor;
     return props?.themes?.check?.defaultColor ?? '#e2e2e2';
   };
 
   const checkIconColors = () => {
-    if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#999';
+    if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#aaa';
     if (!!props?.checked) return props?.themes?.check?.checkColor ?? '#fff';
     return props?.themes?.check?.defaultColor ?? '#fff';
   };
@@ -60,59 +61,89 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
     if (typeof props.onClick === 'function') props.onClick(event);
   };
 
+  const TYPOGRAPH_WEIGHT = {
+    lighter: { fontWeight: 300 },
+    normal: { fontWeight: 400 },
+    medium: { fontWeight: 500 },
+    bold: { fontWeight: 600 },
+  } as const;
+
   return (
-    <V.Row
-      align='start'
-      gap={8}
-      width='auto'
+    <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       {...(props || {})}
       ref={ref}
+      css={{ display: 'flex', alignItems: 'start', gap: 8 }}
     >
       <div
         css={{
           ...(props?.css as any),
+          position: 'relative',
           minWidth: props.themes?.check?.checkSize ?? 17,
           maxWidth: props.themes?.check?.checkSize ?? 17,
           minHeight: props.themes?.check?.checkSize ?? 17,
           maxHeight: props.themes?.check?.checkSize ?? 17,
           borderRadius: props.themes?.check?.borderRadius ?? 6,
+          border: '1px solid #e0e0e0',
           backgroundColor: checkColors(),
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: '0.2s ease-in-out',
-          marginTop: 2.5,
+          marginTop: 4,
           cursor: !props?.disabled && 'pointer',
         }}
         onClick={handleOnClick}
       >
-        <CheckIcon size={props.themes?.check?.checkSize ?? 18 - 9} fill={checkIconColors()} />
+        {props?.disabled ? (
+          <div
+            css={{
+              width: props.themes?.check?.checkSize ?? 18 - 9,
+              height: 2,
+              borderRadius: 100,
+              backgroundColor: '#aaa',
+              borderRight: 1000,
+            }}
+          />
+        ) : (
+          <CheckIcon size={props.themes?.check?.checkSize ?? 18 - 9} fill={checkIconColors()} />
+        )}
       </div>
 
       {!!props?.label && (
-        <V.Column gap={4} opacity={props?.labelActive ? 1 : !!props.checked ? 1 : 0.7}>
-          <Txt
-            weight={props?.themes?.label?.titleWeight ?? 'medium'}
-            size={props?.themes?.label?.titleSize ?? 15}
-            color={props?.themes?.label?.titleColor ?? '#555'}
-            css={{ userSelect: 'none' }}
+        <div
+          css={{
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: 2,
+            opacity: props?.labelActive ? 1 : !!props.checked ? 1 : 0.85,
+          }}
+        >
+          <p
             onClick={handleOnClick}
+            css={{
+              userSelect: 'none',
+              fontSize: props?.themes?.label?.titleSize ?? 15,
+              fontWeight: TYPOGRAPH_WEIGHT[props?.themes?.label?.titleWeight ?? 'medium'] as any,
+              color: props?.themes?.label?.titleColor ?? '#555',
+            }}
           >
             {props?.label.title}
-          </Txt>
+          </p>
 
-          <Txt
-            size={props?.themes?.label?.txtSize ?? 13}
-            color={props?.themes?.label?.txtColor ?? '#888'}
-            onClick={props?.label?.txtOnClick}
+          <p
+            css={{
+              userSelect: 'none',
+              fontSize: props?.themes?.label?.txtSize ?? 13,
+              color: props?.themes?.label?.txtColor ?? '#888',
+            }}
           >
             {props?.label.txt}
-          </Txt>
-        </V.Column>
+          </p>
+        </div>
       )}
-    </V.Row>
+    </div>
   );
 });
 

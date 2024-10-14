@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { TxtSpan, V } from '@/_ui';
+import { colors } from '@/libs/themes';
+import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
+import { Skeleton } from '../loading/Skeleton';
 import CalenderTitle from './CalenderTitle';
-import { CalenderGrid, dd_theme, mm_theme, year_theme } from './theme';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -91,7 +92,7 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
   };
 
   return (
-    <V.Column align='center' gap={26}>
+    <Wrapper>
       {isFormat === 'yyyy' && (
         <>
           <CalenderTitle
@@ -108,18 +109,9 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
               const isSelected = selectedDate.getFullYear() === year;
 
               return (
-                <V.Column align='center' crossAlign='center' onClick={() => selectYear(year)}>
-                  <div
-                    key={year}
-                    css={year_theme({
-                      isToday,
-                      selectable,
-                      isSelected,
-                    })}
-                  >
-                    {year}년
-                  </div>
-                </V.Column>
+                <Wrapper onClick={() => selectYear(year)}>
+                  <YYBox year={year} isToday={isToday} selectable={selectable} isSelected={isSelected} />
+                </Wrapper>
               );
             })}
           </CalenderGrid>
@@ -143,9 +135,7 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
               const isSelectedMonth = selectedDate.getMonth() === month && selectedDate.getFullYear() === currentYear;
 
               return (
-                <V.Column
-                  align='center'
-                  crossAlign='center'
+                <Wrapper
                   onClick={() => {
                     if (!selectable) return;
 
@@ -156,10 +146,8 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
                     format === 'yyyy-mm' && onClick && onClick(newDate);
                   }}
                 >
-                  <div key={month} css={mm_theme({ isToday, selectable, isSelectedMonth })}>
-                    {month + 1}월
-                  </div>
-                </V.Column>
+                  <MMBox month={month} isToday={isToday} selectable={selectable} isSelectedMonth={isSelectedMonth} />
+                </Wrapper>
               );
             })}
           </CalenderGrid>
@@ -177,17 +165,9 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
 
           <CalenderGrid ea={7}>
             {daysOfWeek.map(day => (
-              <TxtSpan
-                color='#999'
-                txtAlign='center'
-                className='week'
-                key={day}
-                align='center'
-                crossAlign='center'
-                size={14}
-              >
+              <DayOfWeek className='week' key={day}>
                 {day}
-              </TxtSpan>
+              </DayOfWeek>
             ))}
 
             {calendarDays.map((day: number | null, index) => {
@@ -198,28 +178,222 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
               const isToday = day === todayDate && currentMonth === todayMonth && currentYear === todayYear;
 
               return (
-                <V.Column align='center' crossAlign='center' onClick={() => selectable && day && selectDay(day)}>
-                  <div
-                    key={index}
-                    css={dd_theme({
-                      isToday,
-                      isWeekend,
-                      selectable,
-                      selectWrap: isSelectedDate(day) && selectable,
-                    })}
-                  >
-                    {day}
-                  </div>
-                </V.Column>
+                <Wrapper onClick={() => selectable && day && selectDay(day)}>
+                  <DDBox
+                    day={day}
+                    isToday={isToday}
+                    isWeekend={isWeekend}
+                    selectable={selectable}
+                    selectWrap={isSelectedDate(day) && selectable}
+                  />
+                </Wrapper>
               );
             })}
           </CalenderGrid>
         </>
       )}
-    </V.Column>
+    </Wrapper>
   );
 };
 
-const Calender = dynamic(() => Promise.resolve(CalenderComponent), { ssr: false, loading: () => <p>...loading</p> });
+const Calender = dynamic(() => Promise.resolve(CalenderComponent), {
+  ssr: false,
+  loading: () => <Skeleton height={330} />,
+});
 
 export default Calender;
+
+//
+// themes
+const flexT: Interpolation<Theme> = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  whiteSpace: 'nowrap',
+  userSelect: 'none',
+  textAlign: 'center',
+  fontSize: '0.938rem',
+  transition: 'background-color 0.3s ease',
+};
+
+//
+const CalenderGrid = ({ ea, children }: { ea: number; children: ReactNode }) => {
+  return (
+    <div css={{ width: '100%', gridTemplateColumns: `repeat(${ea}, 1fr)`, display: 'grid', gap: 10 }}>{children}</div>
+  );
+};
+
+//
+const Wrapper = ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
+  <div onClick={onClick} css={{ ...flexT, width: '100%', rowGap: 26 }}>
+    {children}
+  </div>
+);
+
+//
+const DayOfWeek = ({ children }: { children: ReactNode } & HTMLAttributes<HTMLElement>) => (
+  <span
+    css={{
+      ...flexT,
+      fontSize: '0.875rem',
+      color: '#999',
+    }}
+  >
+    {children}
+  </span>
+);
+
+//
+const YYBox = ({
+  year,
+  isToday,
+  isSelected,
+  selectable,
+}: {
+  year: number;
+  isToday?: boolean;
+  selectable?: boolean;
+  isSelected?: boolean;
+}) => {
+  const colorTheme = () => {
+    if (isSelected) return '#fff';
+    if (!selectable) return '#bbb';
+    if (isToday) return '#4788f4';
+    return '#555';
+  };
+
+  const bgTheme = () => {
+    if (isSelected) return colors.keyColor;
+    if (isToday && !selectable) return '#E5EDF8';
+    if (isToday) return '#E5EDF8';
+
+    return '';
+  };
+
+  return (
+    <div
+      key={year}
+      css={{
+        ...flexT,
+        minHeight: 50,
+        maxHeight: 50,
+        minWidth: 70,
+        maxWidth: 70,
+        borderRadius: 16,
+        padding: 5,
+        backgroundColor: bgTheme(),
+        color: colorTheme(),
+        cursor: selectable ? 'pointer' : 'default',
+        '&:hover': { opacity: selectable ? 0.85 : 1 },
+      }}
+    >
+      {year}년
+    </div>
+  );
+};
+
+//
+const MMBox = ({
+  month,
+  isToday,
+  selectable,
+  isSelectedMonth,
+}: {
+  month: number;
+  isToday: boolean;
+  selectable: boolean;
+  isSelectedMonth: boolean;
+}) => {
+  const colorTheme = () => {
+    if (isSelectedMonth) return colors.white;
+    if (!selectable) return '#bbb';
+    if (isToday) return colors.blue[500];
+
+    return '#555';
+  };
+
+  const bgTheme = () => {
+    if (isSelectedMonth) return colors.keyColor;
+    if (isToday && !selectable) return colors.tel[500];
+    if (isToday) return colors.tel[500];
+
+    return '';
+  };
+
+  return (
+    <div
+      key={month}
+      css={{
+        ...(flexT as any),
+        minHeight: 50,
+        maxHeight: 50,
+        minWidth: 60,
+        maxWidth: 60,
+        borderRadius: 16,
+        padding: 5,
+        backgroundColor: bgTheme(),
+        color: colorTheme(),
+        cursor: selectable ? 'pointer' : 'default',
+        '&:hover': { opacity: selectable && 0.85 },
+      }}
+    >
+      {month + 1}월
+    </div>
+  );
+};
+
+const DDBox = ({
+  day,
+  isToday,
+  isWeekend,
+  selectable,
+  selectWrap,
+  size = 32,
+}: {
+  day: number | null;
+  isToday?: any;
+  isWeekend?: any;
+  selectable?: any;
+  selectWrap?: any;
+  size?: number;
+}) => {
+  const colorTheme = () => {
+    if (!!isToday && !!selectWrap) return '#fff';
+    if (!!isWeekend && !!selectWrap) return '#fff';
+    if (!!isWeekend && !selectable) return '#bbb';
+    if (isToday) return colors.blue[600];
+    if (isWeekend) return '#997F8F';
+    if (!selectable) return '#bbb';
+    if (selectWrap) return '#fff';
+
+    return '#454545';
+  };
+
+  const bgTheme = () => {
+    if (selectWrap) return colors.keyColor;
+    if (isToday) return colors.tel[500];
+
+    return '';
+  };
+
+  return (
+    <div
+      key={day}
+      css={{
+        minHeight: size,
+        maxHeight: size,
+        minWidth: size,
+        maxWidth: size,
+        borderRadius: 10,
+        padding: 5,
+        color: colorTheme() as any,
+        backgroundColor: bgTheme(),
+        cursor: selectable ? 'pointer' : 'default',
+        '&:hover': { opacity: selectable && 0.85 },
+      }}
+    >
+      {day}
+    </div>
+  );
+};

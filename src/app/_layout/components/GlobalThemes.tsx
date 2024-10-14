@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { JengaProvider } from '@/_ui/JengaProvider';
 import { Global, css } from '@emotion/react';
+import { ReactNode } from 'react';
 
 //
 //
@@ -26,6 +26,7 @@ export function GlobalThemes({ children }: { children?: ReactNode }): JSX.Elemen
           html {
             margin: 0;
             padding: 0;
+            font-size: 16px;
           }
 
           body {

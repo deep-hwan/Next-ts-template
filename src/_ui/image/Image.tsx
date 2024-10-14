@@ -27,14 +27,6 @@ type Types = {
   priority?: boolean;
   quality?: number;
   isHover?: boolean;
-  _mediaQuery?: {
-    s1440?: SizeThemeType;
-    s1280?: SizeThemeType;
-    s1080?: SizeThemeType;
-    s768?: SizeThemeType;
-    s600?: SizeThemeType;
-    s428?: SizeThemeType;
-  };
 } & SizeThemeType &
   Omit<HTMLAttributes<HTMLImageElement>, 'objectFit'>;
 
@@ -45,22 +37,16 @@ const ImageInstance = forwardRef(function ImageInstance(
   const uid = useUid();
 
   const imgRef = useRef<HTMLImageElement>(null);
-  const [isHover, setIsHover] = useState(props.isHover ?? false);
+  const [isHover, setIsHover] = useState(false);
   const [zoomImg, setZoomImg] = useState(false);
-  const [calculatedHeight, setCalculatedHeight] = useState<string | number>('200px');
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [imageAspectRatio, setImageAspectRatio] = useState<number | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 이미지 로드 후 비율 계산하여 height 설정
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
-    const aspectRatio = naturalHeight / naturalWidth;
-
-    const width = props.size?.width ?? '100%';
-    if (typeof width === 'number') {
-      setCalculatedHeight(width * aspectRatio);
-    } else if (width === '100%') {
-      setCalculatedHeight(`${aspectRatio * 100}vw`);
-    }
+    const aspectRatio = naturalWidth / naturalHeight;
+    setImageAspectRatio(aspectRatio);
+    setIsLoading(false);
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -75,13 +61,12 @@ const ImageInstance = forwardRef(function ImageInstance(
   const imageWrapperStyle = (props: SizeThemeType) => ({
     position: 'relative',
     width: props.size?.width ?? '100%',
-    height: props.size?.height ?? calculatedHeight,
     minWidth: props.size?.minWidth,
     maxWidth: props.size?.maxWidth,
     minHeight: props.size?.minHeight,
     maxHeight: props.size?.maxHeight,
     borderRadius: props.borderRadius,
-    aspectRatio: props.ratio ? `${props.ratio.x}/${props.ratio.y}` : '',
+    aspectRatio: imageAspectRatio || (props.ratio ? `${props.ratio.x}/${props.ratio.y}` : undefined),
     transition: '0.3s ease-in-out',
     boxShadow: props.shadow
       ? `${props.shadow.x}px ${props.shadow.y}px ${props.shadow.blur}px ${props.shadow.color}`
@@ -91,8 +76,6 @@ const ImageInstance = forwardRef(function ImageInstance(
     scale: props.scale,
   });
 
-  //
-  // 팝업 제거
   const clickModalOutside = useCallback(
     (event: MouseEvent) => {
       if (zoomImg && imgRef.current && !imgRef.current.contains(event.target as Node)) setZoomImg(false);
@@ -120,11 +103,10 @@ const ImageInstance = forwardRef(function ImageInstance(
     return () => document.removeEventListener('mousedown', clickModalOutside);
   }, [zoomImg]);
 
-  //
-  //
-  const onHover = useCallback(() => {
+  const onHover = () => {
     if (props.isHover) setIsHover(!isHover);
-  }, [props.isHover]);
+    else return;
+  };
 
   return (
     <>
@@ -150,11 +132,8 @@ const ImageInstance = forwardRef(function ImageInstance(
           placeholder='blur'
           quality={props?.quality ?? 75}
           onClick={handleOnClick}
-          onLoad={event => {
-            handleImageLoad(event);
-            setIsLoading(false);
-          }}
-          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
+          onLoad={handleImageLoad}
+          blurDataURL='data:image/png;base64,...'
           css={{
             overflow: 'hidden',
             objectFit: objectFit ?? 'cover',
@@ -186,11 +165,11 @@ const ImageInstance = forwardRef(function ImageInstance(
               src={source}
               alt={alt}
               priority={props.priority}
-              layout='fill'
+              fill
               quality={props?.quality ?? 75}
               loading='lazy'
               placeholder='blur'
-              blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
+              blurDataURL='data:image/png;base64,...'
               objectFit='contain'
               style={{ objectFit: 'contain' }}
               css={{ width: '100%' }}

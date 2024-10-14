@@ -1,8 +1,8 @@
-import { useRouter, NextRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 
 //libs
-import { colors } from '@/libs/themes';
 import { Checkbox, V } from '@/_ui';
+import { colors } from '@/libs/themes';
 
 //
 interface isValuesProps {

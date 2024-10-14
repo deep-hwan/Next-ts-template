@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 //libs
-import { colors } from '@/libs/themes';
-import { V, Spacing, Txt, TxtSpan, TouchableOpacity, Button, Dialog, BottomSheet, CalenderModal } from '@/_ui';
+import { BottomSheet, Button, CalenderModal, Dialog, Spacing, TouchableOpacity, Txt, TxtSpan, V } from '@/_ui';
 import { useMoment } from '@/libs/hooks';
+import { colors } from '@/libs/themes';
 
 //
 export default function Comp4() {

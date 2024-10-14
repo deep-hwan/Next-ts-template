@@ -1,32 +1,33 @@
 /** @jsxImportSource @emotion/react */
-import { BlurLayer, P, TouchableOpacity, V } from '@/_ui';
-import { MQ } from '@/libs/themes';
 import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import React, { HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef, useState } from 'react';
 
-// --------------------------------------------
-// -------------- Type Interface --------------
-// --------------------------------------------
-interface BottomSheetProps extends HTMLAttributes<HTMLElement> {
+//
+import { BlurLayer } from '@/_ui';
+import { MQ } from '@/libs/themes';
+import useHadleEvent from './useHadleEvent';
+
+//
+interface BottomSheetProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   children: React.ReactNode;
   zIndex?: number;
   open: boolean;
   onCancel: () => void;
-  theme?: 'light' | 'dark';
   clickOutSideClose?: boolean;
   windowScreenScroll?: boolean;
+  colors?: {
+    backgroundColor?: string;
+    handlebarColor?: string;
+  };
 }
 
-// -----------------------------------------
-// -------------- BottomSheet --------------
-// -----------------------------------------
+//
 const BottomSheetComponent = ({
   children,
   open,
   onCancel,
-  theme = 'light',
-  windowScreenScroll = true,
+  windowScreenScroll = false,
   clickOutSideClose = true,
   zIndex,
   ...props
@@ -35,11 +36,6 @@ const BottomSheetComponent = ({
   const viewRef = useRef<HTMLDivElement>(null);
   const [startY, setStartY] = useState(0);
   const [currentY, setCurrentY] = useState(0);
-
-  const THEME_VARIANT = {
-    light: { bg: '#fff', bar: '#e0e0e0' },
-    dark: { bg: '#222', bar: '#3f3f3f' },
-  };
 
   const handleTouchStart = (event: React.TouchEvent) => {
     const touch = event.touches[0];
@@ -61,132 +57,139 @@ const BottomSheetComponent = ({
     setStartY(0);
   };
 
-  //
-  // 외부 모달 닫기
-  const clickModalOutside = useCallback(
-    (event: MouseEvent) => {
-      if (clickOutSideClose) if (open && ref.current && !ref.current.contains(event.target as Node)) onCancel();
-    },
-    [open, onCancel]
-  );
-
-  useEffect(() => {
-    if (windowScreenScroll) {
-      if (open) {
-        const scrollY = window.scrollY;
-
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.overflowY = 'hidden';
-      } else {
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.overflowY = 'auto';
-
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    } else return;
-  }, [open]);
-
-  useEffect(() => {
-    document.addEventListener('mousedown', clickModalOutside);
-    return () => document.removeEventListener('mousedown', clickModalOutside);
-  }, [clickModalOutside, open]);
+  useHadleEvent({ ref, open, onCancel, clickOutSideClose, windowScreenScroll });
 
   return (
     <>
       {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
 
-      <P.Fixed
-        zIndex={zIndex ?? 9999}
-        width='100%'
-        height='100%'
-        position={{
-          top: open ? 0 : ('120%' as any),
-          bottom: 0,
-          left: 0,
-          right: 0,
-        }}
-        transitionTime={0.3}
-        css={{ overscrollBehavior: 'contain' }}
-      >
-        <V.Column
-          padding={{ top: 70 }}
-          height='100%'
-          align='center'
-          crossAlign='center'
+      <Fixed open={open} zIndex={zIndex}>
+        <div
           css={{
+            ...(flexT as []),
+            justifyContent: 'center',
+            paddingTop: 70,
             [MQ[1]]: {
               paddingTop: 'calc(env(safe-area-inset-top) + 10px)',
             },
           }}
         >
-          <V.Column
+          <div
             ref={ref}
-            maxWidth={560}
-            height='100%'
-            backgroundColor={THEME_VARIANT[theme].bg}
-            css={[BoxTheme(open)]}
+            css={{
+              ...(flexT as []),
+              maxWidth: 600,
+              opacity: open ? '1' : '0',
+              borderRadius: '22px 22px 0 0',
+              boxShadow: '0 3px 30px rgba(0,0,0,0.1)',
+              transition: '0.25s ease-in-out',
+              paddingTop: 'env(safe-area-inset-top)',
+              backgroundColor: props.colors?.backgroundColor ?? '#fff',
+
+              '&:webkit-scrollbar': {
+                display: 'none',
+              },
+
+              [MQ[1]]: {
+                maxWidth: '100%',
+              },
+            }}
             {...props}
           >
-            <V.Column
-              padding={{ all: 10 }}
-              align='center'
-              crossAlign='center'
+            <div
+              css={{ ...(flexT as []), height: 'auto', padding: 10 }}
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              <TouchableOpacity
-                maxWidth={50}
-                minWidth={50}
-                minHeight={6}
-                maxHeight={6}
+              <div
                 onClick={onCancel}
-                borderRadius={1000}
-                backgroundColor={THEME_VARIANT[theme].bar}
+                css={{
+                  maxWidth: 50,
+                  minWidth: 50,
+                  minHeight: 6,
+                  maxHeight: 6,
+                  borderRadius: 1000,
+                  backgroundColor: props.colors?.handlebarColor ?? '#e0e0e0',
+                }}
               />
-            </V.Column>
+            </div>
 
-            <V.Column
-              ref={viewRef}
-              height='100%'
-              scroll={{ type: 'auto', y: 'auto', bar: true }}
-              css={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-            >
-              {children}
-            </V.Column>
-          </V.Column>
-        </V.Column>
-      </P.Fixed>
+            <View ref={viewRef}>{children}</View>
+          </div>
+        </div>
+      </Fixed>
     </>
   );
 };
-
-// ------------------------------------
-// -------------- Styles --------------
-// ------------------------------------
-function BoxTheme(isActive?: boolean): Interpolation<Theme> {
-  return {
-    opacity: isActive ? '1' : '0',
-    borderRadius: '22px 22px 0 0',
-    boxShadow: '0 3px 30px rgba(0,0,0,0.1)',
-    transition: '0.25s ease-in-out',
-    paddingTop: 'env(safe-area-inset-top)',
-
-    '&:webkit-scrollbar': {
-      display: 'none',
-    },
-
-    [MQ[1]]: {
-      maxWidth: '100%',
-    },
-  };
-}
 
 const BottomSheet = dynamic(() => Promise.resolve(BottomSheetComponent), {
   ssr: false,
 });
 
 export default BottomSheet;
+
+//
+//
+const flexT: Interpolation<Theme> = {
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  transition: '0.2s ease-in-out',
+};
+
+//
+const Fixed = ({ children, open, zIndex }: { children: ReactNode; open: boolean; zIndex?: number }) => (
+  <div
+    css={{
+      ...flexT,
+      overscrollBehavior: 'contain',
+      position: 'fixed',
+      top: open ? 0 : '200%',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: zIndex ?? 9999,
+    }}
+  >
+    {children}
+  </div>
+);
+
+//
+const View = ({ children, ref }: { children: ReactNode; ref: ForwardedRef<HTMLDivElement> }) => (
+  <div
+    ref={ref}
+    css={{
+      ...(flexT as any),
+      alignItems: 'start',
+      paddingBottom: 'env(safe-area-inset-bottom)',
+      overflow: 'auto',
+      '::-webkit-scrollbar': {
+        display: 'flex',
+        width: '4px',
+        height: '4px',
+      },
+      '::-webkit-scrollbar-track': {
+        backgroundColor: 'transparent',
+      },
+      '::-webkit-scrollbar-thumb': {
+        backgroundColor: '#cccccc',
+        borderRadius: '100px',
+      },
+      '::-webkit-scrollbar-thumb:hover': {
+        background: '#e2e2e2',
+      },
+      '::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment': {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+      },
+    }}
+  >
+    {children}
+  </div>
+);

@@ -1,8 +1,8 @@
-import React, { useRef, useState, ChangeEvent, FormEvent } from 'react';
-import { useRouter, NextRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
 
 //libs
-import { V, Input, Option, Select, Button, AvatarUploader, LoadingLayer } from '@/_ui';
+import { AvatarUploader, Button, Input, LoadingLayer, Option, Select, V } from '@/_ui';
 
 //utils
 import { regEx } from '@/libs/utils/regEx';

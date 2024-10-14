@@ -1,7 +1,6 @@
 import { ForwardedRef, forwardRef } from 'react';
 
 //libs
-import { P, TouchableOpacity } from '@/_ui';
 import { colors } from '@/libs/themes';
 import dynamic from 'next/dynamic';
 
@@ -17,38 +16,51 @@ type Type = {
 //
 const SwitchComponent = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivElement | any>) => {
   return (
-    <TouchableOpacity
-      width='auto'
-      minWidth={props?.width ?? 48}
-      minHeight={props?.height ?? 30}
-      backgroundColor='#eee'
-      borderRadius={100}
+    <div
       onClick={() => props.onClick && props.onClick()}
+      css={{
+        position: 'relative',
+        minWidth: props?.width ?? 48,
+        minHeight: props?.height ?? 30,
+        borderRadius: 1000,
+        backgroundColor: '#eee',
+      }}
     >
-      <P.Absolute
+      <div
         ref={ref}
-        position={{ left: 0, right: 0, top: 0, bottom: 0 }}
-        width='100%'
-        height='100%'
-        transitionTime={0.3}
-        padding={{ all: 3 }}
+        css={{
+          ...(absoluteT as any),
+          width: '100%',
+          height: '100%',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          padding: 3,
+        }}
       >
-        <P.Absolute
-          position={{ left: props?.active ? '48%' : 3 }}
-          width='auto'
-          minWidth={`calc(${props.height ?? 30}px - 6px)`}
-          minHeight={`calc(${props.height ?? 30}px - 6px)`}
-          backgroundColor={props?.active ? colors.keyColor : '#aaa'}
-          borderRadius={100}
-          transitionTime={0.3}
+        <div
+          css={{
+            ...(absoluteT as any),
+            left: props?.active ? '48%' : 3,
+            minWidth: `calc(${props.height ?? 30}px - 6px)`,
+            minHeight: `calc(${props.height ?? 30}px - 6px)`,
+            backgroundColor: props?.active ? colors.keyColor : '#aaa',
+          }}
         >
           {''}
-        </P.Absolute>
-      </P.Absolute>
-    </TouchableOpacity>
+        </div>
+      </div>
+    </div>
   );
 });
 
 const Switch = dynamic(() => Promise.resolve(SwitchComponent), { ssr: true, loading: () => <p>...loading</p> });
 
 export default Switch;
+
+const absoluteT = {
+  position: 'absolute',
+  transition: '0.3s ease-in-out',
+  borderRadius: 100,
+};

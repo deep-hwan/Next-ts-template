@@ -12,7 +12,7 @@ export default function CheckModals({ dialogOnChange }: { dialogOnChange: () => 
       {/* ----- 모달 : 바텀시트 ----- */}
       <Modal
         open={(router.query.modal === '개인정보처리방침' || router.query.modal === '이용약관') as boolean}
-        onCancel={() => router.push({}, undefined, { scroll: false })}
+        onCancel={() => router.back()}
         title={router.query.modal as string}
       >
         <V.Column align='start' gap={20} padding={{ horizontal: 20, bottom: 30 }}>
@@ -57,14 +57,14 @@ export default function CheckModals({ dialogOnChange }: { dialogOnChange: () => 
       {/* ----- 모달 : 다이아로그 ----- */}
       <Dialog
         open={(router.query.modal === '마케팅수신동의') as boolean}
-        onCancel={() => router.push({}, undefined, { scroll: false })}
+        onCancel={() => router.back()}
         title='다이아 로그'
         description={'Android OS에서 영감을 받은\nDialog 모달 위젯이에요!'}
         tabs={[
           {
             name: '닫기',
             onClick: () => {
-              router.push({}, undefined, { scroll: false });
+              router.back();
               dialogOnChange();
             },
           },

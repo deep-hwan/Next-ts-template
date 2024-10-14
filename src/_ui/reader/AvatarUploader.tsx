@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { P, Skeleton, V } from '@/_ui';
+import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
+//
+import { Skeleton } from '@/_ui';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
-// --------------------------------------------
-// -------------- Type Interface --------------
-// --------------------------------------------
+//
 interface Props {
   onUpload: (e: any) => void;
   onCancel: () => void;
@@ -24,7 +24,7 @@ const AvatarUploaderComponent = ({ size = 100, source, alt = '업로드 이미�
   };
 
   return (
-    <V.Column maxWidth={size} minWidth={size} maxHeight={size} minHeight={size}>
+    <Wrapper size={size}>
       {source ? (
         <>
           <img
@@ -33,35 +33,30 @@ const AvatarUploaderComponent = ({ size = 100, source, alt = '업로드 이미�
             onClick={handleClick}
             css={{ width: size, maxWidth: size, height: size, maxHeight: size, objectFit: 'cover', borderRadius: 1000 }}
           />
-          <P.Absolute
-            position={{ bottom: 0, right: 0 }}
-            backgroundColor='#fff'
-            borderRadius={10}
-            crossAlign='center'
-            align='center'
-            zIndex={10}
-            minWidth={28}
-            maxWidth={28}
-            minHeight={28}
-            maxHeight={28}
+          <div
             onClick={onCancel}
+            css={{
+              ...(flextT as []),
+              minWidth: 28,
+              maxWidth: 28,
+              minHeight: 28,
+              maxHeight: 28,
+              borderRadius: 100,
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              backgroundColor: '#fff',
+              cursor: 'pointer',
+              zIndex: 100,
+            }}
           >
             <CancelIcon />
-          </P.Absolute>
+          </div>
         </>
       ) : (
-        <V.Column
-          maxWidth={size}
-          minWidth={size}
-          maxHeight={size}
-          minHeight={size}
-          backgroundColor='#f8f8f8'
-          borderRadius={100000}
-          crossAlign='center'
-          align='center'
-        >
+        <Wrapper size={size} bg='#f8f8f8' br={100000}>
           {loading ? <LoadingSpinner /> : <CameraIcon size={size} />}
-        </V.Column>
+        </Wrapper>
       )}
 
       <input
@@ -84,13 +79,10 @@ const AvatarUploaderComponent = ({ size = 100, source, alt = '업로드 이미�
           },
         ]}
       />
-    </V.Column>
+    </Wrapper>
   );
 };
 
-// -----------------------------------
-// -------------- Icons --------------
-// -----------------------------------
 const CameraIcon = ({ size }: { size: number }) => {
   return (
     <svg width={`${size / 3}px`} id='carmera-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 36.8'>
@@ -124,3 +116,33 @@ const AvatarUploader = dynamic(() => Promise.resolve(AvatarUploaderComponent), {
 });
 
 export default AvatarUploader;
+
+//
+//
+const flextT: Interpolation<Theme> = {
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  userSelect: 'none',
+};
+
+//
+const Wrapper = ({ children, size, bg, br }: { children: ReactNode; size: number; bg?: string; br?: number }) => (
+  <div
+    css={{
+      ...(flextT as any),
+      width: size,
+      minWidth: size,
+      maxWidth: size,
+      height: size,
+      minHeight: size,
+      maxHeight: size,
+      backgroundColor: bg,
+      borderRadius: br,
+    }}
+  >
+    {children}
+  </div>
+);

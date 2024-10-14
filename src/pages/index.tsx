@@ -1,7 +1,7 @@
 import { useOpenWebBrowser } from '@/libs/hooks';
 
 //libs
-import { Spacing, V } from '@/_ui/index';
+import { Spacing, V } from '@/_ui';
 import { screenSize } from '@/libs/themes';
 
 //components

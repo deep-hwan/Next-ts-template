@@ -1,9 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { BlurLayer } from '@/_ui';
+import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import { HTMLAttributes, ReactNode, useCallback, useEffect, useRef } from 'react';
+import { HTMLAttributes, ReactNode, useRef } from 'react';
 
-interface Props extends HTMLAttributes<HTMLElement> {
+//
+import { BlurLayer } from '@/_ui';
+import useHandleEvent from './useHadleEvent';
+
+interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
   children: ReactNode;
   open: boolean;
@@ -26,7 +30,7 @@ const ModalComponent = (props: Props) => {
     modalSize = 700,
     open,
     onCancel,
-    windowScreenScroll = true,
+    windowScreenScroll = false,
     clickOutSideClose = true,
     title,
     subTitle,
@@ -34,72 +38,20 @@ const ModalComponent = (props: Props) => {
     zIndex,
     ...rest
   } = props;
+
   const ref = useRef<HTMLDivElement>(null);
-
-  //
-  const clickModalOutside = useCallback(
-    (event: MouseEvent) => {
-      if (clickOutSideClose) if (open && ref.current && !ref.current.contains(event.target as Node)) onCancel();
-    },
-    [open, onCancel]
-  );
-
-  useEffect(() => {
-    if (!windowScreenScroll) {
-      if (open) {
-        const scrollY = window.scrollY;
-
-        document.body.style.position = 'fixed';
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.overflowY = 'hidden';
-      } else {
-        const scrollY = document.body.style.top;
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.overflowY = 'auto';
-
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
-      }
-    } else return;
-  }, [open, windowScreenScroll]);
-
-  useEffect(() => {
-    document.addEventListener('mousedown', clickModalOutside);
-    return () => document.removeEventListener('mousedown', clickModalOutside);
-  }, [clickModalOutside, open]);
+  useHandleEvent({ ref, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
 
   return (
     <>
       {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
 
-      <div
-        css={{
-          zIndex: zIndex ?? 9999,
-          width: '100%',
-          height: '100%',
-          position: 'fixed',
-          top: open ? 0 : '200%',
-          right: 0,
-          left: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 20,
-          transition: '0.3s ease-in-out',
-          overscrollBehavior: 'contain',
-          [MQ[3]]: { padding: '20px 0 0' },
-        }}
-      >
+      <Fixed open={open} zIndex={zIndex}>
         <div
           ref={ref}
           css={{
-            width: '100%',
+            ...(flexT as []),
             maxWidth: modalSize,
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
             justifyContent: 'center',
             gap: 10,
           }}
@@ -113,6 +65,11 @@ const ModalComponent = (props: Props) => {
                 backgroundColor: colors?.background ?? '#fff',
                 padding: 13,
                 borderRadius: 100,
+                cursor: 'pointer',
+                outline: 'none',
+                border: 'none',
+                fontSize: '1rem',
+                transition: '0.3s ease-in-out',
                 [MQ[3]]: { order: 0 },
               }}
             >
@@ -181,7 +138,7 @@ const ModalComponent = (props: Props) => {
             {props.children}
           </div>
         </div>
-      </div>
+      </Fixed>
     </>
   );
 };
@@ -209,3 +166,36 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
 const Modal = dynamic(() => Promise.resolve(ModalComponent), { ssr: false });
 
 export default Modal;
+
+//
+//
+const flexT: Interpolation<Theme> = {
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%',
+  transition: '0.2s ease-in-out',
+};
+
+//
+const Fixed = ({ children, open, zIndex }: { children: ReactNode; open: boolean; zIndex?: number }) => (
+  <div
+    css={{
+      ...flexT,
+      overscrollBehavior: 'contain',
+      justifyContent: 'center',
+      position: 'fixed',
+      top: open ? 0 : '200%',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      zIndex: zIndex ?? 9999,
+      padding: '20px 25px 50px',
+      [MQ[3]]: { padding: '20px 0 0' },
+    }}
+  >
+    {children}
+  </div>
+);

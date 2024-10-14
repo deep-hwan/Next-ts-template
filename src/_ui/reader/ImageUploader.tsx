@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { P, Skeleton, TxtSpan, V } from '@/_ui';
-import React, { ChangeEvent, ReactNode, useRef } from 'react';
-import { LoadingSpinner } from '../loading/LoadingSpinner';
 import dynamic from 'next/dynamic';
+import React, { ChangeEvent, ReactNode, useRef } from 'react';
+
+//
+import { Skeleton } from '@/_ui';
+import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 interface Props {
   children?: ReactNode;
@@ -66,14 +68,20 @@ const ImageUploaderComponent = (props: Props) => {
   } as const;
 
   return (
-    <V.Column
-      width={width}
-      minWidth={minWidth}
-      maxWidth={maxWidth}
-      height={height}
-      minHeight={minHeight}
-      maxHeight={maxHeight}
-      css={{ cursor: 'pointer', userSelect: 'none', aspectRatio: `${ratio?.x} / ${ratio.y}` }}
+    <div
+      css={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: width,
+        height: height,
+        minWidth: minWidth,
+        minHeight: minHeight,
+        maxWidth: maxWidth,
+        maxHeight: maxHeight,
+        cursor: 'pointer',
+        userSelect: 'none',
+        aspectRatio: `${ratio?.x} / ${ratio.y}`,
+      }}
     >
       {source ? (
         <>
@@ -95,31 +103,36 @@ const ImageUploaderComponent = (props: Props) => {
           />
           <>
             {!!onCancel && (
-              <P.Absolute
-                zIndex={10}
-                position={{ top: 8, right: 8 }}
-                backgroundColor='rgba(0,0,0,0.5)'
-                padding={{ vertical: 4, horizontal: 6 }}
+              <div
                 onClick={onCancel}
-                borderRadius={1000}
-                css={{ '&:active': { opacity: 0.7 } }}
+                css={{
+                  zIndex: 10,
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 1000,
+                  padding: '4px 6px',
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  '&:active': { opacity: 0.7 },
+                }}
               >
-                <TxtSpan size={12} color='#eee'>
-                  취소
-                </TxtSpan>
-              </P.Absolute>
+                <span css={{ color: '#eee', fontSize: '0.75rem' }}>취소</span>
+              </div>
             )}
           </>
         </>
       ) : (
-        <V.Column
-          width='100%'
-          height='100%'
-          backgroundColor={backgroundColor ?? VARIANTS[theme].readBg}
-          borderRadius={borderRadius}
-          crossAlign='center'
-          align='center'
+        <div
           css={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             aspectRatio: `${ratio?.x} / ${ratio.y}`,
             width: '100%',
             height: '100%',
@@ -127,6 +140,8 @@ const ImageUploaderComponent = (props: Props) => {
             minHeight: minHeight,
             maxWidth: maxWidth,
             maxHeight: maxHeight,
+            backgroundColor: backgroundColor ?? VARIANTS[theme].readBg,
+            borderRadius,
           }}
         >
           {loading ? (
@@ -134,7 +149,7 @@ const ImageUploaderComponent = (props: Props) => {
           ) : (
             <>{props.children ?? <CameraIcon size={100} fill={VARIANTS[theme].cancelTabColor} />}</>
           )}
-        </V.Column>
+        </div>
       )}
 
       <input
@@ -146,13 +161,12 @@ const ImageUploaderComponent = (props: Props) => {
         onDrop={handleDrop}
         css={themes.input}
       />
-    </V.Column>
+    </div>
   );
 };
 
-// -----------------------------------
-// -------------- Icons --------------
-// -----------------------------------
+//
+//
 const CameraIcon = ({ size, fill }: { size: number; fill: string }) => {
   return (
     <svg width={`${size / 2.5}px`} viewBox='0 0 460 413' fill='none' xmlns='http://www.w3.org/2000/svg'>

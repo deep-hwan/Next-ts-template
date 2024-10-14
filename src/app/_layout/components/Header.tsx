@@ -36,7 +36,9 @@ export default function Header() {
           <TouchableOpacity
             onClick={() => setIsDrawer(!isDrawer)}
             display='none'
-            _mediaQuery={{ s1080: { display: 'flex' } }}
+            css={{
+              [MQ[1]]: { display: 'flex' },
+            }}
           >
             <ToastIcon fill='#666666' />
           </TouchableOpacity>
