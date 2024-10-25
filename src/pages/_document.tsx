@@ -1,8 +1,19 @@
 import AppIcons from '@/head/appIcons';
 import SplashScreens from '@/head/splashscreens';
-import { Head, Html, Main, NextScript } from 'next/document';
+import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 
-export default function Document() {
+// Breadcrumb 타입 정의
+type Breadcrumb = {
+  position: number;
+  name: string;
+  item: string;
+};
+
+interface MyDocumentProps extends DocumentInitialProps {
+  breadcrumbList: Breadcrumb[] | null;
+}
+
+const MyDocument = ({ breadcrumbList }: MyDocumentProps) => {
   return (
     <Html lang='ko'>
       <Head>
@@ -10,16 +21,30 @@ export default function Document() {
         <meta name='robots' content='index, follow' />
         <meta
           name='viewport'
-          content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1,minimum-scale=1, shrink-to-fit=no, viewport-fit=cover'
+          content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1, shrink-to-fit=no, viewport-fit=cover'
         />
-
         <link rel='manifest' href='/manifest.json' />
-
-        <link rel='preconnect' href='https://fonts.googleapis.com' />
-        <link rel='preconnect' href='https://fonts.gstatic.com' />
 
         <AppIcons />
         <SplashScreens />
+
+        {breadcrumbList && (
+          <script
+            type='application/ld+json'
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'BreadcrumbList',
+                itemListElement: breadcrumbList.map((breadcrumb: Breadcrumb) => ({
+                  '@type': 'ListItem',
+                  position: breadcrumb.position,
+                  name: breadcrumb.name,
+                  item: breadcrumb.item,
+                })),
+              }),
+            }}
+          />
+        )}
       </Head>
       <body>
         <Main />
@@ -27,4 +52,27 @@ export default function Document() {
       </body>
     </Html>
   );
-}
+};
+
+MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<MyDocumentProps> => {
+  const initialProps = await Document.getInitialProps(ctx);
+  const currentPath = ctx.pathname;
+
+  const breadcrumbs: { [key: string]: Breadcrumb[] } = {
+    '/': [{ position: 1, name: 'home', item: 'https://next-typescript-tamplate.vercel.app/' }],
+    '/form-fields': [
+      { position: 1, name: 'home', item: 'https://next-typescript-tamplate.vercel.app/' },
+      { position: 2, name: 'form', item: 'https://next-typescript-tamplate.vercel.app/form-fields' },
+    ],
+  };
+
+  // 현재 경로에 해당하는 BreadcrumbList가 있는지 확인
+  const breadcrumbList = breadcrumbs[currentPath] || null;
+
+  return {
+    ...initialProps,
+    breadcrumbList,
+  };
+};
+
+export default MyDocument;

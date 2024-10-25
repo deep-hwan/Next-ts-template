@@ -72,7 +72,7 @@ export const AppBar = forwardRef(
           {...props}
         >
           <ServiceName>{serviceName}</ServiceName>
-          <nav
+          <div
             css={{
               position: 'relative',
               width: '100%',
@@ -84,7 +84,7 @@ export const AppBar = forwardRef(
             }}
           >
             {children}
-          </nav>
+          </div>
         </header>
       </>
     );

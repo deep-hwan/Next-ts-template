@@ -31,7 +31,9 @@ export default function Header() {
             <Logo alt='서비스명' />
           </Link>
 
-          <Menus />
+          <nav aria-label='Main navigation' css={{ [MQ[1]]: { display: 'none' } }}>
+            <Menus />
+          </nav>
 
           <TouchableOpacity
             onClick={() => setIsDrawer(!isDrawer)}

@@ -5,68 +5,57 @@ type Types = {
   title?: string;
   description?: string;
   image?: string;
+  isArticle?: boolean;
+  articleData?: { author: string; createdAt: string; updatedAt?: string };
 };
 
 export default function SEO(props: Types) {
-  const { locale, locales, asPath } = useRouter();
+  const { locale = 'ko', locales = ['ko', 'en'], asPath } = useRouter();
+  const currentDate = formatCurrentDate();
 
   const {
     title = 'Next.js 템플릿에 오신 것을 환영합니다', // 영문 65자 / 한글 32자
     description, // 영문 160 / 한글 77자
     image = 'https://imagedelivery.net/vJSpkH6oHM7zquolzolo7A/77550435-1cc9-4b42-4519-3cd83f149b00/public',
+    isArticle = false,
+    articleData = { author: 'deepfactory', createdAt: currentDate, updatedAt: currentDate },
   } = props;
-  const siteName = 'Dble UI';
+
+  const siteName = 'deepfactory';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const logoUrl = '/assets/favicons/favicon-512x512.png';
 
-  const formatCurrentDate = () => {
-    const now = new Date();
-
-    const timeZoneOffset = -now.getTimezoneOffset();
-    const offsetHours = Math.floor(Math.abs(timeZoneOffset) / 60);
-    const offsetMinutes = Math.abs(timeZoneOffset) % 60;
-    const sign = timeZoneOffset >= 0 ? '+' : '-';
-    const formattedOffset = `${sign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
-
-    const formattedDate = now.toISOString().replace(/\.\d{3}Z$/, '');
-
-    return `${formattedDate}${formattedOffset}`;
-  };
-
-  const currentDate = formatCurrentDate();
-
   const siteDB = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': isArticle ? 'Article' : 'WebPage',
     name: title,
+    alternateName: 'Next.js UIUX Design Template',
     description: description,
     keywords:
-      'uiux, free, free ui, free design, design, webui, appui, webdesign, 웹디자인, 무료디자인, 무료uiux, 무료웹디자인, 모바일디자인, 반응형디자인, figma, framer, figma comunity',
-    url: siteUrl,
+      'uiux, free, free ui, free design, design, webui, appui, webdesign, 웹디자인, 무료디자인, 무료uiux, 무료웹디자인, 모바일디자인, 반응형디자인, figma, framer, figma community',
+    url: `${siteUrl}${asPath}`,
     image: image,
-    author: {
-      '@type': 'Person',
-      name: 'https://www.deepfactory.kr',
-    },
+    author: isArticle
+      ? { '@type': 'Person', name: articleData.author || 'Unknown' }
+      : { '@type': 'Organization', name: siteName, logo: { '@type': 'ImageObject', url: logoUrl } },
     datePublished: currentDate,
     dateModified: currentDate,
     publisher: {
       '@type': 'Organization',
       name: siteName,
-      logo: {
-        '@type': 'ImageObject',
-        url: logoUrl,
-      },
+      logo: { '@type': 'ImageObject', url: logoUrl },
     },
     headline: title,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${siteUrl}${asPath}`,
-    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}${asPath}` },
     inLanguage: locale,
-    articleSection: title,
-    articleBody: description,
+    articleSection: isArticle ? title : undefined,
+    articleBody: isArticle ? description : undefined,
     thumbnailUrl: image,
+    potentialAction: {
+      '@type': 'ReadAction',
+      target: `${siteUrl}${asPath}`,
+      name: isArticle ? 'Read Article' : 'Visit Page',
+    },
   };
 
   const hreflangLinks = locales?.map(lng => (
@@ -80,12 +69,12 @@ export default function SEO(props: Types) {
       <meta name='keywords' content={siteDB.keywords} />
 
       {/* Open Graph tags for Facebook, LinkedIn */}
-      <meta property='og:locale' content={locale} />
-      <meta name='geo.region' content={locale} />
+      <meta property='og:locale' content={locale === 'ko' ? 'ko_KR' : 'en_US'} />
+      <meta name='geo.region' content={locale === 'ko' ? 'KR' : 'US'} />
       <meta property='og:site_name' content={siteName} />
+      <meta property='og:type' content={isArticle ? 'article' : 'website'} />
       <meta property='og:title' content={title} />
       <meta property='og:description' content={description} />
-      <meta property='og:type' content='website' />
       <meta property='og:url' content={`${siteUrl}${asPath}`} />
       <meta property='og:image' content={image} />
       <meta property='og:image:alt' content={description} />
@@ -93,10 +82,15 @@ export default function SEO(props: Types) {
       <meta property='og:image:width' content='1200' />
       <meta property='og:image:height' content='630' />
 
-      {/* Article tags for publishing dates */}
-      <meta property='article:published_time' content={currentDate} />
-      <meta property='article:modified_time' content={currentDate} />
-      <meta property='article:author' content={siteDB.author.name} />
+      {/* Article-specific Open Graph tags */}
+      {isArticle && (
+        <>
+          <meta property='article:published_time' content={articleData?.createdAt} />
+          <meta property='article:modified_time' content={articleData?.updatedAt} />
+          <meta property='article:author' content={articleData.author} />
+          <meta property='article:section' content={title} />
+        </>
+      )}
 
       {/* Twitter Card tags */}
       <meta name='twitter:card' content='summary_large_image' />
@@ -107,7 +101,7 @@ export default function SEO(props: Types) {
       <meta name='twitter:image' content={image} />
       <meta name='twitter:image:alt' content={description} />
 
-      {/* Canonical URL */}
+      {/* Canonical URL and hreflang links */}
       <link rel='canonical' href={`${siteUrl}${asPath}`} />
       <link rel='alternate' hrefLang='x-default' href={siteUrl} />
       {hreflangLinks}
@@ -120,3 +114,17 @@ export default function SEO(props: Types) {
     </Head>
   );
 }
+
+const formatCurrentDate = () => {
+  const now = new Date();
+
+  const timeZoneOffset = -now.getTimezoneOffset();
+  const offsetHours = Math.floor(Math.abs(timeZoneOffset) / 60);
+  const offsetMinutes = Math.abs(timeZoneOffset) % 60;
+  const sign = timeZoneOffset >= 0 ? '+' : '-';
+  const formattedOffset = `${sign}${String(offsetHours).padStart(2, '0')}:${String(offsetMinutes).padStart(2, '0')}`;
+
+  const formattedDate = now.toISOString().replace(/\.\d{3}Z$/, '');
+
+  return `${formattedDate}${formattedOffset}`;
+};
