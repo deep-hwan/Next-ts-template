@@ -10,24 +10,34 @@ import { RecoilRoot } from 'recoil';
 import App from '@/app/_layout/components/App';
 import { GlobalThemes } from '@/app/_layout/components/GlobalThemes';
 import { useScrollRestoration } from '@/libs/hooks/useScrollRestoration';
+import Head from 'next/head';
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   useScrollRestoration(router);
   const [client] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={client}>
-      <HydrationBoundary state={pageProps.dehydratedState}>
-        <SessionProvider session={pageProps.session} basePath='/api/auth'>
-          <RecoilRoot>
-            <GlobalThemes>
-              <App>
-                <Component {...pageProps} />
-              </App>
-            </GlobalThemes>
-          </RecoilRoot>
-        </SessionProvider>
-      </HydrationBoundary>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1, shrink-to-fit=no, viewport-fit=cover'
+        />
+      </Head>
+
+      <QueryClientProvider client={client}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
+          <SessionProvider session={pageProps.session} basePath='/api/auth'>
+            <RecoilRoot>
+              <GlobalThemes>
+                <App>
+                  <Component {...pageProps} />
+                </App>
+              </GlobalThemes>
+            </RecoilRoot>
+          </SessionProvider>
+        </HydrationBoundary>
+      </QueryClientProvider>
+    </>
   );
 }

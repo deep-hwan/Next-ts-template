@@ -40,13 +40,13 @@ const ImageInstance = forwardRef(function ImageInstance(
   const [isHover, setIsHover] = useState(false);
   const [zoomImg, setZoomImg] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState<number | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     const aspectRatio = naturalWidth / naturalHeight;
     setImageAspectRatio(aspectRatio);
-    setIsLoading(false);
+    setIsLoaded(true);
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -66,7 +66,7 @@ const ImageInstance = forwardRef(function ImageInstance(
     minHeight: props.size?.minHeight,
     maxHeight: props.size?.maxHeight,
     borderRadius: props.borderRadius,
-    aspectRatio: imageAspectRatio || (props.ratio ? `${props.ratio.x}/${props.ratio.y}` : undefined),
+    aspectRatio: props.ratio ? `${props.ratio.x}/${props.ratio.y}` : imageAspectRatio,
     transition: '0.3s ease-in-out',
     boxShadow: props.shadow
       ? `${props.shadow.x}px ${props.shadow.y}px ${props.shadow.blur}px ${props.shadow.color}`
@@ -80,7 +80,7 @@ const ImageInstance = forwardRef(function ImageInstance(
     (event: MouseEvent) => {
       if (zoomImg && imgRef.current && !imgRef.current.contains(event.target as Node)) setZoomImg(false);
     },
-    [zoomImg, setZoomImg]
+    [zoomImg]
   );
 
   useEffect(() => {
@@ -105,7 +105,6 @@ const ImageInstance = forwardRef(function ImageInstance(
 
   const onHover = () => {
     if (props.isHover) setIsHover(!isHover);
-    else return;
   };
 
   return (
@@ -129,18 +128,17 @@ const ImageInstance = forwardRef(function ImageInstance(
           priority={props.priority}
           fill
           loading='lazy'
-          placeholder='blur'
-          quality={props?.quality ?? 75}
+          quality={props.quality ?? 75}
           onClick={handleOnClick}
           onLoad={handleImageLoad}
-          blurDataURL='data:image/png;base64,...'
+          sizes=''
           css={{
             overflow: 'hidden',
             objectFit: objectFit ?? 'cover',
             width: '100%',
             height: '100%',
-            filter: isLoading ? 'blur(10px)' : 'none',
-            transition: '0.3s ease-in-out',
+            filter: isLoaded ? 'none' : 'blur(10px)',
+            transition: 'filter 0.3s ease-in-out',
             scale: isHover ? 1.05 : 1,
           }}
         />
@@ -166,10 +164,8 @@ const ImageInstance = forwardRef(function ImageInstance(
               alt={alt}
               priority={props.priority}
               fill
-              quality={props?.quality ?? 75}
+              quality={props.quality ?? 75}
               loading='lazy'
-              placeholder='blur'
-              blurDataURL='data:image/png;base64,...'
               objectFit='contain'
               style={{ objectFit: 'contain' }}
               css={{ width: '100%' }}

@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-
+import Script from 'next/script';
 type Types = {
+  locale?: string;
   title?: string;
   description?: string;
   image?: string;
@@ -10,7 +11,6 @@ type Types = {
 };
 
 export default function SEO(props: Types) {
-  const { locale = 'ko', locales = ['ko', 'en'], asPath } = useRouter();
   const currentDate = formatCurrentDate();
 
   const {
@@ -19,7 +19,10 @@ export default function SEO(props: Types) {
     image = 'https://imagedelivery.net/vJSpkH6oHM7zquolzolo7A/77550435-1cc9-4b42-4519-3cd83f149b00/public',
     isArticle = false,
     articleData = { author: 'deepfactory', createdAt: currentDate, updatedAt: currentDate },
+    locale = 'ko',
   } = props;
+
+  const { locales = ['ko', 'en'], asPath } = useRouter();
 
   const siteName = 'deepfactory';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -110,7 +113,7 @@ export default function SEO(props: Types) {
       <link rel='alternate' type='application/rss+xml' title='Dble UI RSS Feed' href='/api/rss' />
 
       {/* Structured data for SEO */}
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(siteDB, null, 2) }} />
+      <Script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(siteDB, null, 2) }} />
     </Head>
   );
 }

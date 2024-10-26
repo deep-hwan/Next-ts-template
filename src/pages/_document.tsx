@@ -2,7 +2,6 @@ import AppIcons from '@/head/appIcons';
 import SplashScreens from '@/head/splashscreens';
 import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 
-// Breadcrumb 타입 정의
 type Breadcrumb = {
   position: number;
   name: string;
@@ -19,10 +18,6 @@ const MyDocument = ({ breadcrumbList }: MyDocumentProps) => {
       <Head>
         <meta charSet='utf-8' />
         <meta name='robots' content='index, follow' />
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1, shrink-to-fit=no, viewport-fit=cover'
-        />
         <link rel='manifest' href='/manifest.json' />
 
         <AppIcons />
@@ -57,12 +52,13 @@ const MyDocument = ({ breadcrumbList }: MyDocumentProps) => {
 MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<MyDocumentProps> => {
   const initialProps = await Document.getInitialProps(ctx);
   const currentPath = ctx.pathname;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL!;
 
   const breadcrumbs: { [key: string]: Breadcrumb[] } = {
-    '/': [{ position: 1, name: 'home', item: 'https://next-typescript-tamplate.vercel.app/' }],
+    '/': [{ position: 1, name: 'home', item: siteUrl }],
     '/form-fields': [
-      { position: 1, name: 'home', item: 'https://next-typescript-tamplate.vercel.app/' },
-      { position: 2, name: 'form', item: 'https://next-typescript-tamplate.vercel.app/form-fields' },
+      { position: 1, name: 'home', item: siteUrl },
+      { position: 2, name: 'form', item: siteUrl + '/form-fields' },
     ],
   };
 
