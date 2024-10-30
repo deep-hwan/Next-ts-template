@@ -1,6 +1,6 @@
 {
   "name": "create-next-speed-template",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "bin": "./bin/create-next-speed-template.js",
   "scripts": {
     "dev": "next dev",

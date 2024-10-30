@@ -12,18 +12,24 @@ type Types = {
 
 export default function SEO(props: Types) {
   const currentDate = formatCurrentDate();
+  const { locales = ['ko', 'en'], asPath } = useRouter();
 
+  //
   const {
     title = 'Next.js 템플릿에 오신 것을 환영합니다', // 영문 65자 / 한글 32자
     description, // 영문 160 / 한글 77자
     image = 'https://imagedelivery.net/vJSpkH6oHM7zquolzolo7A/77550435-1cc9-4b42-4519-3cd83f149b00/public',
     isArticle = false,
-    articleData = { author: 'deepfactory', createdAt: currentDate, updatedAt: currentDate },
+    articleData = {
+      author: 'deepfactory',
+      createdAt: props.articleData?.createdAt ?? currentDate,
+      updatedAt: props.articleData?.updatedAt ?? currentDate,
+    },
     locale = 'ko',
   } = props;
 
-  const { locales = ['ko', 'en'], asPath } = useRouter();
-
+  //
+  //
   const siteName = 'deepfactory';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const logoUrl = '/assets/favicons/favicon-512x512.png';
