@@ -14,8 +14,8 @@ type Types = {
       hoverColor?: string;
       disabledColor?: string;
       borderColor?: string;
-      borderRadius?: string;
-      checkSize?: string;
+      borderRadius?: string | number;
+      checkSize?: number;
     };
 
     label?: {
@@ -24,6 +24,7 @@ type Types = {
       titleWeight?: 'lighter' | 'normal' | 'medium' | 'bold';
       txtColor?: string;
       txtSize?: number;
+      opacity?: number;
     };
   };
 
@@ -62,10 +63,10 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
   };
 
   const TYPOGRAPH_WEIGHT = {
-    lighter: { fontWeight: 300 },
-    normal: { fontWeight: 400 },
-    medium: { fontWeight: 500 },
-    bold: { fontWeight: 600 },
+    lighter: { fontWeight: '300' },
+    normal: { fontWeight: '400' },
+    medium: { fontWeight: '500' },
+    bold: { fontWeight: '600' },
   } as const;
 
   return (
@@ -107,7 +108,7 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
             }}
           />
         ) : (
-          <CheckIcon size={props.themes?.check?.checkSize ?? 18 - 9} fill={checkIconColors()} />
+          <CheckIcon size={((props.themes?.check?.checkSize ?? 18) as number) - 8} fill={checkIconColors()} />
         )}
       </div>
 
@@ -117,7 +118,13 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
             display: 'flex',
             flexDirection: 'column',
             rowGap: 2,
-            opacity: props?.labelActive ? 1 : !!props.checked ? 1 : 0.85,
+            opacity: props?.themes?.label?.opacity
+              ? props?.themes?.label?.opacity
+              : props?.labelActive
+                ? 1
+                : !!props.checked
+                  ? 1
+                  : 0.85,
           }}
         >
           <p
@@ -125,8 +132,9 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
             css={{
               userSelect: 'none',
               fontSize: props?.themes?.label?.titleSize ?? 15,
-              fontWeight: TYPOGRAPH_WEIGHT[props?.themes?.label?.titleWeight ?? 'medium'] as any,
+              fontWeight: TYPOGRAPH_WEIGHT[props?.themes?.label?.titleWeight ?? 'medium'].fontWeight as any,
               color: props?.themes?.label?.titleColor ?? '#555',
+              cursor: !props?.disabled && ('pointer' as any),
             }}
           >
             {props?.label.title}

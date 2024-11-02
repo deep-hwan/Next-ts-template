@@ -19,7 +19,7 @@ export function TxtSpan(props: Types & { [key: string]: any }) {
 
   const TYPOGRAPH_WEIGHT = {
     lighter: { fontWeight: '300' },
-    normal: { fontWeight: 400 },
+    normal: { fontWeight: '400' },
     medium: { fontWeight: '500' },
     bold: { fontWeight: '600' },
   } as const;

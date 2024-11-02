@@ -8,10 +8,23 @@ module.exports = {
   generateRobotsTxt: true, // robots.txt generate 여부 (자동생성 여부)
   sitemapSize: 5000, // sitemap별 최대 크기 (최대 크기가 넘어갈 경우 복수개의 sitemap으로 분리됨)
   changefreq: 'daily', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
-  priority: 0.7, // 페이지 주소 우선순위 (검색엔진에 제공됨, 우선순위가 높은 순서대로 크롤링함)
+  priority: 0.8, // 페이지 주소 우선순위 (검색엔진에 제공됨, 우선순위가 높은 순서대로 크롤링함)
 
   additionalSitemaps: [
     `${SITE_URL}/server-sitemap.xml`, // 서버에서 생성한 sitemap 추가
+  ],
+
+  additionalPaths: async config => [
+    {
+      loc: '/form-fields', // 서브 메뉴 페이지
+      changefreq: 'weekly',
+      priority: 0.8,
+    },
+    {
+      loc: '/widget', // 서브 메뉴 페이지
+      changefreq: 'weekly',
+      priority: 0.8,
+    },
   ],
 
   robotsTxtOptions: {
