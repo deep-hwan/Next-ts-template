@@ -101,6 +101,7 @@ declare global {
     tolTip?: TolTipType;
     sizes?: InputSizesType | undefined;
     themes?: ThemesType;
+    tab?: TabType;
   } & Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>;
 
   // Numberic

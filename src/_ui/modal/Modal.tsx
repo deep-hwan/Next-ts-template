@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
 import dynamic from 'next/dynamic';
-import { HTMLAttributes, ReactNode, useRef } from 'react';
+import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef } from 'react';
 
 //
 import { BlurLayer } from '@/_ui';
@@ -24,7 +24,7 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
 const screenSize = [1440, 1080, 780, 600, 438];
 const MQ = screenSize.map(bp => `@media (max-width: ${bp}px)`);
 
-const ModalComponent = (props: Props) => {
+const ModalComponent = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
   const {
     colors,
     modalSize = 700,
@@ -39,8 +39,8 @@ const ModalComponent = (props: Props) => {
     ...rest
   } = props;
 
-  const ref = useRef<HTMLDivElement>(null);
-  useHandleEvent({ ref, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
+  const modalRef = useRef<HTMLDivElement>(null);
+  useHandleEvent({ ref: modalRef, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
 
   return (
     <>
@@ -48,7 +48,7 @@ const ModalComponent = (props: Props) => {
 
       <Fixed open={open} zIndex={zIndex}>
         <div
-          ref={ref}
+          ref={modalRef}
           css={{
             ...(flexT as []),
             maxWidth: modalSize,
@@ -78,34 +78,30 @@ const ModalComponent = (props: Props) => {
           )}
 
           <div
+            className='modal-container'
+            ref={ref}
             css={{
+              position: 'relative',
               width: '100%',
-              height: '100%',
-              maxHeight: 500,
+              maxHeight: '100vh',
               borderRadius: 26,
+              overflow: 'hidden',
               backgroundColor: colors?.background ?? '#fff',
-              overscrollBehavior: 'contain',
-              overflowY: 'auto',
-
+              display: 'flex',
+              flexDirection: 'column',
               [MQ[3]]: {
                 height: '100%',
                 maxHeight: '100%',
                 borderRadius: '26px 26px 0 0',
               },
-
-              '::-webkit-scrollbar': { display: 'none' },
             }}
             {...rest}
           >
             {!!title && (
               <div
+                className='modal-container-titleBox'
                 css={{
-                  zIndex: 10,
                   minHeight: (title && subTitle && 90) || (title && 70) || 45,
-                  position: 'sticky',
-                  top: 0,
-                  left: 0,
-                  right: 0,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
@@ -123,7 +119,7 @@ const ModalComponent = (props: Props) => {
                       <p
                         css={{
                           fontSize: '0.938rem',
-                          color: colors?.subTitle ?? '#888',
+                          color: colors?.subTitle ?? '#797979',
                           [MQ[3]]: { fontSize: '0.813rem' },
                         }}
                       >
@@ -135,13 +131,31 @@ const ModalComponent = (props: Props) => {
               </div>
             )}
 
-            {props.children}
+            <div
+              className='modal-container-content'
+              css={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                maxHeight: 450,
+                display: 'flex',
+                flexDirection: 'column',
+                overscrollBehavior: 'contain',
+                overflowY: 'auto',
+
+                [MQ[3]]: {
+                  maxHeight: '100%',
+                },
+              }}
+            >
+              {props.children}
+            </div>
           </div>
         </div>
       </Fixed>
     </>
   );
-};
+});
 
 // ----------------------------------
 // -------------- Icon --------------

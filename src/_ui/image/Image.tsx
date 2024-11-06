@@ -127,11 +127,13 @@ const ImageInstance = forwardRef(function ImageInstance(
           alt={alt}
           priority={props.priority}
           fill
-          loading='lazy'
+          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
           quality={props.quality ?? 75}
+          placeholder='blur'
+          loading={props?.priority ? 'eager' : 'lazy'}
+          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
           onClick={handleOnClick}
           onLoad={handleImageLoad}
-          sizes=''
           css={{
             overflow: 'hidden',
             objectFit: objectFit ?? 'cover',
@@ -162,6 +164,7 @@ const ImageInstance = forwardRef(function ImageInstance(
               ref={ref}
               src={source}
               alt={alt}
+              blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
               priority={props.priority}
               fill
               quality={props.quality ?? 75}

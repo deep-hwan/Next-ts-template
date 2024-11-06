@@ -2,8 +2,8 @@
 import { useUid } from '@/libs/hooks';
 import dynamic from 'next/dynamic';
 import { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
-import FieldContainer from './container/FieldContainer';
 import { Skeleton } from '../loading/Skeleton';
+import FieldContainer from './container/FieldContainer';
 
 const PhoneNumberFieldComponent = forwardRef(
   (
@@ -14,6 +14,7 @@ const PhoneNumberFieldComponent = forwardRef(
       error,
       sizes,
       themes,
+      tab,
       ...props
     }: PhoneNumberType,
     ref: ForwardedRef<HTMLInputElement>
@@ -50,7 +51,7 @@ const PhoneNumberFieldComponent = forwardRef(
     };
 
     return (
-      <FieldContainer sizes={sizes} themes={themes} events={{ error, disabled }}>
+      <FieldContainer sizes={sizes} themes={themes} events={{ error, disabled }} tab={tab} tabId={`${id}-button`}>
         <input
           ref={ref}
           id={id}

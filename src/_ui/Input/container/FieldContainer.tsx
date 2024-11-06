@@ -34,23 +34,23 @@ function FieldContainerComponent(props: Types) {
   };
 
   const inputEdgeColor = () => {
-    if (focus && !error) return themes?.focus?.edgeColor ?? '#999';
     if (disabled) return themes?.disabled?.edgeColor ?? '#999';
     if (error) return themes?.error?.edgeColor ?? '#999';
+    if (focus && !error) return themes?.focus?.edgeColor ?? '#999';
     return themes?.default?.edgeColor ?? '#888';
   };
 
   const borderColor = () => {
-    if (focus && !error) return themes?.focus?.borderColor ?? '#b9d0e4';
     if (disabled) return themes?.disabled?.borderColor ?? '#eee';
     if (error) return themes?.error?.borderColor ?? '#FF6767';
+    if (focus && !error) return themes?.focus?.borderColor ?? '#b9d0e4';
     return themes?.default?.borderColor ?? '#e0e0e0';
   };
 
   const backgroundColor = () => {
-    if (focus && !error) return themes?.focus?.backgroundColor ?? '#f8f9fc';
     if (disabled) return themes?.disabled?.backgroundColor ?? '#f5f5f5';
     if (error) return themes?.error?.backgroundColor ?? '#fffbfb';
+    if (focus && !error) return themes?.focus?.backgroundColor ?? '#f8f9fc';
     return themes?.default?.backgroundColor ?? '#fff';
   };
 
@@ -62,9 +62,9 @@ function FieldContainerComponent(props: Types) {
   };
 
   const placeholderTheme = () => {
-    if (focus && !error) return themes?.focus?.placeholderColor ?? '#c2c2c2';
     if (disabled) return themes?.disabled?.placeholderColor ?? '#c2c2c2';
     if (error) return themes?.error?.placeholderColor ?? '#c2c2c2';
+    if (focus && !error) return themes?.focus?.placeholderColor ?? '#c2c2c2';
     return themes?.default?.placeholderColor ?? '#c2c2c2';
   };
 
@@ -147,7 +147,12 @@ function FieldContainerComponent(props: Types) {
             whiteSpace: 'nowrap',
             padding: '8px 10px 8px',
             position: 'sticky',
+            userSelect: 'none',
+            border: 'none',
+            outline: 'none',
+            transition: '0.2 ease-in-out',
             '&:hover': { opacity: 0.8 },
+            '&:active': { opacity: 0.6 },
             '&:disabled': { color: '#ccc' },
           }}
           disabled={tab.disabled}

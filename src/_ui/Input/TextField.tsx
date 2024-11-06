@@ -1,10 +1,10 @@
 import { useUid } from '@/libs/hooks';
 import dynamic from 'next/dynamic';
-import React, { ForwardedRef, forwardRef, useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import { Skeleton } from '../loading/Skeleton';
 import FieldContainer from './container/FieldContainer';
 
-const TextFieldComponent = forwardRef((props: FieldType, ref: ForwardedRef<HTMLInputElement>) => {
+const TextFieldComponent = forwardRef<HTMLInputElement, FieldType>((props, ref) => {
   const { disabled = false, numberType = 'int', tab, value, error, edge, sizes, themes, ...rest } = props;
   const id = props?.id ?? useUid();
 
@@ -40,7 +40,7 @@ const TextFieldComponent = forwardRef((props: FieldType, ref: ForwardedRef<HTMLI
     >
       <input
         id={id}
-        ref={ref}
+        ref={ref} // Ensure ref is forwarded directly to the input element
         value={value}
         onChange={handleInput}
         onKeyPress={e => {
@@ -61,6 +61,8 @@ const TextFieldComponent = forwardRef((props: FieldType, ref: ForwardedRef<HTMLI
     </FieldContainer>
   );
 });
+
+TextFieldComponent.displayName = 'TextFieldComponent';
 
 const TextField = dynamic(() => Promise.resolve(TextFieldComponent), {
   ssr: false,

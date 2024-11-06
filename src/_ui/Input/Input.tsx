@@ -23,6 +23,7 @@ export const Input = ({ label, labelSize, labelColor, minWidth, maxWidth, import
       labelSize={labelSize}
       maxWidth={maxWidth}
       minWidth={minWidth}
+      important={important}
       error={error}
       tolTip={tolTip}
       {...props}
