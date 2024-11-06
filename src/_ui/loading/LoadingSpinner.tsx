@@ -16,7 +16,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 // -------------- LoadingSpinner --------------
 // --------------------------------------------
 const LoadingSpinnerUi = forwardRef(
-  ({ size = 40, storkeSize = 3, color = 'eee', ...props }: Props, ref?: ForwardedRef<HTMLDivElement>) => {
+  ({ size = 40, storkeSize = 3, color = '#eee', ...props }: Props, ref?: ForwardedRef<HTMLDivElement>) => {
     const rotation = keyframes`
     0% {transform: rotate(0deg)}
   100% {transform: rotate(360deg)}
