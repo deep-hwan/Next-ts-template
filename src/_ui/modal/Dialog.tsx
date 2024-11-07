@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { HTMLAttributes, ReactNode, useRef } from 'react';
 
 //
 import { colors, MQ } from 'src/libs/themes';
 import { BlurLayer } from '../index';
-import useHandleEvent from './useHadleEvent';
+import useHandleEvent from './handler/useHadleEvent';
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
@@ -36,7 +35,7 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   };
 }
 
-const DialogComponent = (props: Props) => {
+const Dialog = (props: Props) => {
   const {
     theme = 'light',
     dialogSizes = 500,
@@ -172,8 +171,6 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
     </svg>
   );
 }
-
-const Dialog = dynamic(() => Promise.resolve(DialogComponent), { ssr: false });
 
 export default Dialog;
 

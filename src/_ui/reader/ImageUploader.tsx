@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import dynamic from 'next/dynamic';
 import React, { ChangeEvent, ReactNode, useRef } from 'react';
 
 //
-import { Skeleton } from '@/_ui';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 interface Props {
@@ -29,7 +27,7 @@ interface Props {
 }
 
 //
-const ImageUploaderComponent = (props: Props) => {
+const ImageUploader = (props: Props) => {
   const { source, alt = '업로드 이미지', onUpload, onCancel, loading } = props;
   const { width = '100%', minWidth, maxWidth } = props.size ?? {};
   const { height, minHeight = 360, maxHeight } = props.size ?? {};
@@ -210,10 +208,5 @@ const themes: any = {
     cursor: 'pointer',
   },
 };
-
-const ImageUploader = dynamic(() => Promise.resolve(ImageUploaderComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={300} borderRadius={18} />,
-});
 
 export default ImageUploader;

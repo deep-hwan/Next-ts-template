@@ -2,7 +2,6 @@ import { ForwardedRef, forwardRef } from 'react';
 
 //libs
 import { colors } from '@/libs/themes';
-import dynamic from 'next/dynamic';
 
 //type
 type Type = {
@@ -14,7 +13,7 @@ type Type = {
 };
 
 //
-const SwitchComponent = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivElement | any>) => {
+const Switch = forwardRef((props: Type, ref: ForwardedRef<HTMLElement | HTMLDivElement | any>) => {
   return (
     <div
       onClick={() => props.onClick && props.onClick()}
@@ -54,8 +53,6 @@ const SwitchComponent = forwardRef((props: Type, ref: ForwardedRef<HTMLElement |
     </div>
   );
 });
-
-const Switch = dynamic(() => Promise.resolve(SwitchComponent), { ssr: true, loading: () => <p>...loading</p> });
 
 export default Switch;
 

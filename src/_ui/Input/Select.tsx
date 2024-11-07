@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { P, Skeleton } from '@/_ui';
-import dynamic from 'next/dynamic';
+import { P } from '@/_ui';
 import {
   ForwardedRef,
   forwardRef,
@@ -93,9 +92,4 @@ const SelectIcon = ({ fill, size }: { fill: string; size: number }) => {
   );
 };
 
-const DynamicSelect = dynamic(() => Promise.resolve(Select), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
-});
-
-export default DynamicSelect;
+export default Select;

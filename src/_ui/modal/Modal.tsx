@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef } from 'react';
 
 //
 import { BlurLayer } from '@/_ui';
-import useHandleEvent from './useHadleEvent';
+import useHandleEvent from './handler/useHadleEvent';
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
@@ -24,7 +23,7 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
 const screenSize = [1440, 1080, 780, 600, 438];
 const MQ = screenSize.map(bp => `@media (max-width: ${bp}px)`);
 
-const ModalComponent = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
+const Modal = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>) => {
   const {
     colors,
     modalSize = 700,
@@ -176,8 +175,6 @@ function CancelIcon({ fill = '#ccc' }: { fill?: string }) {
     </svg>
   );
 }
-
-const Modal = dynamic(() => Promise.resolve(ModalComponent), { ssr: false });
 
 export default Modal;
 

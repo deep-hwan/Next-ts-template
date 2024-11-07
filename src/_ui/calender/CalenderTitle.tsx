@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 
 type Props = {
   prev: () => void;
@@ -9,7 +8,7 @@ type Props = {
   title: string;
 };
 
-const CalenderTitleComponent = ({ prev, next, onClickTitle, title }: Props) => {
+const CalenderTitle = ({ prev, next, onClickTitle, title }: Props) => {
   return (
     <div css={themes.wrapper}>
       <button type='button' css={themes.tab} onClick={prev}>
@@ -26,11 +25,6 @@ const CalenderTitleComponent = ({ prev, next, onClickTitle, title }: Props) => {
     </div>
   );
 };
-
-const CalenderTitle = dynamic(() => Promise.resolve(CalenderTitleComponent), {
-  ssr: false,
-  loading: () => <p>...loading</p>,
-});
 
 export default CalenderTitle;
 

@@ -6,7 +6,7 @@ import { HTMLAttributes, ReactNode, useRef } from 'react';
 //
 import { BlurLayer, Calendar } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import useHandleEvent from './useHadleEvent';
+import useHandleEvent from './handler/useHadleEvent';
 
 //
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 } & Omit<HTMLAttributes<HTMLElement>, 'color'>;
 
 //
-const CalenderModalComponent = ({
+const CalenderModal = ({
   open,
   onCancel,
   format = 'yyyy-mm-dd',
@@ -126,10 +126,6 @@ const CalenderModalComponent = ({
     </>
   );
 };
-
-const CalenderModal = dynamic(() => Promise.resolve(CalenderModalComponent), {
-  ssr: false,
-});
 
 export default CalenderModal;
 

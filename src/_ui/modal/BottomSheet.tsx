@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef, useState } from 'react';
 
 //
 import { BlurLayer } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import useHadleEvent from './useHadleEvent';
+import useHadleEvent from './handler/useHadleEvent';
 
 //
 interface BottomSheetProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
@@ -23,7 +22,7 @@ interface BottomSheetProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
 }
 
 //
-const BottomSheetComponent = ({
+const BottomSheet = ({
   children,
   open,
   onCancel,
@@ -122,10 +121,6 @@ const BottomSheetComponent = ({
     </>
   );
 };
-
-const BottomSheet = dynamic(() => Promise.resolve(BottomSheetComponent), {
-  ssr: false,
-});
 
 export default BottomSheet;
 

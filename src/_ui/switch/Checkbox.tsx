@@ -1,8 +1,6 @@
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, HTMLAttributes, useState } from 'react';
 //
-import { Skeleton } from '@/_ui';
 import { colors } from '@/libs/themes';
 
 //
@@ -43,7 +41,7 @@ type Types = {
 } & Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>;
 //
 //
-const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | undefined) => {
+const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | undefined) => {
   const [hover, setHover] = useState(false);
 
   const checkColors = () => {
@@ -86,7 +84,7 @@ const CheckboxComponent = forwardRef((props: Types, ref: ForwardedRef<HTMLDivEle
           minHeight: props.themes?.check?.checkSize ?? 17,
           maxHeight: props.themes?.check?.checkSize ?? 17,
           borderRadius: props.themes?.check?.borderRadius ?? 6,
-          border: '1px solid #e0e0e0',
+          border: `1px solid ${props.checked ? colors.keyColor : '#e0e0e0'}`,
           backgroundColor: checkColors(),
           display: 'flex',
           alignItems: 'center',
@@ -170,30 +168,5 @@ const CheckIcon = ({ size, fill }: { size: any; fill: string }) => (
     </defs>
   </svg>
 );
-
-const Checkbox = dynamic(() => Promise.resolve(CheckboxComponent), {
-  ssr: false,
-  loading: () => (
-    <div css={{ gap: 10, display: 'flex', alignItems: 'center' }}>
-      <div
-        css={{
-          width: 17,
-          height: 17,
-          backgroundColor: '#e2e2e2',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: '0.2s ease-in-out',
-          marginTop: 2.5,
-          borderRadius: 6,
-        }}
-      >
-        <CheckIcon size={10} fill='#bbb' />
-      </div>
-
-      <Skeleton height={10} width={50} />
-    </div>
-  ),
-});
 
 export default Checkbox;

@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { ReactNode, useRef } from 'react';
 //
-import { Skeleton } from '@/_ui';
 import { LoadingSpinner } from '../loading/LoadingSpinner';
 
 //
@@ -17,7 +15,7 @@ interface Props {
 }
 
 //
-const AvatarUploaderComponent = ({ size = 100, source, alt = '업로드 이미지', onUpload, onCancel, loading }: Props) => {
+const AvatarUploader = ({ size = 100, source, alt = '업로드 이미지', onUpload, onCancel, loading }: Props) => {
   const uploadRef = useRef<HTMLInputElement>(null);
   const handleClick = () => {
     if (!loading) uploadRef.current?.click();
@@ -109,11 +107,6 @@ const CancelIcon = () => {
     </svg>
   );
 };
-
-const AvatarUploader = dynamic(() => Promise.resolve(AvatarUploaderComponent), {
-  ssr: false,
-  loading: () => <Skeleton width={120} height={120} borderRadius={120} />,
-});
 
 export default AvatarUploader;
 

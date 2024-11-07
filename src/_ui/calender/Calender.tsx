@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { colors } from '@/libs/themes';
 import { Interpolation, Theme } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
-import { Skeleton } from '../loading/Skeleton';
 import CalenderTitle from './CalenderTitle';
 
 const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
@@ -16,7 +14,7 @@ interface CalendarProps {
   format?: 'yyyy-mm-dd' | 'yyyy-mm' | 'yyyy';
 }
 
-const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) => {
+const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) => {
   const [selectedDate, setSelectedDate] = useState(() => date || new Date());
 
   useEffect(() => {
@@ -195,11 +193,6 @@ const CalenderComponent = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-
     </Wrapper>
   );
 };
-
-const Calender = dynamic(() => Promise.resolve(CalenderComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={330} />,
-});
 
 export default Calender;
 

@@ -1,7 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Skeleton } from '@/_ui/loading/Skeleton';
 import { css } from '@emotion/react';
-import dynamic from 'next/dynamic';
 import { ReactNode, useCallback, useState } from 'react';
 import { GlobalInputTheme } from './input';
 
@@ -20,7 +18,7 @@ type Types = {
   };
 };
 
-function FieldContainerComponent(props: Types) {
+function FieldContainer(props: Types) {
   const { children, edge, tab, tabId, sizes, themes, events } = props;
   const { disabled } = events ?? {};
   const error = events?.error?.error;
@@ -195,10 +193,5 @@ const fieldThemes = css`
   -moz-appearance: none;
   transition: 0.3s ease-in-out;
 `;
-
-const FieldContainer = dynamic(() => Promise.resolve(FieldContainerComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
-});
 
 export default FieldContainer;

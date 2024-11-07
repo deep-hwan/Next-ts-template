@@ -2,11 +2,9 @@
 import { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 
 import { useUid } from '@/libs/hooks';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '../loading/Skeleton';
 import FieldContainer from './container/FieldContainer';
 
-const NumbericFieldComponent = forwardRef(
+const NumbericField = forwardRef(
   (
     { error, edge, disabled, value, onChange, sizes, themes, ...props }: NumbericType,
     ref: ForwardedRef<HTMLInputElement>
@@ -61,10 +59,5 @@ const NumbericFieldComponent = forwardRef(
     );
   }
 );
-
-const NumbericField = dynamic(() => Promise.resolve(NumbericFieldComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
-});
 
 export default NumbericField;

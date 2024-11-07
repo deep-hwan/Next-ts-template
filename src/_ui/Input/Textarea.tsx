@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { Skeleton, TouchableOpacity, TxtSpan, V } from '@/_ui';
+import { TouchableOpacity, TxtSpan, V } from '@/_ui';
 import { useUid } from '@/libs/hooks';
-import dynamic from 'next/dynamic';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import FieldContainer from './container/FieldContainer';
 
-const TextareaComponent = forwardRef((props: EditorType, ref: ForwardedRef<HTMLTextAreaElement>) => {
+const Textarea = forwardRef((props: EditorType, ref: ForwardedRef<HTMLTextAreaElement>) => {
   const {
     tab,
     rows = 1,
@@ -116,11 +115,6 @@ const TextareaComponent = forwardRef((props: EditorType, ref: ForwardedRef<HTMLT
       )}
     </V.Column>
   );
-});
-
-const Textarea = dynamic(() => Promise.resolve(TextareaComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
 });
 
 export default Textarea;

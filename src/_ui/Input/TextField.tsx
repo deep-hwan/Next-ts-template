@@ -1,10 +1,8 @@
 import { useUid } from '@/libs/hooks';
-import dynamic from 'next/dynamic';
 import React, { forwardRef, useCallback, useState } from 'react';
-import { Skeleton } from '../loading/Skeleton';
 import FieldContainer from './container/FieldContainer';
 
-const TextFieldComponent = forwardRef<HTMLInputElement, FieldType>((props, ref) => {
+const TextField = forwardRef<HTMLInputElement, FieldType>((props, ref) => {
   const { disabled = false, numberType = 'int', tab, value, error, edge, sizes, themes, ...rest } = props;
   const id = props?.id ?? useUid();
 
@@ -60,13 +58,6 @@ const TextFieldComponent = forwardRef<HTMLInputElement, FieldType>((props, ref) 
       />
     </FieldContainer>
   );
-});
-
-TextFieldComponent.displayName = 'TextFieldComponent';
-
-const TextField = dynamic(() => Promise.resolve(TextFieldComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
 });
 
 export default TextField;

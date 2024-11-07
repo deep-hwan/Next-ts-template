@@ -1,11 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { useUid } from '@/libs/hooks';
-import dynamic from 'next/dynamic';
 import { ChangeEvent, ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
-import { Skeleton } from '../loading/Skeleton';
 import FieldContainer from './container/FieldContainer';
 
-const PhoneNumberFieldComponent = forwardRef(
+const PhoneNumberField = forwardRef(
   (
     {
       disabled = false,
@@ -69,10 +67,5 @@ const PhoneNumberFieldComponent = forwardRef(
     );
   }
 );
-
-const PhoneNumberField = dynamic(() => Promise.resolve(PhoneNumberFieldComponent), {
-  ssr: false,
-  loading: () => <Skeleton height={48} borderRadius={14} />,
-});
 
 export default PhoneNumberField;
