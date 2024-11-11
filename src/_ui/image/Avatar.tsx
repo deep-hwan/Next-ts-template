@@ -28,10 +28,8 @@ export function Avatar({
 
   const source_instance =
     !!source ||
-    source.includes('.png') ||
-    source.includes('.jpg') ||
-    source.includes('.jpeg') ||
-    source.includes('.webp');
+    (!!source &&
+      (source.includes('.png') || source.includes('.jpg') || source.includes('.jpeg') || source.includes('.webp')));
 
   const sizes = {
     width: size,
@@ -86,7 +84,7 @@ export function Avatar({
     <>
       {source_instance ? (
         <ImageInstance
-          source={source}
+          source={source.replace('/upload/', '/upload/w_150,h_150,c_fill,g_face,q_auto,f_auto/')}
           alt={alt}
           size={sizes}
           borderRadius={borderRadius}
