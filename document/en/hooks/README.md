@@ -34,3 +34,5 @@ Custom hooks will be constantly updated!
 - useViewport: This is a hook that can check the width and height values of the current screen layout
 
 - useScrollRestoration: It's a hook that reaches the scroll position of the page you moved when you do router.back(), and it's managed globally by \_app.tsx
+
+- useResetRouteQuery: A hook that initializes queryValue to an empty value ("") when the value of queryName does not exist in router.Query. It is suitable for query filter functionality

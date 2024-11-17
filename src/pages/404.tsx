@@ -1,7 +1,7 @@
-import SEO from '@/head/seo';
 import { NextRouter, useRouter } from 'next/router';
 
 import { Button, Spacing, Txt, V } from '@/_ui';
+import SEO from '@/head/next-seo';
 import { MQ, colors, fontSize } from '@/libs/themes';
 
 //

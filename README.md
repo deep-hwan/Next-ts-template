@@ -123,12 +123,12 @@ Make sure to check the contents below before deployment before building
 
 1. Modify the contents related to each seo and sitemap to suit the service
 
-2. Modify and check the **next-sitemap.config** to suit the service
+2. Modify and check the **next-sitemap.config.js** to suit the service
 
-3. Modify the app content related to PWA in **public > manifest.json**
+3. Modify and check the **next.seo.config.js** to suit the service
 
-4. Create a site map with **npx next-sitemap** (e.g. when developed with yarnberry pnp)
+4. Modify the app content related to PWA in **public > manifest.json**
 
 5. (Optional) You can create rss in **page > api > rss.ts** > modify the content
 
-6. **yarn run build** or **npm run build**
+6. **✅ yarn run build** or **npm run build** >> Sitemap is live and distributed to the public

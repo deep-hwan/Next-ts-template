@@ -1,8 +1,8 @@
-import { ForwardedRef, useCallback, useEffect } from 'react';
+import { ForwardedRef, useCallback, useEffect, useRef } from 'react';
 
 type RefType = ForwardedRef<HTMLDivElement>;
 
-export default function useHandleEvent({
+export default function useModalView({
   ref,
   open,
   onCancel,
@@ -15,6 +15,9 @@ export default function useHandleEvent({
   clickOutSideClose?: boolean;
   windowScreenScroll?: boolean;
 }) {
+  const initialOverflowY = useRef<string | null>(null);
+  const initialScrollY = useRef<number>(0);
+
   const clickModalOutside = useCallback(
     (event: MouseEvent) => {
       if (
@@ -34,19 +37,21 @@ export default function useHandleEvent({
   useEffect(() => {
     if (!windowScreenScroll) {
       if (open) {
-        const scrollY = window.scrollY;
+        initialOverflowY.current = document.body.style.overflowY;
+        initialScrollY.current = window.scrollY;
 
-        document.body.style.top = `-${scrollY}px`;
-        document.body.style.overflowY = 'hidden';
+        if (initialOverflowY.current !== 'hidden') {
+          document.body.style.top = `-${initialScrollY.current}px`;
+          document.body.style.overflowY = 'hidden';
+        }
       } else {
-        const scrollY = document.body.style.top;
-
-        document.body.style.top = '';
-        document.body.style.overflowY = 'auto';
-
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        if (initialOverflowY.current !== 'hidden') {
+          document.body.style.top = '';
+          document.body.style.overflowY = 'auto';
+          window.scrollTo(0, initialScrollY.current);
+        }
       }
-    } else return;
+    }
   }, [open, windowScreenScroll]);
 
   useEffect(() => {

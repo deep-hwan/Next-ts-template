@@ -8,7 +8,7 @@ import { colors } from '@/libs/themes';
 //components
 import Fields from '@/app/form-fields/Fields';
 import Result from '@/app/form-fields/Result';
-import SEO from '@/head/seo';
+import SEO from '@/head/next-seo';
 
 //
 export default function FormFields() {

@@ -1,42 +1,62 @@
-/** @type {import('next-sitemap').IConfig} */
-
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 module.exports = {
-  siteUrl: SITE_URL, // 게시하는 site의 url
+  siteUrl: siteUrl,
   exclude: ['/404'],
-  generateRobotsTxt: true, // robots.txt generate 여부 (자동생성 여부)
-  sitemapSize: 5000, // sitemap별 최대 크기 (최대 크기가 넘어갈 경우 복수개의 sitemap으로 분리됨)
-  changefreq: 'daily', // 페이지 주소 변경 빈도 (검색엔진에 제공됨) - always, daily, hourly, monthly, never, weekly, yearly 중 택 1
-  priority: 0.8, // 페이지 주소 우선순위 (검색엔진에 제공됨, 우선순위가 높은 순서대로 크롤링함)
+  generateRobotsTxt: true,
+  sitemapSize: 7000,
+  changefreq: 'daily',
+  priority: 0.8,
 
-  additionalSitemaps: [
-    `${SITE_URL}/server-sitemap.xml`, // 서버에서 생성한 sitemap 추가
+  alternateRefs: [
+    { href: `${siteUrl}/`, hreflang: 'ko' },
+    { href: `${siteUrl}/en`, hreflang: 'en' },
+    { href: `${siteUrl}/ko`, hreflang: 'ko' },
   ],
+
+  additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
+
+  transform: async (config, path) => {
+    if (path === '/') {
+      return {
+        loc: '/',
+        alternateRefs: config.alternateRefs,
+      };
+    }
+    return {
+      loc: path,
+      alternateRefs: config.alternateRefs.map(ref => ({
+        ...ref,
+        href: `${ref.href}${path}`,
+      })),
+    };
+  },
 
   additionalPaths: async config => [
     {
-      loc: '/form-fields', // 서브 메뉴 페이지
+      loc: '/menu1',
       changefreq: 'weekly',
       priority: 0.8,
     },
     {
-      loc: '/widget', // 서브 메뉴 페이지
+      loc: '/menu2',
+      changefreq: 'weekly',
+      priority: 0.8,
+    },
+    {
+      loc: '/menu3',
       changefreq: 'weekly',
       priority: 0.8,
     },
   ],
 
   robotsTxtOptions: {
-    additionalSitemaps: [`${SITE_URL}/sitemap.xml`],
-
-    // 정책 설정
+    additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
     policies: [
       {
-        userAgent: '*', // 모든 검색 엔진 크롤러에 대한 정책을 설정합니다.
-        allow: '/', // 전체 사이트에 대한 크롤링을 허용합니다.
+        userAgent: '*',
+        allow: '/',
       },
-      // 추가 정책이 필요할 경우 배열 요소로 추가 작성
     ],
-  }, // robots.txt 옵션 설정
+  },
 };

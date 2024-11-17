@@ -1,13 +1,10 @@
 # *
 User-agent: *
-Disallow: /404
-
-# *
-User-agent: *
 Allow: /
 
 # Host
-Host: http://localhost:8080/v1
+Host: https://next-typescript-tamplate.vercel.app
 
 # Sitemaps
-Sitemap: http://localhost:8080/v1/sitemap.xml
+Sitemap: https://next-typescript-tamplate.vercel.app/sitemap.xml
+Sitemap: https://next-typescript-tamplate.vercel.app/server-sitemap.xml

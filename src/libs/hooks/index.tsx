@@ -14,9 +14,11 @@ import { useScrollRestoration } from './useScrollRestoration';
 import { useStopSwipe } from './useStopSwipe';
 import { useTanstackQuery } from './useTanstackQuery';
 import { useUid } from './useUid';
+import { useResetRouteQuery } from './useResetRouteQuery';
 import { useViewport } from './useViewport';
 
 export {
+  useResetRouteQuery,
   useCallback,
   useClickOutside,
   useCookie,

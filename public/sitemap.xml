@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>http://localhost:8080/v1/sitemap-0.xml</loc></sitemap>
-<sitemap><loc>http://localhost:8080/v1/sitemap.xml</loc></sitemap>
+<sitemap><loc>https://next-typescript-tamplate.vercel.app/sitemap-0.xml</loc></sitemap>
+<sitemap><loc>https://next-typescript-tamplate.vercel.app/server-sitemap.xml</loc></sitemap>
 </sitemapindex>

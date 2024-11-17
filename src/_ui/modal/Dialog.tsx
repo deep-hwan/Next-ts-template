@@ -1,15 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import { HTMLAttributes, ReactNode, useRef } from 'react';
+import { HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 //
 import { colors, MQ } from 'src/libs/themes';
 import { BlurLayer } from '../index';
-import useHandleEvent from './handler/useHadleEvent';
+import useModalView from './handler/useModalView';
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
-  theme?: 'light' | 'dark';
   open: boolean;
   children?: ReactNode;
   onCancel: () => void;
@@ -37,7 +36,6 @@ interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
 
 const Dialog = (props: Props) => {
   const {
-    theme = 'light',
     dialogSizes = 500,
     open,
     onCancel,
@@ -51,108 +49,124 @@ const Dialog = (props: Props) => {
   } = props;
 
   const ref = useRef<HTMLDivElement>(null);
-  useHandleEvent({ ref, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
+  const [delayedOpen, setDelayedOpen] = useState(false);
+
+  useModalView({ ref, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
+
+  useEffect(() => {
+    if (open) {
+      const timeout = setTimeout(() => setDelayedOpen(true), 20);
+      return () => clearTimeout(timeout);
+    } else setDelayedOpen(false);
+  }, [open]);
 
   return (
     <>
-      {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9999} />}
+      {open && (
+        <>
+          {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9999} />}
 
-      <Fixed open={open} zIndex={zIndex}>
-        <div
-          ref={ref}
-          css={{
-            ...(flexT as []),
-
-            height: 'auto',
-            maxWidth: dialogSizes,
-            minWidth: 320,
-            padding: '46px 40px 36px',
-            alignItems: 'start',
-            borderRadius: 20,
-            overscrollBehavior: 'contain',
-            backgroundColor: props?.colors?.backgroundColor ?? '#fff',
-            [MQ[3]]: { padding: '26px 25px 16px' },
-          }}
-          {...rest}
-        >
-          <div
-            css={{
-              ...(flexT as []),
-              alignItems: 'end',
-              height: 'auto',
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              left: 0,
-            }}
-          >
-            <div css={{ padding: 8, cursor: 'pointer' }} onClick={onCancel}>
-              <CancelIcon fill={props?.colors?.cancelColor ?? '#e0e0e0'} />
-            </div>
-          </div>
-
-          <div css={{ ...(flexT as []), alignItems: 'start', rowGap: 10 }}>
-            <b
+          <Fixed open={delayedOpen} zIndex={zIndex}>
+            <div
+              ref={ref}
               css={{
-                fontSize: '1.25rem',
-                color: props.colors?.titleColor ?? '#555',
+                ...(flexT as []),
+
+                height: 'auto',
+                maxWidth: dialogSizes,
+                minWidth: 320,
+                padding: '46px 40px 36px',
+                alignItems: 'start',
+                borderRadius: 20,
+                overscrollBehavior: 'contain',
+                backgroundColor: props?.colors?.backgroundColor ?? '#fff',
+                [MQ[3]]: { padding: '26px 25px 16px' },
               }}
+              {...rest}
             >
-              {title}
-            </b>
-
-            <p
-              css={{
-                fontSize: '0.938rem',
-                color: props.colors?.txtColor ?? '#888',
-              }}
-            >
-              {description}
-            </p>
-
-            {props?.children}
-
-            {tabs?.length !== 0 && !!tabs && (
               <div
                 css={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  columnGap: tabSpaceGap,
-                  paddingTop: tabSpaceTop ?? 22,
+                  ...(flexT as []),
+                  alignItems: 'end',
+                  height: 'auto',
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
                 }}
               >
-                {tabs?.map((item: any) => (
-                  <button
-                    onClick={() => item.onClick()}
-                    disabled={item?.disabled}
-                    css={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '100%',
-                      borderRadius: 18,
-                      minHeight: 52,
-                      backgroundColor: item?.buttonColor ?? colors.keyColor,
-                      color: item?.txtColor ?? '#fff',
-                      cursor: 'pointer',
-                      outline: 'none',
-                      border: 'none',
-                      fontSize: '1rem',
-                      transition: '0.3s ease-in-out',
+                <div css={{ padding: 8, cursor: 'pointer' }} onClick={onCancel}>
+                  <CancelIcon fill={props?.colors?.cancelColor ?? '#e0e0e0'} />
+                </div>
+              </div>
 
-                      '&:hover': { opacity: 0.9 },
-                      '&:active': { opacity: 8 },
+              <div css={{ ...(flexT as []), alignItems: 'start', rowGap: 10 }}>
+                <b
+                  css={{
+                    fontSize: '1.25rem',
+                    color: props.colors?.titleColor ?? '#555',
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  {title}
+                </b>
+
+                <p
+                  css={{
+                    fontSize: '0.938rem',
+                    color: props.colors?.txtColor ?? '#888',
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  {description}
+                </p>
+
+                {props?.children}
+
+                {tabs?.length !== 0 && !!tabs && (
+                  <div
+                    css={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'stretch',
+                      columnGap: tabSpaceGap,
+                      paddingTop: tabSpaceTop ?? 22,
                     }}
                   >
-                    {item?.name}
-                  </button>
-                ))}
+                    {tabs?.map((item: any) => (
+                      <button
+                        onClick={() => item.onClick()}
+                        disabled={item?.disabled}
+                        css={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '100%',
+                          borderRadius: 18,
+                          minHeight: 52,
+                          backgroundColor: item?.buttonColor ?? colors.keyColor,
+                          color: item?.txtColor ?? '#fff',
+                          cursor: 'pointer',
+                          outline: 'none',
+                          border: 'none',
+                          fontSize: '1rem',
+                          transition: '0.3s ease-in-out',
+                          userSelect: 'none',
+
+                          '&:hover': { opacity: 0.9 },
+                          '&:active': { opacity: 8 },
+                        }}
+                      >
+                        {item?.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
-      </Fixed>
+            </div>
+          </Fixed>
+        </>
+      )}
     </>
   );
 };
@@ -187,17 +201,20 @@ const flexT: Interpolation<Theme> = {
 };
 
 //
+//
 const Fixed = ({ children, open, zIndex }: { children: ReactNode; open: boolean; zIndex?: number }) => (
   <div
     css={{
       ...flexT,
+
       overscrollBehavior: 'contain',
       justifyContent: 'center',
       position: 'fixed',
-      top: open ? 0 : '200%',
+      top: 0,
       bottom: 0,
       left: 0,
       right: 0,
+      opacity: open ? 1 : 0,
       zIndex: zIndex ?? 10000,
       padding: '20px 25px 50px',
     }}

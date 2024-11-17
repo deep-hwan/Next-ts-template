@@ -5,7 +5,7 @@ import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef, useState } from
 //
 import { BlurLayer } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import useHadleEvent from './handler/useHadleEvent';
+import useHadleEvent from './handler/useModalView';
 
 //
 interface BottomSheetProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {

@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef } from 'react';
+import React, { ForwardedRef, HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 //
 import { BlurLayer } from '@/_ui';
-import useHandleEvent from './handler/useHadleEvent';
+import useModalView from './handler/useModalView';
 
 interface Props extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
   zIndex?: number;
@@ -39,119 +39,153 @@ const Modal = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDivElement>)
   } = props;
 
   const modalRef = useRef<HTMLDivElement>(null);
-  useHandleEvent({ ref: modalRef, open, onCancel, clickOutSideClose: true, windowScreenScroll: false });
+  useModalView({
+    ref: modalRef,
+    open,
+    onCancel,
+    clickOutSideClose,
+    windowScreenScroll,
+  });
+
+  const [delayedOpen, setDelayedOpen] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      const timeout = setTimeout(() => setDelayedOpen(true), 80);
+      return () => clearTimeout(timeout);
+    } else {
+      setDelayedOpen(false);
+    }
+  }, [open]);
 
   return (
     <>
-      {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
+      {open && (
+        <>
+          {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
 
-      <Fixed open={open} zIndex={zIndex}>
-        <div
-          ref={modalRef}
-          css={{
-            ...(flexT as []),
-            maxWidth: modalSize,
-            justifyContent: 'center',
-            gap: 10,
-          }}
-        >
-          {showCancelTab && (
-            <button
-              onClick={onCancel}
+          <Fixed open={delayedOpen} zIndex={zIndex}>
+            <div
+              ref={modalRef}
               css={{
-                display: 'flex',
-                order: 2,
-                backgroundColor: colors?.background ?? '#fff',
-                padding: 13,
-                borderRadius: 100,
-                cursor: 'pointer',
-                outline: 'none',
-                border: 'none',
-                fontSize: '1rem',
-                transition: '0.3s ease-in-out',
-                [MQ[3]]: { order: 0 },
+                ...(flexT as []),
+                maxWidth: modalSize,
+                justifyContent: 'center',
+                gap: 10,
               }}
             >
-              <CancelIcon fill={colors?.cancelTab ?? '#ccc'} />
-            </button>
-          )}
+              {showCancelTab && (
+                <button
+                  onClick={onCancel}
+                  css={{
+                    display: 'flex',
+                    order: 2,
+                    backgroundColor: colors?.background ?? '#fff',
+                    padding: 13,
+                    borderRadius: 100,
+                    cursor: 'pointer',
+                    outline: 'none',
+                    border: 'none',
+                    fontSize: '1rem',
+                    transition: '0.3s ease-in-out',
+                    [MQ[3]]: { order: 0 },
+                  }}
+                >
+                  <CancelIcon fill={colors?.cancelTab ?? '#ccc'} />
+                </button>
+              )}
 
-          <div
-            className='modal-container'
-            ref={ref}
-            css={{
-              position: 'relative',
-              width: '100%',
-              maxHeight: '100vh',
-              borderRadius: 26,
-              overflow: 'hidden',
-              backgroundColor: colors?.background ?? '#fff',
-              display: 'flex',
-              flexDirection: 'column',
-              [MQ[3]]: {
-                height: '100%',
-                maxHeight: '100%',
-                borderRadius: '26px 26px 0 0',
-              },
-            }}
-            {...rest}
-          >
-            {!!title && (
               <div
-                className='modal-container-titleBox'
+                className='modal-container'
+                ref={ref}
                 css={{
-                  minHeight: (title && subTitle && 90) || (title && 70) || 45,
+                  position: 'relative',
+                  width: '100%',
+                  maxHeight: '100vh',
+                  borderRadius: 26,
+                  overflow: 'hidden',
+                  backgroundColor: colors?.background ?? '#fff',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '0 20px',
-                  borderRadius: '26px 26px 0 0',
-                  backgroundColor: title ? (colors?.background ?? '#fff') : 'transparent',
+                  flexDirection: 'column',
+                  [MQ[3]]: {
+                    height: '100%',
+                    maxHeight: '100%',
+                    borderRadius: '26px 26px 0 0',
+                  },
                 }}
+                {...rest}
               >
-                {(title || subTitle) && (
-                  <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 6 }}>
-                    <b css={{ fontSize: '1.25rem', color: colors?.title ?? '#555', [MQ[3]]: { fontSize: '1.125rem' } }}>
-                      {title}
-                    </b>
-                    {!!subTitle && (
-                      <p
+                {!!title && (
+                  <div
+                    className='modal-container-titleBox'
+                    css={{
+                      minHeight: (title && subTitle && 90) || (title && 70) || 45,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '0 20px',
+                      borderRadius: '26px 26px 0 0',
+                      backgroundColor: title ? (colors?.background ?? '#fff') : 'transparent',
+                    }}
+                  >
+                    {(title || subTitle) && (
+                      <div
                         css={{
-                          fontSize: '0.938rem',
-                          color: colors?.subTitle ?? '#797979',
-                          [MQ[3]]: { fontSize: '0.813rem' },
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'start',
+                          gap: 6,
                         }}
                       >
-                        {subTitle}
-                      </p>
+                        <b
+                          css={{
+                            fontSize: '1.25rem',
+                            color: colors?.title ?? '#555',
+                            [MQ[3]]: { fontSize: '1.125rem' },
+                          }}
+                        >
+                          {title}
+                        </b>
+                        {!!subTitle && (
+                          <p
+                            css={{
+                              fontSize: '0.938rem',
+                              color: colors?.subTitle ?? '#797979',
+                              [MQ[3]]: { fontSize: '0.813rem' },
+                            }}
+                          >
+                            {subTitle}
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
+
+                <div
+                  className='modal-container-content'
+                  css={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '100%',
+                    maxHeight: 450,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overscrollBehavior: 'contain',
+                    overflowY: 'auto',
+
+                    [MQ[3]]: {
+                      maxHeight: '100%',
+                    },
+                  }}
+                >
+                  {props.children}
+                </div>
               </div>
-            )}
-
-            <div
-              className='modal-container-content'
-              css={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                maxHeight: 450,
-                display: 'flex',
-                flexDirection: 'column',
-                overscrollBehavior: 'contain',
-                overflowY: 'auto',
-
-                [MQ[3]]: {
-                  maxHeight: '100%',
-                },
-              }}
-            >
-              {props.children}
             </div>
-          </div>
-        </div>
-      </Fixed>
+          </Fixed>
+        </>
+      )}
     </>
   );
 });

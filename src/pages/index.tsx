@@ -10,7 +10,7 @@ import Comp2 from '@/app/home/Comp2';
 import Comp3 from '@/app/home/Comp3';
 import Comp4 from '@/app/home/Comp4';
 import Comp5 from '@/app/home/Comp5';
-import SEO from '@/head/seo';
+import SEO from '@/head/next-seo';
 
 //
 export default function Index() {
