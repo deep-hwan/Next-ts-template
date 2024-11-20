@@ -15,15 +15,16 @@ interface CalendarProps {
 }
 
 const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) => {
-  const [selectedDate, setSelectedDate] = useState(() => date || new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(date instanceof Date ? date : new Date());
+  const [currentMonth, setCurrentMonth] = useState<number>(selectedDate?.getMonth() ?? new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState<number>(selectedDate?.getFullYear() ?? new Date().getFullYear());
+  const [isFormat, setIsFormat] = useState(format);
 
   useEffect(() => {
-    if (date instanceof Date || date === null) setSelectedDate(date || new Date());
+    if (date instanceof Date || date === null) {
+      setSelectedDate(date || new Date());
+    }
   }, [date]);
-
-  const [currentMonth, setCurrentMonth] = useState(selectedDate?.getMonth());
-  const [currentYear, setCurrentYear] = useState(selectedDate?.getFullYear());
-  const [isFormat, setIsFormat] = useState(format);
 
   const today = new Date();
   const todayDate = today.getDate();
@@ -70,19 +71,17 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
 
   const prevDecade = () => setYearRange(prev => ({ startYear: prev.startYear - 10, endYear: prev.endYear - 10 }));
 
-  //
   // yyyy-mm-dd > 클릭핸들러
   const selectDay = (day: any) => {
     const newDate = new Date(currentYear, currentMonth, day);
-    if ((minDate && newDate < minDate) || (maxDate && newDate > maxDate)) return;
+    if ((minDate instanceof Date && newDate < minDate) || (maxDate instanceof Date && newDate > maxDate)) return;
     onClick && onClick(newDate);
   };
 
-  //
   // yyyy > 클릭 핸들러
   const selectYear = (year: number) => {
     const newDate = new Date(year, 0, 1);
-    if ((minDate && newDate < minDate) || (maxDate && newDate > maxDate)) return;
+    if ((minDate instanceof Date && newDate < minDate) || (maxDate instanceof Date && newDate > maxDate)) return;
     setCurrentYear(year);
 
     format !== 'yyyy' && setIsFormat('yyyy-mm');
@@ -100,14 +99,14 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
           />
 
           <CalenderGrid ea={3}>
-            {Array.from({ length: 9 }, (_, i) => yearRange.startYear + i).map(year => {
+            {Array.from({ length: 10 }, (_, i) => yearRange.startYear + i).map(year => {
               const date = new Date(year, 0, 1);
               const selectable = (!minDate || date >= minDate) && (!maxDate || date <= maxDate);
               const isToday = todayYear === year;
               const isSelected = selectedDate.getFullYear() === year;
 
               return (
-                <Wrapper onClick={() => selectYear(year)}>
+                <Wrapper key={year} onClick={() => selectYear(year)}>
                   <YYBox year={year} isToday={isToday} selectable={selectable} isSelected={isSelected} />
                 </Wrapper>
               );
@@ -122,7 +121,7 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
             prev={prevYear}
             next={nextYear}
             onClickTitle={() => setIsFormat('yyyy')}
-            title={currentYear + '년'}
+            title={`${currentYear}년`}
           />
 
           <CalenderGrid ea={4}>
@@ -134,6 +133,7 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
 
               return (
                 <Wrapper
+                  key={month}
                   onClick={() => {
                     if (!selectable) return;
 
@@ -158,17 +158,15 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
             prev={prevMonth}
             next={nextMonth}
             onClickTitle={() => setIsFormat('yyyy-mm')}
-            title={currentYear + '년' + ' ' + (currentMonth + 1) + '월'}
+            title={`${currentYear}년 ${currentMonth + 1}월`}
           />
 
           <CalenderGrid ea={7}>
             {daysOfWeek.map(day => (
-              <DayOfWeek className='week' key={day}>
-                {day}
-              </DayOfWeek>
+              <DayOfWeek key={day}>{day}</DayOfWeek>
             ))}
 
-            {calendarDays.map((day: number | null, index) => {
+            {calendarDays.map((day, index) => {
               const date = new Date(currentYear, currentMonth, day ?? 0);
               const dayOfWeek = date.getDay();
               const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
@@ -176,7 +174,7 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
               const isToday = day === todayDate && currentMonth === todayMonth && currentYear === todayYear;
 
               return (
-                <Wrapper onClick={() => selectable && day && selectDay(day)}>
+                <Wrapper key={index} onClick={() => selectable && day && selectDay(day)}>
                   <DDBox
                     day={day}
                     isToday={isToday}
@@ -196,7 +194,6 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
 
 export default Calender;
 
-//
 // themes
 const flexT: Interpolation<Theme> = {
   display: 'flex',
