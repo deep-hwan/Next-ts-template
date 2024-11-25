@@ -18,16 +18,19 @@ module.exports = {
 
   transform: async (config, path) => {
     if (path === '/') {
+      // 루트 경로 처리
       return {
         loc: '/',
         alternateRefs: config.alternateRefs,
       };
     }
+
+    // 다른 경로에 대해 처리
     return {
       loc: path,
       alternateRefs: config.alternateRefs.map(ref => ({
         ...ref,
-        href: `${ref.href}${path}`,
+        href: `${ref.href}`,
       })),
     };
   },

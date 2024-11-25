@@ -16,6 +16,7 @@ import { useTanstackQuery } from './useTanstackQuery';
 import { useUid } from './useUid';
 import { useResetRouteQuery } from './useResetRouteQuery';
 import { useViewport } from './useViewport';
+import { useCompressCoded } from './useCompressCoded';
 
 export {
   useResetRouteQuery,

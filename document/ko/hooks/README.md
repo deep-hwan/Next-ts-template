@@ -36,3 +36,5 @@
 - useScrollRestoration : router.back()을 했을 때 이동한 페이지의 스크롤 위치에 도달하는 Hook 이며 \_app.tsx에서 전역으로 관리하고 있어요
 
 - useResetRouteQuery : router.query에서 queryName의 value가 존재 하지 않는 경우 빈 값으로("") 으로 queryValue를 초기화하는 훅이에요. 쿼리 필터 기능에 적합해요
+
+- useCompressCoded : 데이터를 인코딩 및 디코딩을 제공하는 훅입니다
