@@ -9,7 +9,7 @@ const projectName = process.argv[2];
 if (!projectName) {
   console.error('Please provide a project name:');
   console.error('npx create-next-speed-template my-app');
-  process.exit(1); // 0 : 정상종료 / 0 아닌 : 비정상 종료
+  process.exit(1);
 }
 
 const projectPath = path.resolve(process.cwd(), projectName);
@@ -30,6 +30,12 @@ try {
   // Remove Git history from the cloned template
   execSync('rm -rf .git', { stdio: 'inherit' });
 
+  // Modify package.json to set version to 1.0.0
+  const packageJsonPath = path.join(projectPath, 'package.json');
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+  packageJson.version = '1.0.0'; // Set the version to 1.0.0
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
   // Install dependencies using Yarn or npm
   console.log('Installing dependencies...');
   execSync('yarn install', { stdio: 'inherit' });
@@ -41,6 +47,4 @@ try {
   console.error('An error occurred during setup:', error);
 }
 
-
-
-// setting : chmod +x bin/create-next-speed-template.js    
+// setting : chmod +x bin/create-next-speed-template.js

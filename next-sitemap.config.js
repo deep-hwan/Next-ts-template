@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbleui.com';
 
 module.exports = {
   siteUrl: siteUrl,
@@ -9,9 +9,8 @@ module.exports = {
   priority: 0.8,
 
   alternateRefs: [
-    { href: `${siteUrl}/`, hreflang: 'ko' },
-    { href: `${siteUrl}/en`, hreflang: 'en' },
-    { href: `${siteUrl}/ko`, hreflang: 'ko' },
+    { href: `${siteUrl}`, hreflang: 'en' }, // 기본 영어 경로
+    { href: `${siteUrl}/ko`, hreflang: 'ko' }, // 한국어 경로
   ],
 
   additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
@@ -37,17 +36,17 @@ module.exports = {
 
   additionalPaths: async config => [
     {
-      loc: '/menu1',
+      loc: '/uiux',
       changefreq: 'weekly',
       priority: 0.8,
     },
     {
-      loc: '/menu2',
+      loc: '/widget',
       changefreq: 'weekly',
       priority: 0.8,
     },
     {
-      loc: '/menu3',
+      loc: '/order', // 고객센터 페이지
       changefreq: 'weekly',
       priority: 0.8,
     },
