@@ -15,16 +15,15 @@ interface CalendarProps {
 }
 
 const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: CalendarProps) => {
-  const [selectedDate, setSelectedDate] = useState<Date>(date instanceof Date ? date : new Date());
-  const [currentMonth, setCurrentMonth] = useState<number>(selectedDate?.getMonth() ?? new Date().getMonth());
-  const [currentYear, setCurrentYear] = useState<number>(selectedDate?.getFullYear() ?? new Date().getFullYear());
-  const [isFormat, setIsFormat] = useState(format);
+  const [selectedDate, setSelectedDate] = useState(() => date || new Date());
 
   useEffect(() => {
-    if (date instanceof Date || date === null) {
-      setSelectedDate(date || new Date());
-    }
+    if (date instanceof Date || date === null) setSelectedDate(date || new Date());
   }, [date]);
+
+  const [currentMonth, setCurrentMonth] = useState(selectedDate?.getMonth());
+  const [currentYear, setCurrentYear] = useState(selectedDate?.getFullYear());
+  const [isFormat, setIsFormat] = useState(format);
 
   const today = new Date();
   const todayDate = today.getDate();
@@ -67,21 +66,34 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
     endYear: currentYear - (currentYear % 10) + 9,
   });
 
-  const nextDecade = () => setYearRange(prev => ({ startYear: prev.startYear + 10, endYear: prev.endYear + 10 }));
+  const nextDecade = () =>
+    setYearRange(prev => ({
+      startYear: prev.startYear + 10,
+      endYear: prev.endYear + 10,
+    }));
 
-  const prevDecade = () => setYearRange(prev => ({ startYear: prev.startYear - 10, endYear: prev.endYear - 10 }));
+  const prevDecade = () =>
+    setYearRange(prev => ({
+      startYear: prev.startYear - 10,
+      endYear: prev.endYear - 10,
+    }));
 
+  //
   // yyyy-mm-dd > 클릭핸들러
   const selectDay = (day: any) => {
     const newDate = new Date(currentYear, currentMonth, day);
-    if ((minDate instanceof Date && newDate < minDate) || (maxDate instanceof Date && newDate > maxDate)) return;
+    if ((minDate && newDate < minDate) || (maxDate && newDate > maxDate)) return;
     onClick && onClick(newDate);
   };
 
+  //
   // yyyy > 클릭 핸들러
   const selectYear = (year: number) => {
     const newDate = new Date(year, 0, 1);
-    if ((minDate instanceof Date && newDate < minDate) || (maxDate instanceof Date && newDate > maxDate)) return;
+
+    // yyyy 포맷일 때만 minDate/maxDate 체크
+    if (format === 'yyyy' && ((minDate && newDate < minDate) || (maxDate && newDate > maxDate))) return;
+
     setCurrentYear(year);
 
     format !== 'yyyy' && setIsFormat('yyyy-mm');
@@ -99,9 +111,11 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
           />
 
           <CalenderGrid ea={3}>
-            {Array.from({ length: 10 }, (_, i) => yearRange.startYear + i).map(year => {
+            {Array.from({ length: 9 }, (_, i) => yearRange.startYear + i).map(year => {
               const date = new Date(year, 0, 1);
-              const selectable = (!minDate || date >= minDate) && (!maxDate || date <= maxDate);
+              // yyyy 포맷일 때만 selectable 체크, 그 외에는 항상 true
+              const selectable =
+                format === 'yyyy' ? (!minDate || date >= minDate) && (!maxDate || date <= maxDate) : true;
               const isToday = todayYear === year;
               const isSelected = selectedDate.getFullYear() === year;
 
@@ -127,7 +141,22 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
           <CalenderGrid ea={4}>
             {Array.from({ length: 12 }, (_, i) => i).map(month => {
               const date = new Date(currentYear, month, 1);
-              const selectable = (!minDate || date >= minDate) && (!maxDate || date <= maxDate);
+              const lastDayOfMonth = new Date(currentYear, month + 1, 0);
+
+              // Check if any day in month is selectable for yyyy-mm-dd format
+              let monthSelectable = false;
+              if (format === 'yyyy-mm-dd') {
+                for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                  const dayDate = new Date(currentYear, month, day);
+                  if ((!minDate || dayDate >= minDate) && (!maxDate || dayDate <= maxDate)) {
+                    monthSelectable = true;
+                    break;
+                  }
+                }
+              } else {
+                monthSelectable = (!minDate || date >= minDate) && (!maxDate || date <= maxDate);
+              }
+
               const isToday = todayYear === currentYear && todayMonth === month;
               const isSelectedMonth = selectedDate.getMonth() === month && selectedDate.getFullYear() === currentYear;
 
@@ -135,7 +164,7 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
                 <Wrapper
                   key={month}
                   onClick={() => {
-                    if (!selectable) return;
+                    if (!monthSelectable) return;
 
                     const newDate = new Date(currentYear, month, 1);
                     setCurrentMonth(month);
@@ -144,7 +173,12 @@ const Calender = ({ minDate, maxDate, date, onClick, format = 'yyyy-mm-dd' }: Ca
                     format === 'yyyy-mm' && onClick && onClick(newDate);
                   }}
                 >
-                  <MMBox month={month} isToday={isToday} selectable={selectable} isSelectedMonth={isSelectedMonth} />
+                  <MMBox
+                    month={month}
+                    isToday={isToday}
+                    selectable={monthSelectable}
+                    isSelectedMonth={isSelectedMonth}
+                  />
                 </Wrapper>
               );
             })}

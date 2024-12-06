@@ -74,6 +74,8 @@ export default function Comp4() {
       {/* 캘린더 모달 */}
       <CalenderModal
         open={isOpen === 'calenderModal'}
+        format='yyyy-mm-dd'
+        minDate={new Date()}
         onCancel={() => setIsOpen(false)}
         date={isDate ? isDate : new Date()}
         onClick={(date: any) => {
