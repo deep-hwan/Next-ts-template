@@ -19,7 +19,7 @@
 
 - useOpenWebBrowser : 각 미디어 및 플랫폼 인앱에서 나의 사이트를 열람할 때 앱 브라우저로 열람하도록 처리하는 전역 Hook 이에요
 
-- usePlatformOs : 현재 사용 중인 기기의 OS를 확인하는 Hook 이에요
+- usePlatformOS : 현재 사용 중인 기기의 OS를 확인하는 Hook 이에요
 
 - useRouteOnload: 현재 페이지를 나갈 때 저장된 recoil state를 초기화 할때 사용하는 Hook 이에요
 
@@ -35,6 +35,6 @@
 
 - useScrollRestoration : router.back()을 했을 때 이동한 페이지의 스크롤 위치에 도달하는 Hook 이며 \_app.tsx에서 전역으로 관리하고 있어요
 
-- useResetRouteQuery : router.query에서 queryName의 value가 존재 하지 않는 경우 빈 값으로("") 으로 queryValue를 초기화하는 훅이에요. 쿼리 필터 기능에 적합해요
+- useRouteResetQuery : router.query에서 queryName의 value가 존재 하지 않는 경우 빈 값으로("") 으로 queryValue를 초기화하는 훅이에요. 쿼리 필터 기능에 적합해요
 
 - useCompressCoded : 데이터를 인코딩 및 디코딩을 제공하는 훅입니다

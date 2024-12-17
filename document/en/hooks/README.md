@@ -19,7 +19,7 @@ Custom hooks will be constantly updated!
 
 - useOpenWebBrowser: This is a global hook that processes my site to be viewed with an app browser when browsing my site on each media and platform in-app
 
-- usePlatformOs : This is a hook to check the OS of the device you are currently using
+- usePlatformOS : This is a hook to check the OS of the device you are currently using
 
 - useRouteOnload: This is the hook used to initialize the stored recovery state when leaving the current page
 
@@ -35,6 +35,6 @@ Custom hooks will be constantly updated!
 
 - useScrollRestoration: It's a hook that reaches the scroll position of the page you moved when you do router.back(), and it's managed globally by \_app.tsx
 
-- useResetRouteQuery: A hook that initializes queryValue to an empty value ("") when the value of queryName does not exist in router.Query. It is suitable for query filter functionality
+- useRouteResetQuery: A hook that initializes queryValue to an empty value ("") when the value of queryName does not exist in router.Query. It is suitable for query filter functionality
 
 - useCompressCoded : A hook that provides encoding and decoding of data

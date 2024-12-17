@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-// ex : useResetRouteQuery('queryName',["1","2","3"])
+// ex : useRouteResetQuery('queryName',["1","2","3"])
 
-export function useResetRouteQuery({ queryName, queryValues }: { queryName: string; queryValues: string[] }) {
+export function useRouteResetQuery({ queryName, queryValues }: { queryName: string; queryValues: string[] }) {
   const { query, replace } = useRouter();
 
   useEffect(() => {

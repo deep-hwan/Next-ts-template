@@ -35,9 +35,10 @@ export function GlobalThemes({ children }: { children?: ReactNode }): JSX.Elemen
             padding: 0;
             width: 100%;
             height: 100%;
-            text-rendering: optimizeLegibility;
+
             overflow-x: hidden;
             overflow-y: auto;
+            text-rendering: optimizeLegibility;
             word-break: break-all;
             word-wrap: break-word;
             overflow-wrap: break-word;
@@ -141,11 +142,52 @@ export function GlobalThemes({ children }: { children?: ReactNode }): JSX.Elemen
             display: none;
           }
 
+          //
+          ////
           input::-webkit-search-decoration,
           input::-webkit-search-cancel-button,
           input::-webkit-search-results-button,
           input::-webkit-search-results-decoration {
             display: none;
+          }
+
+          input,
+          textarea,
+          select {
+            &:hover,
+            &:focus,
+            &:active {
+              outline: none;
+              box-shadow: none;
+              border: none;
+            }
+          }
+
+          input[type='number']::-webkit-outer-spin-button,
+          input[type='number']::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          &:-webkit-autofill,
+          &:-webkit-autofill:hover,
+          &:-webkit-autofill:focus,
+          &:-webkit-autofill:active {
+            -webkit-text-fill-color: #797979;
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+            box-shadow: 0 0 0px 1000px transparent inset;
+            transition: background-color 5000s ease-in-out 0s;
+            transition-delay: 9999s;
+          }
+
+          &:autofill,
+          &:autofill:hover,
+          &:autofill:focus,
+          &:autofill:active {
+            -webkit-text-fill-color: #797979;
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+            box-shadow: 0 0 0px 1000px transparent inset;
+            transition: background-color 5000s ease-in-out 0s;
           }
         `}
       />

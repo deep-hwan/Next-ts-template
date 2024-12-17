@@ -30,7 +30,7 @@ import AvatarUploader from './reader/AvatarUploader';
 import ImageUploader from './reader/ImageUploader';
 
 //switch
-import Checkbox from './switch/Checkbox';
+import { Checkbox } from './switch/Checkbox';
 import Switch from './switch/Switch';
 
 //typography

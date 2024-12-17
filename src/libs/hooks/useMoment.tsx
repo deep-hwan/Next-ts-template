@@ -17,14 +17,17 @@ export function useMoment(dateParam: string | Date) {
         | 'yyyy'
         | 'yyyy.mm'
         | 'yyyy.mm.dd'
+        | 'yyyy.mm.dd hh:mm'
         | 'yyyy-mm'
         | 'yyyy-mm-dd'
+        | 'yyyy-mm-dd hh:mm'
         | 'yyyy년'
         | 'yyyy년mm월'
         | 'yyyy년mm월dd일'
-        | 'yyyy.mm.dd hh:mm'
-        | 'yyyy-mm-dd hh:mm'
         | 'yyyy년mm월dd일 hh:mm'
+        | 'yy년mm월'
+        | 'yy년mm월dd일'
+        | 'yy년mm월dd일 hh:mm'
     ) => {
       const type = typeParam ?? 'yyyy.mm.dd';
 
@@ -53,12 +56,20 @@ export function useMoment(dateParam: string | Date) {
         return `${year}.${formattedMonth}.${formattedDay}`;
       }
 
+      if (type === 'yyyy.mm.dd hh:mm') {
+        return `${year}.${formattedMonth}.${formattedDay} ${period} ${adjustedHours}:${formattedMinutes}`;
+      }
+
       if (type === 'yyyy-mm') {
         return `${year}-${formattedMonth}`;
       }
 
       if (type === 'yyyy-mm-dd') {
         return `${year}-${formattedMonth}-${formattedDay}`;
+      }
+
+      if (type === 'yyyy-mm-dd hh:mm') {
+        return `${year}-${formattedMonth}-${formattedDay} ${period} ${adjustedHours}:${formattedMinutes}`;
       }
 
       if (type === 'yyyy년') {
@@ -73,16 +84,20 @@ export function useMoment(dateParam: string | Date) {
         return `${year}년 ${formattedMonth}월 ${formattedDay}일`;
       }
 
-      if (type === 'yyyy.mm.dd hh:mm') {
-        return `${year}.${formattedMonth}.${formattedDay} ${period} ${adjustedHours}:${formattedMinutes}`;
-      }
-
-      if (type === 'yyyy-mm-dd hh:mm') {
-        return `${year}-${formattedMonth}-${formattedDay} ${period} ${adjustedHours}:${formattedMinutes}`;
-      }
-
       if (type === 'yyyy년mm월dd일 hh:mm') {
         return `${year}년 ${formattedMonth}월 ${formattedDay}일 ${period} ${adjustedHours}:${formattedMinutes}`;
+      }
+
+      if (type === 'yy년mm월') {
+        return `${year.toString().slice(-2)}년 ${formattedMonth}월`;
+      }
+
+      if (type === 'yy년mm월dd일') {
+        return `${year.toString().slice(-2)}년 ${formattedMonth}월 ${formattedDay}일`;
+      }
+
+      if (type === 'yy년mm월dd일 hh:mm') {
+        return `${year.toString().slice(-2)}년 ${formattedMonth}월 ${formattedDay}일 ${period} ${adjustedHours}:${formattedMinutes}`;
       }
     },
 

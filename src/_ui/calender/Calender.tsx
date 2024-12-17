@@ -244,7 +244,7 @@ const flexT: Interpolation<Theme> = {
 //
 const CalenderGrid = ({ ea, children }: { ea: number; children: ReactNode }) => {
   return (
-    <div css={{ width: '100%', gridTemplateColumns: `repeat(${ea}, 1fr)`, display: 'grid', gap: 10 }}>{children}</div>
+    <div css={{ width: '100%', gridTemplateColumns: `repeat(${ea}, 1fr)`, display: 'grid', gap: 5 }}>{children}</div>
   );
 };
 
@@ -284,7 +284,7 @@ const YYBox = ({
     if (isSelected) return '#fff';
     if (!selectable) return '#bbb';
     if (isToday) return '#4788f4';
-    return '#555';
+    return '#66666a';
   };
 
   const bgTheme = () => {
@@ -304,7 +304,7 @@ const YYBox = ({
         maxHeight: 50,
         minWidth: 70,
         maxWidth: 70,
-        borderRadius: 16,
+        borderRadius: 18,
         padding: 5,
         backgroundColor: bgTheme(),
         color: colorTheme(),
@@ -334,7 +334,7 @@ const MMBox = ({
     if (!selectable) return '#bbb';
     if (isToday) return colors.blue[500];
 
-    return '#555';
+    return '#66666a';
   };
 
   const bgTheme = () => {
@@ -352,9 +352,9 @@ const MMBox = ({
         ...(flexT as any),
         minHeight: 50,
         maxHeight: 50,
-        minWidth: 60,
-        maxWidth: 60,
-        borderRadius: 16,
+        minWidth: 50,
+        maxWidth: 50,
+        borderRadius: 18,
         padding: 5,
         backgroundColor: bgTheme(),
         color: colorTheme(),
@@ -391,7 +391,7 @@ const DDBox = ({
     if (!selectable) return '#bbb';
     if (selectWrap) return '#fff';
 
-    return '#454545';
+    return '#66666a';
   };
 
   const bgTheme = () => {
@@ -409,7 +409,7 @@ const DDBox = ({
         maxHeight: size,
         minWidth: size,
         maxWidth: size,
-        borderRadius: 10,
+        borderRadius: 11,
         padding: 5,
         color: colorTheme() as any,
         backgroundColor: bgTheme(),

@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { Interpolation, Theme } from '@emotion/react';
-import React, { ForwardedRef, HTMLAttributes, ReactNode, useRef, useState } from 'react';
+import React, { ForwardedRef, HTMLAttributes, ReactNode, useEffect, useRef, useState } from 'react';
 
 //
 import { BlurLayer } from '@/_ui';
 import { MQ } from '@/libs/themes';
-import useHadleEvent from './handler/useModalView';
+import useModalView from './handler/useModalView';
 
 //
 interface BottomSheetProps extends Omit<HTMLAttributes<HTMLElement>, 'color'> {
@@ -56,13 +56,31 @@ const BottomSheet = ({
     setStartY(0);
   };
 
-  useHadleEvent({ ref, open, onCancel, clickOutSideClose, windowScreenScroll });
+  const [delayedOpen, setDelayedOpen] = useState(false);
 
+  const handleCancel = () => {
+    setDelayedOpen(false);
+    const timeout = setTimeout(() => onCancel(), 100);
+    return () => clearTimeout(timeout);
+  };
+
+  useEffect(() => {
+    if (open) {
+      const timeout = setTimeout(() => setDelayedOpen(true), 80);
+      return () => clearTimeout(timeout);
+    } else {
+      setDelayedOpen(false);
+    }
+  }, [open]);
+
+  useModalView({ ref, open, onCancel: handleCancel, clickOutSideClose, windowScreenScroll });
+
+  if (!open) return null;
   return (
     <>
       {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
 
-      <Fixed open={open} zIndex={zIndex}>
+      <Fixed open={delayedOpen} zIndex={zIndex}>
         <div
           css={{
             ...(flexT as []),
@@ -102,7 +120,7 @@ const BottomSheet = ({
               onTouchEnd={handleTouchEnd}
             >
               <div
-                onClick={onCancel}
+                onClick={handleCancel}
                 css={{
                   maxWidth: 50,
                   minWidth: 50,

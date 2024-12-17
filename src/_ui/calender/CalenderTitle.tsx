@@ -60,7 +60,7 @@ const themes = {
     justifyContent: 'center',
     fontSize: '1rem',
     fontWeight: 500,
-    color: '#444',
+    color: '#66666a',
     padding: '5px 5px 7px',
     whiteSpace: 'nowrap',
     cursor: 'pointer',

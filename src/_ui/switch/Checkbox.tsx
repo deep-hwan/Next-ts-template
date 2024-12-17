@@ -1,5 +1,5 @@
 import { Interpolation, Theme } from '@emotion/react';
-import { ForwardedRef, forwardRef, HTMLAttributes, useState } from 'react';
+import { ForwardedRef, HTMLAttributes, useState } from 'react';
 //
 import { colors } from '@/libs/themes';
 
@@ -28,6 +28,7 @@ type Types = {
 
   label?: {
     title: string;
+    edgeTitle?: string;
     txt?: string;
     txtOnClick?: any;
   };
@@ -41,11 +42,17 @@ type Types = {
 } & Omit<HTMLAttributes<HTMLDivElement>, 'onClick'>;
 //
 //
-const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | undefined) => {
+function Checkbox(props: Types & { ref?: ForwardedRef<HTMLDivElement> }) {
   const [hover, setHover] = useState(false);
 
   const checkColors = () => {
     if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#fafafa';
+    if (!!props?.checked) return props?.themes?.check?.checkColor ?? colors.keyColor;
+    return props?.themes?.check?.defaultColor ?? '#e2e2e2';
+  };
+
+  const checkBorderColors = () => {
+    if (props?.disabled) return props?.themes?.check?.disabledColor ?? '#e0e0e0';
     if (!!props?.checked) return props?.themes?.check?.checkColor ?? colors.keyColor;
     return props?.themes?.check?.defaultColor ?? '#e2e2e2';
   };
@@ -71,9 +78,10 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={handleOnClick}
       {...(props || {})}
-      ref={ref}
-      css={{ display: 'flex', alignItems: 'start', gap: 8 }}
+      ref={props.ref}
+      css={{ display: 'flex', alignItems: 'start', gap: 7 }}
     >
       <div
         css={{
@@ -84,16 +92,17 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
           minHeight: props.themes?.check?.checkSize ?? 17,
           maxHeight: props.themes?.check?.checkSize ?? 17,
           borderRadius: props.themes?.check?.borderRadius ?? 6,
-          border: `1px solid ${props.checked ? colors.keyColor : '#e0e0e0'}`,
+          border: `1px solid ${checkBorderColors()}`,
           backgroundColor: checkColors(),
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: '0.2s ease-in-out',
-          marginTop: 4,
+          marginTop: props.themes?.check?.checkSize
+            ? props.themes?.check?.checkSize - 14
+            : (props?.themes?.label?.titleSize ?? 15) - 11.5,
           cursor: !props?.disabled && 'pointer',
         }}
-        onClick={handleOnClick}
       >
         {props?.disabled ? (
           <div
@@ -101,12 +110,12 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
               width: props.themes?.check?.checkSize ?? 18 - 9,
               height: 2,
               borderRadius: 100,
-              backgroundColor: '#aaa',
+              backgroundColor: '#c2c2c2',
               borderRight: 1000,
             }}
           />
         ) : (
-          <CheckIcon size={((props.themes?.check?.checkSize ?? 18) as number) - 8} fill={checkIconColors()} />
+          <CheckIcon size={((props.themes?.check?.checkSize ?? 18) as number) - 9} fill={checkIconColors()} />
         )}
       </div>
 
@@ -126,23 +135,35 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
           }}
         >
           <p
-            onClick={handleOnClick}
             css={{
               userSelect: 'none',
               fontSize: props?.themes?.label?.titleSize ?? 15,
-              fontWeight: TYPOGRAPH_WEIGHT[props?.themes?.label?.titleWeight ?? 'medium'].fontWeight as any,
-              color: props?.themes?.label?.titleColor ?? '#555',
+              fontWeight: TYPOGRAPH_WEIGHT[props?.themes?.label?.titleWeight ?? 'normal'].fontWeight as any,
+              color: props?.themes?.label?.titleColor ?? '#616066',
               cursor: !props?.disabled && ('pointer' as any),
             }}
           >
             {props?.label.title}
+
+            {!!props?.label.edgeTitle && (
+              <span
+                css={{
+                  userSelect: 'none',
+                  fontSize: 13,
+                  color: '#8f8e98',
+                  paddingLeft: 4,
+                }}
+              >
+                {props?.label.edgeTitle}
+              </span>
+            )}
           </p>
 
           <p
             css={{
               userSelect: 'none',
               fontSize: props?.themes?.label?.txtSize ?? 13,
-              color: props?.themes?.label?.txtColor ?? '#888',
+              color: props?.themes?.label?.txtColor ?? '#9d9d9f',
             }}
           >
             {props?.label.txt}
@@ -151,7 +172,7 @@ const Checkbox = forwardRef((props: Types, ref: ForwardedRef<HTMLDivElement> | u
       )}
     </div>
   );
-});
+}
 
 const CheckIcon = ({ size, fill }: { size: any; fill: string }) => (
   <svg width={size} height={size} viewBox='0 0 22 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -169,4 +190,4 @@ const CheckIcon = ({ size, fill }: { size: any; fill: string }) => (
   </svg>
 );
 
-export default Checkbox;
+export { Checkbox };

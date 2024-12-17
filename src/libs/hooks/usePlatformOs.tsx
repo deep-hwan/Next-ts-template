@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function usePlatformOs() {
+export function usePlatformOS() {
   const [platform, setPlatform] = useState<'android' | 'ios' | 'pc' | 'Unknown'>('Unknown');
 
   useEffect(() => {

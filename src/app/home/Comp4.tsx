@@ -78,10 +78,7 @@ export default function Comp4() {
         minDate={new Date()}
         onCancel={() => setIsOpen(false)}
         date={isDate ? isDate : new Date()}
-        onClick={(date: any) => {
-          setIsOpen(false);
-          setIsDate(date);
-        }}
+        onClick={(date: any) => setIsDate(date)}
       />
     </>
   );

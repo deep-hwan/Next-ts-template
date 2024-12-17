@@ -7,19 +7,18 @@ import { useMediaQuery } from './useMediaQuery';
 import { useMoment } from './useMoment';
 import { useObserver } from './useObserver';
 import { useOpenWebBrowser } from './useOpenWebBrowser';
-import { usePlatformOs } from './usePlatformOs';
+import { usePlatformOS } from './usePlatformOS';
 import { useRouteOnload } from './useRouteOnload';
+import { useRouteResetQuery } from './useRouteResetQuery';
 import { useSafeArea } from './useSafeArea';
 import { useScrollRestoration } from './useScrollRestoration';
 import { useStopSwipe } from './useStopSwipe';
 import { useTanstackQuery } from './useTanstackQuery';
 import { useUid } from './useUid';
-import { useResetRouteQuery } from './useResetRouteQuery';
 import { useViewport } from './useViewport';
 import { useCompressCoded } from './useCompressCoded';
 
 export {
-  useResetRouteQuery,
   useCallback,
   useClickOutside,
   useCookie,
@@ -31,8 +30,9 @@ export {
   useMoment,
   useObserver,
   useOpenWebBrowser,
-  usePlatformOs,
+  usePlatformOS,
   useRouteOnload,
+  useRouteResetQuery,
   useSafeArea,
   useScrollRestoration,
   useState,
@@ -41,4 +41,5 @@ export {
   useTransition,
   useUid,
   useViewport,
+  useCompressCoded,
 };
