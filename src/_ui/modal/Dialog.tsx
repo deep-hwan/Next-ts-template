@@ -59,14 +59,14 @@ const Dialog = (props: Props) => {
 
   useEffect(() => {
     if (open) {
-      const timeout = setTimeout(() => setDelayedOpen(true), 20);
+      const timeout = setTimeout(() => setDelayedOpen(true), 50);
       return () => clearTimeout(timeout);
     } else {
       setDelayedOpen(false);
     }
   }, [open]);
 
-  useModalView({ ref, open, onCancel: handleCancel, clickOutSideClose: true, windowScreenScroll: false });
+  useModalView({ ref, open: delayedOpen, onCancel: handleCancel, clickOutSideClose: true, windowScreenScroll: false });
 
   if (!open) return null;
   return (

@@ -64,7 +64,6 @@ export default function CheckModals({ dialogOnChange }: { dialogOnChange: () => 
           {
             name: '닫기',
             onClick: () => {
-              router.back();
               dialogOnChange();
             },
           },

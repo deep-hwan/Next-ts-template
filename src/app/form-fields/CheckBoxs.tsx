@@ -40,11 +40,13 @@ export default function CheckBoxs({
       <Checkbox
         id='이용약관'
         checked={isValues.check1}
-        onClick={() => handleCheckOnChange('check1')}
+        onClick={() => {
+          handleCheckOnChange('check1');
+          if (!isValues.check1) modalQueryRouter('개인정보처리방침');
+        }}
         label={{
           title: '이용약관 (필수)',
           txt: '서비스 이용약관에 동의합니다. (자세히 보기📎)',
-          txtOnClick: () => modalQueryRouter('이용약관'),
         }}
         themes={{ label: { titleSize: 14, titleWeight: 'medium' } }}
       />
@@ -53,11 +55,13 @@ export default function CheckBoxs({
       <Checkbox
         id='개인정보 처리방침'
         checked={isValues.check2}
-        onClick={() => handleCheckOnChange('check2')}
+        onClick={() => {
+          handleCheckOnChange('check2');
+          if (!isValues.check2) modalQueryRouter('개인정보처리방침');
+        }}
         label={{
           title: '개인정보 처리방침 (필수)',
           txt: '개인정보 처리방침에 동의합니다. (자세히 보기📎)',
-          txtOnClick: () => modalQueryRouter('이용약관'),
         }}
         themes={{ label: { titleSize: 14, titleWeight: 'medium' } }}
       />

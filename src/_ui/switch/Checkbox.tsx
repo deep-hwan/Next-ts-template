@@ -30,7 +30,6 @@ type Types = {
     title: string;
     edgeTitle?: string;
     txt?: string;
-    txtOnClick?: any;
   };
 
   labelActive?: boolean;

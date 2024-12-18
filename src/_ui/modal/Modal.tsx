@@ -55,7 +55,7 @@ const ModalComponent = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDiv
 
   useEffect(() => {
     if (open) {
-      const timeout = setTimeout(() => setDelayedOpen(true), 80);
+      const timeout = setTimeout(() => setDelayedOpen(true), 50);
       return () => clearTimeout(timeout);
     } else {
       setDelayedOpen(false);
@@ -64,7 +64,7 @@ const ModalComponent = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDiv
 
   useModalView({
     ref: modalRef,
-    open,
+    open: delayedOpen,
     onCancel: handleCancel,
     clickOutSideClose,
     windowScreenScroll,
@@ -73,7 +73,7 @@ const ModalComponent = React.forwardRef((props: Props, ref: ForwardedRef<HTMLDiv
   if (!open) return null;
   return (
     <>
-      {open && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
+      {open && delayedOpen && <BlurLayer zIndex={zIndex ? zIndex - 1 : 9998} />}
 
       <Fixed open={delayedOpen} zIndex={zIndex}>
         <div

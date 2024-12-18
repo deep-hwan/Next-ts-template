@@ -66,14 +66,20 @@ const BottomSheet = ({
 
   useEffect(() => {
     if (open) {
-      const timeout = setTimeout(() => setDelayedOpen(true), 80);
+      const timeout = setTimeout(() => setDelayedOpen(true), 50);
       return () => clearTimeout(timeout);
     } else {
       setDelayedOpen(false);
     }
   }, [open]);
 
-  useModalView({ ref, open, onCancel: handleCancel, clickOutSideClose, windowScreenScroll });
+  useModalView({
+    ref,
+    open: delayedOpen,
+    onCancel: handleCancel,
+    clickOutSideClose,
+    windowScreenScroll,
+  });
 
   if (!open) return null;
   return (

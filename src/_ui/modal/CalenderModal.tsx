@@ -52,7 +52,13 @@ const CalenderModal = ({
     }
   }, [open]);
 
-  useModalView({ ref, open, onCancel: handleCancel, clickOutSideClose, windowScreenScroll });
+  useModalView({
+    ref,
+    open: delayedOpen,
+    onCancel: handleCancel,
+    clickOutSideClose,
+    windowScreenScroll,
+  });
 
   if (!open) return null;
   return (
