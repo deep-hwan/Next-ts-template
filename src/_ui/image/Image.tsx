@@ -39,6 +39,7 @@ const ImageInstance = forwardRef(function ImageInstance(
   const imgRef = useRef<HTMLImageElement>(null);
   const [isHover, setIsHover] = useState(false);
   const [zoomImg, setZoomImg] = useState(false);
+  const [showZoomImage, setShowZoomImage] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState<number | undefined>(undefined);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -90,6 +91,10 @@ const ImageInstance = forwardRef(function ImageInstance(
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.overflowY = 'hidden';
+
+      const timer = setTimeout(() => {
+        setShowZoomImage(true);
+      }, 200);
     } else {
       const scrollY = document.body.style.top;
       document.body.style.position = '';
@@ -97,6 +102,7 @@ const ImageInstance = forwardRef(function ImageInstance(
       document.body.style.overflowY = 'auto';
 
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      setShowZoomImage(false);
     }
 
     document.addEventListener('mousedown', clickModalOutside);
@@ -146,7 +152,7 @@ const ImageInstance = forwardRef(function ImageInstance(
         />
       </div>
 
-      {zoomImg && (
+      {zoomImg && showZoomImage && (
         <PopupImageWrapper onCancel={() => setZoomImg(false)}>
           <div
             className='zoom-image'
@@ -167,7 +173,7 @@ const ImageInstance = forwardRef(function ImageInstance(
               blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
               priority={props.priority}
               fill
-              quality={props.quality ?? 75}
+              quality={props.quality ?? 70}
               loading='lazy'
               objectFit='contain'
               style={{ objectFit: 'contain' }}

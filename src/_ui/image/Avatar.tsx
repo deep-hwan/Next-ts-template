@@ -25,6 +25,7 @@ export function Avatar({
 }: Types) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [zoomImg, setZoomImg] = useState(false);
+  const [showZoomImage, setShowZoomImage] = useState(false);
 
   const source_instance =
     !!source ||
@@ -61,6 +62,12 @@ export function Avatar({
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.overflowY = 'hidden';
+
+      const timer = setTimeout(() => {
+        setShowZoomImage(true);
+      }, 200);
+
+      return () => clearTimeout(timer);
     } else {
       const scrollY = document.body.style.top;
       document.body.style.position = '';
@@ -68,6 +75,7 @@ export function Avatar({
       document.body.style.overflowY = 'auto';
 
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      setShowZoomImage(false);
     }
   }, [zoomImg]);
 
@@ -84,7 +92,7 @@ export function Avatar({
     <>
       {source_instance ? (
         <ImageInstance
-          source={source.replace('/upload/', '/upload/w_150,h_150,c_fill,g_face,q_auto,f_auto/')}
+          source={source}
           alt={alt}
           size={sizes}
           borderRadius={borderRadius}
@@ -111,7 +119,7 @@ export function Avatar({
         </svg>
       )}
 
-      {zoomImg && (
+      {zoomImg && showZoomImage && (
         <PopupAvatarWrapper>
           <div
             className='zoom-image'
