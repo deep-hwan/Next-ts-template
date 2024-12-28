@@ -1,5 +1,5 @@
 //libs
-import { Txt, V, Avatar } from '@/_ui';
+import { Avatar, Txt, V } from '@/_ui';
 import { colors } from '@/libs/themes';
 
 //
@@ -10,6 +10,7 @@ export default function Comp1() {
         <Avatar
           source='https://imagedelivery.net/vJSpkH6oHM7zquolzolo7A/77550435-1cc9-4b42-4519-3cd83f149b00/public'
           alt='템플릿'
+          isLoading={false}
           size={40}
           zoomUp
         />

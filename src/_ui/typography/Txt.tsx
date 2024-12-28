@@ -69,7 +69,7 @@ export function Txt(props: Types & { [key: string]: any }) {
     ...restProps,
     size: txt_size_extend(),
     weight: txt_weight(),
-    color: restProps.color ?? '#4e4e51',
+    color: restProps.color ?? '#57575c',
     txtAlign: restProps.txtAlign ?? 'start',
     whiteSpace: props?.ellipsis?.ellipsis ? 'normal' : (props.whiteSpace ?? 'pre-line'),
     userSelect: props.userSelect ? props.userSelect : onClick && 'none',

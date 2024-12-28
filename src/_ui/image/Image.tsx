@@ -2,9 +2,11 @@
 import { useUid } from '@/libs/hooks';
 import Image from 'next/image';
 import { ForwardedRef, forwardRef, HTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
+import { Skeleton } from '../loading/Skeleton';
 import { PopupImageWrapper } from './instances/PopupImageWrapper';
 
 type SizeThemeType = {
+  isLoading?: boolean;
   size?: {
     width?: 'auto' | '100%' | string | number;
     minWidth?: number | string;
@@ -27,11 +29,12 @@ type Types = {
   priority?: boolean;
   quality?: number;
   isHover?: boolean;
+  isLoading?: boolean;
 } & SizeThemeType &
   Omit<HTMLAttributes<HTMLImageElement>, 'objectFit'>;
 
 const ImageInstance = forwardRef(function ImageInstance(
-  { source, alt, objectFit, zoomUp, ...props }: Types,
+  { source, alt, objectFit, zoomUp, isLoading, ...props }: Types,
   ref?: ForwardedRef<HTMLImageElement>
 ) {
   const uid = useUid();
@@ -125,34 +128,41 @@ const ImageInstance = forwardRef(function ImageInstance(
         }}
         {...props}
       >
-        <Image
-          id={`image-${uid}`}
-          itemProp='image'
-          ref={ref}
-          src={source}
-          alt={alt}
-          priority={props.priority}
-          fill
-          blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
-          quality={props.quality ?? 75}
-          placeholder='blur'
-          loading={props?.priority ? 'eager' : 'lazy'}
-          sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-          onClick={handleOnClick}
-          onLoad={handleImageLoad}
-          css={{
-            overflow: 'hidden',
-            objectFit: objectFit ?? 'cover',
-            width: '100%',
-            height: '100%',
-            filter: isLoaded ? 'none' : 'blur(10px)',
-            transition: 'filter 0.3s ease-in-out',
-            scale: isHover ? 1.05 : 1,
-          }}
-        />
+        {isLoading ? (
+          <Skeleton height={'100%' as any} width={'100%' as any} />
+        ) : (
+          <Image
+            id={`image-${uid}`}
+            itemProp='image'
+            ref={ref}
+            src={source}
+            alt={alt}
+            priority={props.priority}
+            fill
+            blurDataURL='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAECAIAAADETxJQAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAM0lEQVR4nAEoANf/AP7+//j9/+ry/wDe3NbEqorX1cwAkn9ndUYhjHddAAgEBBIODgcHCB3XE9M/sWuRAAAAAElFTkSuQmCC'
+            quality={props.quality ?? 75}
+            placeholder='blur'
+            loading={props?.priority ? 'eager' : 'lazy'}
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            onClick={handleOnClick}
+            onLoad={handleImageLoad}
+            css={{
+              overflow: 'hidden',
+              objectFit: objectFit ?? 'cover',
+              width: '100%',
+              height: '100%',
+              filter: isLoaded ? 'none' : 'blur(10px)',
+              transition: 'filter 0.3s ease-in-out',
+              scale: isHover ? 1.05 : 1,
+              boxShadow: props.shadow
+                ? `${props.shadow.x}px ${props.shadow.y}px ${props.shadow.blur}px ${props.shadow.color}`
+                : undefined,
+            }}
+          />
+        )}
       </div>
 
-      {zoomImg && showZoomImage && (
+      {!isLoading && zoomImg && showZoomImage && (
         <PopupImageWrapper onCancel={() => setZoomImg(false)}>
           <div
             className='zoom-image'

@@ -28,6 +28,7 @@ export function TxtSpan(props: Types & { [key: string]: any }) {
     ...restProps,
     size: typeof size === 'string' ? size : (size as number) / 16 + 'rem',
     weight: TYPOGRAPH_WEIGHT[weight ?? 'normal'].fontWeight as any,
+    txtAlign: restProps.txtAlign ?? 'start',
     userSelect: props.userSelect ? props.userSelect : onClick && 'none',
     cursor: props.cursor ? props.cursor : onClick && 'pointer',
   });
