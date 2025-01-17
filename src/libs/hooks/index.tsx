@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import { useClickOutside } from './useClickOutSide';
+import { useCompressCoded } from './useCompressCoded';
 import { useCookie } from './useCookie';
 import { useInfiniteQueryObserver } from './useInfiniteQueryObserver';
+import { useInterval } from './useInterval';
 import { useLocalStorage } from './useLocalStorage';
 import { useMediaQuery } from './useMediaQuery';
 import { useMoment } from './useMoment';
@@ -16,14 +18,15 @@ import { useStopSwipe } from './useStopSwipe';
 import { useTanstackQuery } from './useTanstackQuery';
 import { useUid } from './useUid';
 import { useViewport } from './useViewport';
-import { useCompressCoded } from './useCompressCoded';
 
 export {
   useCallback,
   useClickOutside,
+  useCompressCoded,
   useCookie,
   useEffect,
   useInfiniteQueryObserver,
+  useInterval,
   useLocalStorage,
   useMediaQuery,
   useMemo,
@@ -41,5 +44,4 @@ export {
   useTransition,
   useUid,
   useViewport,
-  useCompressCoded,
 };

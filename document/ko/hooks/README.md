@@ -37,4 +37,8 @@
 
 - useRouteResetQuery : router.query에서 queryName의 value가 존재 하지 않는 경우 빈 값으로("") 으로 queryValue를 초기화하는 훅이에요. 쿼리 필터 기능에 적합해요
 
-- useCompressCoded : 데이터를 인코딩 및 디코딩을 제공하는 훅입니다
+- useCompressCoded : 데이터를 인코딩 및 디코딩을 제공하는 훅이에요
+
+- useTimeout : setTimeout을 처리하는 훅이에요
+
+- useInterval : setInterval을 처리하는 훅이에요

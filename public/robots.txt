@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /404
+
+# Host
+Host: https://next-typescript-tamplate.vercel.app
+
+# Sitemaps
+Sitemap: https://next-typescript-tamplate.vercel.app/sitemap.xml

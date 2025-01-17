@@ -1,22 +1,52 @@
+import { siteDescription, siteTitle, siteUrl } from '@/libs/utils/site';
 import { format } from 'date-fns';
+import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
+import path from 'path';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
+// Define a type for the dynamic URL items
+interface DynamicUrlItem {
+  title: string;
+  description: string;
+  url: string;
+  image: string;
+  datePublished: Date;
+}
 
-const generateRssFeed = (locale: string) => {
-  // 기본 언어가 ko일 경우에는 '/ko' 경로를 사용하지 않음
-  const isDefaultLocale = locale === 'ko';
-  const basePath = isDefaultLocale ? '' : `/${locale}`;
+// Function to fetch dynamic URLs from multiple JSON files
+async function fetchDynamicUrls(basePath: string): Promise<DynamicUrlItem[]> {
+  const jsonFiles = [{ path: '', key: 'appName' }]; // << add json file and data
+
+  let dynamicUrls: DynamicUrlItem[] = [];
+
+  for (const { path: jsonPath, key } of jsonFiles) {
+    try {
+      const data: any[] = JSON.parse(fs.readFileSync(path.join(__dirname, jsonPath), 'utf-8'));
+      const urls = data.map((item: any) => ({
+        title: item.title || item[key] || 'No Title',
+        description: item.description || 'No Description',
+        url: `${siteUrl}${basePath}/${item[key]}`,
+        image: `${siteUrl}/assets/favicons/favicon-512x512.png`,
+        datePublished: new Date(),
+      }));
+      dynamicUrls = dynamicUrls.concat(urls);
+    } catch (error) {
+      console.error(`Error reading or parsing file ${jsonPath}:`, error);
+    }
+  }
+
+  return dynamicUrls;
+}
+
+const generateRssFeed = async () => {
+  const basePath = ''; // Since the service is only for Korean users, no need for locale handling
+
+  // Fetch dynamic URLs from all JSON files
+  const dynamicUrls = await fetchDynamicUrls(basePath);
 
   const rssItems = [
-    {
-      title: 'Next.js 템플릿에 오신 것을 환영합니다',
-      description: 'Next.js 템플릿에 오신 것을 환영합니다',
-      url: `${SITE_URL}${basePath}/post/1`, // 언어별 경로 처리
-      image: `${SITE_URL}/assets/favicons/favicon-512x512.png`,
-      datePublished: new Date(),
-    },
-    // 추가적인 게시물 데이터도 여기서 처리할 수 있음
+    ...dynamicUrls,
+    // Add more items dynamically if needed
   ];
 
   const rssItemsXml = rssItems
@@ -35,27 +65,24 @@ const generateRssFeed = (locale: string) => {
     })
     .join('');
 
-  const rssFeed = `
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <rss version="2.0">
-      <channel>
-        <title>Dble UI RSS Feed</title>
-        <link>${SITE_URL}${basePath}</link>
-        <description>최고의 UI 및 컴포넌트 리소스 사이트</description>
-        <language>${locale}</language>
-        <lastBuildDate>${format(new Date(), 'EEE, dd MMM yyyy HH:mm:ss O')}</lastBuildDate>
-        ${rssItemsXml}
-      </channel>
-    </rss>
-  `;
+  const rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>${siteTitle}</title>
+    <link>${siteUrl}${basePath}</link>
+    <description>${siteDescription}</description>
+    <language>ko</language>
+    <lastBuildDate>${format(new Date(), 'EEE, dd MMM yyyy HH:mm:ss O')}</lastBuildDate>
+    ${rssItemsXml}
+  </channel>
+</rss>`;
 
   return rssFeed;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { locale } = req.query; // locale 파라미터를 가져옴
-    const rssFeed = generateRssFeed(Array.isArray(locale) ? locale[0] : locale || 'ko'); // 기본 언어는 ko로 설정
+    const rssFeed = await generateRssFeed();
 
     res.setHeader('Content-Type', 'application/xml');
     res.write(rssFeed);

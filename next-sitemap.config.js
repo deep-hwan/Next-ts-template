@@ -1,64 +1,40 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbleui.com';
+/** @type {import('next-sitemap').IConfig} */
 
-module.exports = {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+const sitemapConfig = {
   siteUrl: siteUrl,
   exclude: ['/404'],
   generateRobotsTxt: true,
   sitemapSize: 7000,
   changefreq: 'daily',
-  priority: 0.8,
-
-  alternateRefs: [
-    { href: `${siteUrl}`, hreflang: 'en' }, // 기본 영어 경로
-    { href: `${siteUrl}/ko`, hreflang: 'ko' }, // 한국어 경로
-  ],
-
-  additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
-
-  transform: async (config, path) => {
-    if (path === '/') {
-      // 루트 경로 처리
-      return {
-        loc: '/',
-        alternateRefs: config.alternateRefs,
-      };
-    }
-
-    // 다른 경로에 대해 처리
-    return {
-      loc: path,
-      alternateRefs: config.alternateRefs.map(ref => ({
-        ...ref,
-        href: `${ref.href}`,
-      })),
-    };
-  },
-
-  additionalPaths: async config => [
-    {
-      loc: '/uiux',
-      changefreq: 'weekly',
-      priority: 0.8,
-    },
-    {
-      loc: '/widget',
-      changefreq: 'weekly',
-      priority: 0.8,
-    },
-    {
-      loc: '/order', // 고객센터 페이지
-      changefreq: 'weekly',
-      priority: 0.8,
-    },
-  ],
-
+  outDir: './public',
+  priority: 0.7,
+  trailingSlash: false, //  true 시 항상 URL 끝에 / 붙임s
   robotsTxtOptions: {
-    additionalSitemaps: [`${siteUrl}/server-sitemap.xml`],
     policies: [
       {
         userAgent: '*',
         allow: '/',
+        disallow: ['/404'],
       },
     ],
+    // additionalSitemaps: [`${siteUrl}/sitemap-0.xml`],
   },
+
+  // 특정 경로 설정 -  우선순위 처리
+  additionalPaths: async config => [
+    {
+      loc: '/',
+      changefreq: 'daily',
+      priority: 1.0,
+    },
+    {
+      loc: '/form-fields',
+      changefreq: 'daily',
+      priority: 0.8,
+    },
+  ],
 };
+
+module.exports = sitemapConfig;

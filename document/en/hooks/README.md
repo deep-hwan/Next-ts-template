@@ -38,3 +38,7 @@ Custom hooks will be constantly updated!
 - useRouteResetQuery: A hook that initializes queryValue to an empty value ("") when the value of queryName does not exist in router.Query. It is suitable for query filter functionality
 
 - useCompressCoded : A hook that provides encoding and decoding of data
+
+- useTimeout : This is a hook that handles setTimeout
+
+- useInterval: The hook that handles setInterval
