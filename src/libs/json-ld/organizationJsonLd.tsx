@@ -35,7 +35,7 @@ export const OrganizationJsonLd = ({ title = siteTitle, siteUrl = site_url }: { 
     foundingDate: '2025-01-13',
     founder: {
       '@type': 'Person',
-      name: '픽럽',
+      name: '디블',
     },
   };
 

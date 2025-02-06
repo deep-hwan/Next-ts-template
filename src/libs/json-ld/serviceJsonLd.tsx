@@ -13,10 +13,10 @@ export const ServiceJsonLd = ({ description = siteDescription }: { description?:
 
     provider: {
       '@type': 'Organization',
-      name: '픽럽랩스',
+      name: '디블',
     },
     areaServed: '대한민국',
-    serviceType: '소개팅의 모든 서비스',
+    serviceType: '웹서비스',
   };
 
   return (
